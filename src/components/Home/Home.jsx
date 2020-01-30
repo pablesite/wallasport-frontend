@@ -16,6 +16,9 @@ import Grid from '@material-ui/core/Grid';
 
 import "./Home.css"
 
+import { useTranslation } from 'react-i18next';
+
+
 export default function Home(props) {
 
   const type = [
@@ -25,11 +28,15 @@ export default function Home(props) {
 
   const { adverts, checkUser, error, history, isFetching, loadAdverts, user, tagList } = props;
 
+  const [t, i18n] = useTranslation();
+
+
+
   const [filters, setFilters] = useState({
-    name: '',
-    price: '',
-    tag: '',
-    type: ''
+    nombre: '',
+    precio: '',
+    tags: '',
+    venta: ''
   });
 
   const [update, setUpdate] = useState(true);
@@ -37,7 +44,7 @@ export default function Home(props) {
   useEffect(() => {
     if (checkUser.exist) {
       loadAdverts("tag=" + checkUser.user.tag).then(() => setUpdate(true))
-
+      
     } else {
       history.push("/login");
     }
@@ -52,30 +59,30 @@ export default function Home(props) {
   const onSubmit = (event) => {
     event && event.preventDefault();
 
-    const { name, price, tag, type } = filters;
+    const { nombre, precio, tags, venta } = filters;
     let filterString = '';
     let temp = true;
 
-    if (name) {
-      filterString = 'name=' + name;
+    if (nombre) {
+      filterString = 'nombre=' + nombre;
     }
-    if (price) {
+    if (precio) {
       if (filterString === '') {
-        filterString = 'price=' + price;
+        filterString = 'precio=' + precio;
       } else {
-        filterString = filterString + '&price=' + price;
+        filterString = filterString + '&price=' + precio;
       }
     }
-    if (tag) {
+    if (tags) {
       if (filterString === '') {
-        filterString = 'tag=' + tag;
+        filterString = 'tags=' + tags;
       } else {
-        filterString = filterString + '&tag=' + tag;
+        filterString = filterString + '&tags=' + tags;
       }
     }
 
-    if (type) {
-      if (type === 'sell') {
+    if (venta) {
+      if (venta === 'venta') {
         temp = true;
       } else {
         temp = false;
@@ -102,7 +109,7 @@ export default function Home(props) {
 
     const { name, value } = event.target;
 
-    if (name === 'price') {
+    if (name === 'precio') {
       const regExp = /\d*(?:-)\d*/;
       let newValue = regExp.exec(value);
       if (newValue == null) {
@@ -137,8 +144,8 @@ export default function Home(props) {
           <Grid item xs={10} sm={2}>
             <TextField
               label="Name"
-              value={filters.name}
-              name="name"
+              value={filters.nombre}
+              name="nombre"
               onChange={onInputChange}
               fullWidth
             />
@@ -147,8 +154,8 @@ export default function Home(props) {
           <Grid item xs={10} sm={2}>
             <TextField
               label="Price (min-max)"
-              value={filters.price}
-              name="price"
+              value={filters.precio}
+              name="precio"
               onChange={onInputChange}
               fullWidth
             />
@@ -160,8 +167,8 @@ export default function Home(props) {
               <Select
 
                 label="Tag"
-                value={filters.tag}
-                name="tag"
+                value={filters.tags}
+                name="tags"
                 onChange={onInputChange}
               >
                 <MenuItem value='' > <em>None</em> </MenuItem>
@@ -180,8 +187,8 @@ export default function Home(props) {
               <InputLabel >Type</InputLabel>
               <Select
                 label="Type"
-                value={filters.type}
-                name="type"
+                value={filters.venta}
+                name="venta"
                 onChange={onInputChange}
               >
                 <MenuItem value='' > <em>None</em> </MenuItem>
@@ -200,12 +207,16 @@ export default function Home(props) {
                 variant="contained"
                 color="primary"
                 type='submit'
+              
               >
-                Filtra!
+                {t('filtering')}
+
             </Button>
             </Box>
           </Grid>
         </Grid>
+
+        <Button onClick={() => {i18n.changeLanguage("es")}}>TEST</Button>
 
       </form>
 

@@ -20,6 +20,7 @@ class Advert extends Component {
 
   render() {
     const { advert } = this.props;
+
     return (
       <React.Fragment>
         <Grid
@@ -33,7 +34,7 @@ class Advert extends Component {
                 className="limit-height-12vh"
                 avatar={
                   <Avatar aria-label="recipe"  className='avatar'>
-                      {advert.type}
+                      {advert.venta}
                   </Avatar>
                   
                 }
@@ -51,7 +52,7 @@ class Advert extends Component {
               />
               <CardMedia
                 className="media"
-                image={advert.photo !== 'noPhoto' ? `http://localhost:3001${advert.photo}` : `http://localhost:3000/noHayImagen.gif`}
+                image={advert.photo !== 'noPhoto' ? `http://localhost:3001/${advert.photo}` : `http://localhost:3000/noHayImagen.gif`}
                 title={advert.name}
               />
               <CardContent>

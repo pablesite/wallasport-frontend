@@ -12,6 +12,9 @@ import { saveUser, fetchTags } from './store/actions'
 
 import * as  AdvertsService  from './services/AdvertDBService'
 
+import './i18n';
+
+
 
 // funcion render de la applicacion
 const renderApp = props =>

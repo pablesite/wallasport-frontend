@@ -14,6 +14,9 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
+// import { Trans } from 'react-i18next';
+import { Translation } from 'react-i18next';
+
 
 import "./Login.css"
 
@@ -23,7 +26,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Wallakeep - Pablo Ruiz Molina
+                WallaSport - Pablo Ruiz Molina
         </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -88,7 +91,8 @@ class Login extends Component {
                         </Avatar>
 
                         <Typography component="h1" variant="h5">
-                            Sign up
+                            {/* <Trans>Sign up</Trans> */}
+                        Sign up
                         </Typography>
 
                         <p></p>

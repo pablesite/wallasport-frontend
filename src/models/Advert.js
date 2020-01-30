@@ -9,12 +9,12 @@ export default class Advert {
   
 
   constructor(value) {
-    this.description = value.description;
-    this.name = value.name;
-    this.photo = value.photo;
-    this.price = value.price;
+    //this.description = value.description;
+    this.name = value.nombre;
+    this.photo = value.foto;
+    this.price = value.precio;
     this.tags = value.tags;
-    this.type = value.type;
+    this.type = value.venta;
     this._id = value._id;
 
   }

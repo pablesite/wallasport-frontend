@@ -6,9 +6,9 @@ const initialState = {
         name: '',
         surname: '',
         email: '',
-        tag: ''
+        tag: '',
     },
-
+    tags: [],
     isFetching: false,
     error: null,
     storeInfo: null

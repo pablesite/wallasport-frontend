@@ -89,6 +89,7 @@ import {
   export const fetchTagsSuccess = tags => ({
     type: TAGS_SUCCESS,
     tags: tags,
+    //tags: ['mobile', 'lifestyle', 'motor', 'work']
   });
 
   export const TagsFailure = error => ({
@@ -100,7 +101,7 @@ import {
     return async function(dispatch, _getState, { services: { AdvertsService } }) {
       dispatch(TagsRequest());
       try {
-        const tags = await AdvertsService.getTags()
+        const tags = await AdvertsService.getTags();
         dispatch(fetchTagsSuccess(tags));
         
       } catch (error) {

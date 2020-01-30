@@ -30,11 +30,11 @@ class CreateOrUpdate extends Component {
     this.state = {
       advert: {
         description: '',
-        name: '',
-        photo: '',
-        price: '',
+        nombre: '',
+        foto: '',
+        precio: '',
         tags: [],
-        type: '',
+        venta: '',
         _id: null
       },
       update: true,
@@ -65,11 +65,11 @@ class CreateOrUpdate extends Component {
       this.setState({
         advert: {
           description: '',
-          name: '',
-          photo: '',
-          price: '',
+          nombre: '',
+          foto: '',
+          precio: '',
           tags: [],
-          type: '',
+          venta: '',
           _id: null,
 
         },
@@ -106,11 +106,11 @@ class CreateOrUpdate extends Component {
       this.setState({
         advert: {
           description: '',
-          name: '',
-          photo: '',
-          price: '',
+          nombre: '',
+          foto: '',
+          precio: '',
           tags: [],
-          type: '',
+          venta: '',
           _id: null
 
         },
@@ -132,7 +132,7 @@ class CreateOrUpdate extends Component {
   onInputChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === 'price') {
+    if (name === 'precio') {
 
       if ((!/\D/.exec(value))) {
         this.setState(({ advert }) => ({
@@ -145,6 +145,7 @@ class CreateOrUpdate extends Component {
       }
     } else {
       this.setState(({ advert }) => ({
+        
         advert: {
           ...advert,
           [name]: value
@@ -159,7 +160,7 @@ class CreateOrUpdate extends Component {
       advert: {
         ...advert,
         //photo: value,
-        photo: 'noPhoto' //This functionality is deactivated while APi has not an endpoint to upload files.
+        foto: 'noPhoto' //This functionality is deactivated while APi has not an endpoint to upload files.
       }
     }));
 
@@ -169,7 +170,7 @@ class CreateOrUpdate extends Component {
   render() {
 
     const { user, tagList } = this.props;
-    const { description, name, photo, price, tags, type, _id } = this.state.advert;
+    const { description, nombre, foto, precio, tags, venta, _id } = this.state.advert;
 
     return (
       <React.Fragment>
@@ -199,8 +200,8 @@ class CreateOrUpdate extends Component {
                 <Grid item xs={12} >
                   <TextField
                     label="Advert name"
-                    value={name}
-                    name="name"
+                    value={nombre}
+                    name="nombre"
                     onChange={this.onInputChange}
                     fullWidth
                     variant="filled"
@@ -225,8 +226,8 @@ class CreateOrUpdate extends Component {
                     <InputLabel >Venta</InputLabel>
                     <Select
                       label="Venta"
-                      value={type}
-                      name="type"
+                      value={venta}
+                      name="venta"
                       onChange={this.onInputChange}
                       required
                     >
@@ -256,9 +257,9 @@ class CreateOrUpdate extends Component {
                         <em>None</em>
                       </MenuItem>
 
-                      {tagList.map(tag => (
-                        <MenuItem key={tag} value={tag} >
-                          {tag}
+                      {tagList.map(tags => (
+                        <MenuItem key={tags} value={tags} >
+                          {tags}
                         </MenuItem>
                       ))}
 
@@ -271,9 +272,9 @@ class CreateOrUpdate extends Component {
 
                 <Grid item xs={12}>
                   <TextField
-                    label={type === 'buy' ? "Precio máximo" : "Precio"}
-                    value={price}
-                    name="price"
+                    label={venta === 'buy' ? "Precio máximo" : "Precio"}
+                    value={precio}
+                    name="precio"
                     onChange={this.onInputChange}
                     fullWidth
                     variant="filled"
@@ -303,7 +304,7 @@ class CreateOrUpdate extends Component {
                 </Button>
                   </label>
                   <Box textAlign="justify">
-                    <h3>The photo entered has the name: {photo}.
+                    <h3>The photo entered has the name: {foto}.
                     Attention: This functionality is disabled because the API does not have an endpoint to upload photos.</h3>
                   </Box>
 
