@@ -1,7 +1,7 @@
 import Advert from '../models/Advert';
 
-const API_URL = 'https://localhost:3000/apiv1';
-//const API_URL = 'https://localhost:3000/apiv1/anuncios?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTMwODI3MTRiYTM4NjNhMWNlZTQyMzQiLCJpYXQiOjE1ODAyMzgwMDAsImV4cCI6MTU4MDQxMDgwMH0.IvXE86dRNT347LFJq84yOkWDNz1ei0qno60hqo0Speg'
+const API_URL = 'https://localhost:3002/apiv1';
+//const API_URL = 'https://localhost:3002/apiv1/anuncios?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTMwODI3MTRiYTM4NjNhMWNlZTQyMzQiLCJpYXQiOjE1ODAyMzgwMDAsImV4cCI6MTU4MDQxMDgwMH0.IvXE86dRNT347LFJq84yOkWDNz1ei0qno60hqo0Speg'
 const getRequest = (url) => {
   return fetch(url,
    { method: "GET" },
