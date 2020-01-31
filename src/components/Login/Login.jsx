@@ -92,7 +92,7 @@ class Login extends Component {
 
                         <Typography component="h1" variant="h5">
                             {/* <Trans>Sign up</Trans> */}
-                        Sign up
+                        Sign up!
                         </Typography>
 
                         <p></p>
