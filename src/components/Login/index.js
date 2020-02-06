@@ -1,18 +1,23 @@
+// Listo
 import { connect } from 'react-redux';
 
 import Login from './Login';
-import { saveUser } from '../../store/actions';
-import { checkUserExist } from '../../store/selectors';
+import { register, login, goApp } from '../../store/actions';
 
 
 function mapStateToProps(state) {
   return {
-    checkUser: checkUserExist(state.user),
+    isFetching: state.ui.isFetching, 
+    error: state.ui.error,
+    showLogin: state.homeModals.showLogin,
+    showRegister: state.homeModals.showRegister,
   };
 }
 
 const mapDispatchToProps = {
-  saveUserInStore: saveUser,
+  login: login,
+  register: register,
+  goApp: goApp,
 };
 
 export default connect(

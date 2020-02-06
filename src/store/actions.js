@@ -1,124 +1,255 @@
 import {
-    ADVERTS_REQUEST,
-    ADVERTS_FAILURE,
-    ADVERTS_SUCCESS,
-    TAGS_REQUEST,
-    TAGS_FAILURE,
-    TAGS_SUCCESS,
-    SAVE_USER,
-    DELETE_USER
 
-  } from './types';
-  
-  export const fetchAdverts = (tag) => {
-    return async function(dispatch, _getState, { services: { AdvertsService } }) {
-      dispatch(AdvertsRequest());
-      try {
-        const adverts = await AdvertsService.searchAdverts(tag)
-        dispatch(fetchAdvertsSuccess(adverts));
-        
-      } catch (error) {
-        dispatch(AdvertsFailure(error));
+  API_REQUEST,
+  API_FAILURE,
+  GO_LOGIN,
+  GO_REGISTER,
+  GO_APP,
+
+
+  // GET_USER_SUCCESS,
+  // CREATE_USER_SUCESS,
+  // UPDATE_USER_SUCCESS,
+  DELETE_USER_SUCCESS,
+
+  REGISTER_SUCCESS,
+  REGISTER_INVALID,
+  LOGIN_SUCCESS,
+  LOGIN_INVALID,
+
+
+  ADVERTS_SUCCESS, //GET, CREATE OR UPDATE
+  //DELETE_ADVERT
+
+  GET_TAGS_SUCCESS,
+  // SHOW_REGISTER,
+
+
+} from './types';
+
+import { saveUserInLS, deleteLS } from '../services/Storage';
+
+import i18n from 'i18next';
+
+
+
+/* ----- API Generic Actions----- */
+
+
+export const apiRequest = () => ({
+  type: API_REQUEST,
+});
+
+export const apiFailure = error => ({
+  type: API_FAILURE,
+  error,
+});
+
+export const goLogin = () => ({
+  type: GO_LOGIN,
+});
+
+export const goRegister = () => ({
+  type: GO_REGISTER,
+});
+
+export const goApp = () => ({
+  type: GO_APP,
+});
+
+
+
+/* ----- User Thunks and Actions----- */
+
+//Testeada
+export const register = (user) => {
+  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+
+    dispatch(apiRequest());
+    try {
+
+      const { success } = await AdvertsService.registerNewUser(user)
+
+      if (success === true) {
+        dispatch(goLogin());
+        dispatch(registerSuccess(user));
+        history.push("/login");
+      } else {
+        dispatch(registerInvalid(new Error(i18n.t('Invalid_data_registered'))));
       }
-    };
-  };
 
-  export const createAdvert = (advert) => {
-    return async function(dispatch, _getState, { services: { AdvertsService } }) {
-      dispatch(AdvertsRequest());
-      try {
-        await AdvertsService.createAdvert(advert)
-        dispatch(createorupdateAdvertsSuccess(advert));
-      } catch (error) {
-        dispatch(AdvertsFailure(error));
+    } catch (error) {
+
+      dispatch(apiFailure(error));
+
+    }
+
+  };
+};
+
+
+//Testeada
+export const login = (user) => {
+  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+
+    dispatch(apiRequest());
+    try {
+
+      const { success, token } = await AdvertsService.loginJWT(user)
+
+      if (success === true) {
+        user = { ...user, token }
+        saveUserInLS(user);
+        dispatch(goApp());
+        dispatch(loginSuccess(user));
+        history.push("/home");
+      } else {
+        dispatch(loginInvalid(new Error(i18n.t('Invalid_credentials'))));
       }
-    };
+
+    } catch (error) {
+
+      dispatch(apiFailure(error));
+
+    }
+
   };
-  
-  export const getAdvert = (id) => {
-    return async function(dispatch, _getState, { services: { AdvertsService } }) {
-      dispatch(AdvertsRequest());
-      try {
-        const advert = await AdvertsService.getAdvert(id)
-        dispatch(createorupdateAdvertsSuccess(advert));
-      } catch (error) {
-        dispatch(AdvertsFailure(error));
-      }
-    };
+};
+
+
+//Testeada
+export const logout = () => {
+  return async function (dispatch, _getState, { history }) {
+    deleteLS();
+    dispatch(deleteUserSuccess());
   };
+};
 
 
-  export const updateAdvert = (advert, id) => {
-    return async function(dispatch, _getState, { services: { AdvertsService } }) {
-      dispatch(AdvertsRequest());
-      try {
-        const { result } = await AdvertsService.updateAdvert(advert, id)
-        dispatch(createorupdateAdvertsSuccess(result));
-      } catch (error) {
-        dispatch(AdvertsFailure(error));
-      }
-    };
+//Testeada
+export const loginSuccess = user => ({
+  type: LOGIN_SUCCESS,
+  user,
+});
+
+
+//Testeada
+export const registerSuccess = user => ({
+  type: REGISTER_SUCCESS,
+  user,
+});
+
+
+//Testeada
+export const loginInvalid = error => ({
+  type: LOGIN_INVALID,
+  error,
+});
+
+
+//Testeada
+export const registerInvalid = error => ({
+  type: REGISTER_INVALID,
+  error,
+});
+
+
+//Testeada
+export const deleteUserSuccess = () => ({
+  type: DELETE_USER_SUCCESS,
+  user: null,
+});
+
+
+
+/* ----- Adverts Thunks and Actions----- */
+
+export const getAdverts = (tag) => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      const adverts = await AdvertsService.searchAdverts(tag)
+      dispatch(AdvertsSuccess(adverts));
+
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
   };
-
-  
-  export const AdvertsRequest = () => ({
-    type: ADVERTS_REQUEST,
-  });
-  
-
-  export const fetchAdvertsSuccess = adverts => ({
-    type: ADVERTS_SUCCESS,
-    adverts: adverts,
-  });
+};
 
 
-  export const createorupdateAdvertsSuccess = advert => ({
-    type: ADVERTS_SUCCESS,
-    adverts: [advert] 
-  });
-
-  export const AdvertsFailure = error => ({
-    type: ADVERTS_FAILURE,
-    error,
-  });
-
-  export const TagsRequest = () => ({
-    type: TAGS_REQUEST,
-  });
-
-  export const fetchTagsSuccess = tags => ({
-    type: TAGS_SUCCESS,
-    tags: tags,
-    //tags: ['mobile', 'lifestyle', 'motor', 'work']
-  });
-
-  export const TagsFailure = error => ({
-    type: TAGS_FAILURE,
-    error,
-  });
-
-  export const fetchTags = () => {
-    return async function(dispatch, _getState, { services: { AdvertsService } }) {
-      dispatch(TagsRequest());
-      try {
-        const tags = await AdvertsService.getTags();
-        dispatch(fetchTagsSuccess(tags));
-        
-      } catch (error) {
-        dispatch(TagsFailure(error));
-      }
-    };
+export const getOneAdvert = (id) => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      const advert = await AdvertsService.getOneAdvert(id)
+      dispatch(AdvertsSuccess([advert]));
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
   };
+};
+
+
+export const createAdvert = (advert) => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      await AdvertsService.createAdvert(advert)
+      dispatch(AdvertsSuccess([advert])); //revisar si funciona entre corchetes
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+
+export const updateAdvert = (advert, id) => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      const { result } = await AdvertsService.updateAdvert(advert, id)
+      dispatch(AdvertsSuccess([result])); //revisar si funciona entre corchetes
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+
+// export const deleteAdvert = () => {} 
+
+//Testeada
+export const AdvertsSuccess = adverts => ({
+  type: ADVERTS_SUCCESS,
+  adverts: adverts,
+});
+
+
+/* ----- Tags Thunks and Actions----- */
+
+
+export const fetchTags = () => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      const tags = await AdvertsService.getTags();
+      dispatch(getTagsSuccess(tags));
+
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+
+export const getTagsSuccess = tags => ({
+  type: GET_TAGS_SUCCESS,
+  tags: tags,
+});
 
 
 
-  export const saveUser = user => ({
-    type: SAVE_USER,
-    user,
-  });
 
-  export const deleteUser = () => ({
-    type: DELETE_USER,
-    user: null,
-  });
+
 

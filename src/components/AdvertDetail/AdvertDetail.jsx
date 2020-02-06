@@ -30,20 +30,20 @@ class AdvertDetail extends Component {
   }
 
 
-  checkUserExist() {
-    if (this.props.checkUser.exist) {
-      return true;
-    } else {
-      this.props.history.push("/login");
-      return false;
-    }
-  }
+  // checkUserExist() {
+  //   if (this.props.checkUser.exist) {
+  //     return true;
+  //   } else {
+  //     this.props.history.push("/login");
+  //     return false;
+  //   }
+  // }
 
 
   componentDidMount() {
-    if (this.checkUserExist()) {
-      this.props.getAdvert(this.props.match.params.id)
-    }
+    // if (this.checkUserExist()) {
+      this.props.getOneAdvert(this.props.match.params.id)
+    // }
   }
 
   goHome() {
@@ -69,9 +69,8 @@ class AdvertDetail extends Component {
           user
           &&
           <Profile
-            name={user.name}
-            surname={user.surname}
-            tag={user.tag}
+            username='en pruebas'
+            email={user.email}
           > </Profile>
         }
 

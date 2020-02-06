@@ -1,3 +1,5 @@
+//Actualizar modelo de anuncio aquí y en el backend
+
 export default class Advert {
   description;
   name;
@@ -20,4 +22,6 @@ export default class Advert {
   }
 
 }
+
+
 

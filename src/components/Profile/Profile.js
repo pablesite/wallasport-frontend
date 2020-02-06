@@ -1,5 +1,8 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
+
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,6 +11,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -67,67 +71,68 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Profile(props) {
-  const classes = useStyles();
-
+export default function Profile(props) {
+  const { logout } = props;
   
-  function createOrUpdate(event) {
-    event.preventDefault();
-    props.history.push("/createOrUpdate/");
+  
+  const classes = useStyles();
+  const [t, i18n] = useTranslation();
+
+
+  const onClick = () => {
+    logout();
   };
 
 
   return (
     <React.Fragment>
-      
-        <div className={classes.root}>
-          <AppBar position="static">
-            <Toolbar className={classes.toolbar}>
-              <Grid container alignItems="center" spacing={2}>
 
-                <Grid item xs={10} sm={4}>
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar className={classes.toolbar}>
+            <Grid container alignItems="center" spacing={2}>
+
+              <Grid item xs={10} sm={4}>
+      
+                <Link to='/createOrUpdate/'>Create Advert</Link>
+               
+              
+              </Grid>
+
+              <Grid item xs={10} sm={4}>
+                <Typography className={classes.title} variant="h5" noWrap>
+                  <Box textAlign="center">
+                    Zona privada
+
+                    <h6>@{props.username} </h6>
+                    {/* <h6>({props.email})</h6> */}
+                  </Box>
+                </Typography>
+              </Grid>
+
+              <Grid item xs={10} sm={4}>
+                <Box textAlign="right">
                   <Button
                     variant="contained"
-                    color='secondary'
-                    onClick={createOrUpdate}
+                    color="secondary"
+                    onClick={onClick}
                   >
-                    New Advert
+                    {t('Logout')}
                 </Button>
-                </Grid>
-
-                <Grid item xs={10} sm={4}>
-                  <Typography className={classes.title} variant="h5" noWrap>
-                    <Box textAlign="center">
-                      {props.name} {props.surname}
-                      <h6>(Tag selected: {props.tag})</h6>
-                    </Box>
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={10} sm={4}>
-                  <Box textAlign="right">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => {
-                        props.deleteUserFromStore();
-                        props.history.push("/login");
-                      }}
-                    >
-                      Log out
-                </Button>
-                  </Box>
-                </Grid>
-
+                </Box>
               </Grid>
-            </Toolbar>
-          </AppBar>
 
-        </div>
-      
-        </React.Fragment>
+            </Grid>
+          </Toolbar>
+        </AppBar>
+
+      </div>
+
+    </React.Fragment>
   );
 
 }
 
-export default withRouter(Profile);
+Profile.propTypes = {
+  logout: T.func
+};

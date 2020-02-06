@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import CreateOrUpdate from './CreateOrUpdate';
 
 import { createAdvert, updateAdvert } from '../../store/actions';
-import { checkUserExist } from '../../store/selectors';
+import { isAuthorized } from '../../store/selectors';
 
 
 const mapDispatchToProps = {
@@ -15,7 +15,7 @@ return {
     adverts: state.adverts, 
     user: state.user, 
     tagList: state.tags,
-    checkUser: checkUserExist(state.user), 
+    checkUser: isAuthorized(state.user), 
   } 
 }
 

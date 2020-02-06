@@ -1,184 +1,171 @@
-import "../../App.css";
-import React, { Component } from 'react';
 
-import { FormEnhanced } from '../WithFormEnhanced/WithFormEnhanced'
-import { InputEnhanced } from '../WithInputEnhanced/WithInputEnhanced'
+// Listo
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
+import { Link } from 'react-router-dom'
+
+import FormEnhanced from '../FormEnhanced'
+import InputEnhanced from '../InputEnhanced'
+import Home from '../Home';
+
+import Loading from '../Loading';
+import Error from '../Error';
+import Copyright from '../Copyright';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-
-// import { Trans } from 'react-i18next';
-import { Translation } from 'react-i18next';
+import { TextField } from '@material-ui/core';
+import { useStyles } from '../../styles';
 
 
-import "./Login.css"
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-
-function Copyright() {
+function HomeIcon(props) {
     return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                WallaSport - Pablo Ruiz Molina
-        </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
+        <SvgIcon {...props}>
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </SvgIcon>
     );
 }
 
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
+export default function Login(props) {
 
-        this.state = {
+    const { login, register, isFetching, error, goApp, showLogin, showRegister } = props;
 
-            check: false
-        };
-
-        this.checkError = this.checkError.bind(this);
-
-    }
+    const [t, i18n] = useTranslation();
+    const style = useStyles();
+    const classes = useStyles();
 
 
-    componentDidMount() {
-        if (this.props.checkUser.exist) {
-            this.props.history.push("/home");
+    const initialState = showLogin ? { username: "pablesite", password: "1234" } : { username: "", password: "" };
+
+
+    const onSubmit = (user) => {
+        if (showLogin) {
+            login(user);
+        } else {
+            register(user);
         }
 
-    }
+    };
 
 
-    onSubmit = (user) => {
-        this.props.saveUserInStore(user);
-        this.props.history.push("/home");
-    }
+    return (
+        <React.Fragment>
 
+            <div className={style.loginBackground}>
 
-    checkError(event) {
-        event.preventDefault();
+                {isFetching && <Loading />}
 
-        this.setState({
-            check: true
-        });
+                <Container component="main" maxWidth="xs" className={style.loginContainer}>
 
-    }
+                    <div className={style.loginForm}>
 
+                        <div className={style.homeIcon}>
+                            <HomeIcon onClick={() => goApp()} fontSize="large" />
+                        </div>
 
-    render() {
-
-        const { check } = this.state;
-
-        return (
-            <React.Fragment>
-
-
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-
-                    <div className='paper'>
-
-                        <Avatar className='avatar'>
+                        <Avatar className={style.loginAvatar}>
                             <LockOutlinedIcon />
                         </Avatar>
+                       
+                        <Typography component="h1" variant="h6">
+                            {showLogin && t('Welcome')}
+                            {showRegister && t('Register')}
 
-                        <Typography component="h1" variant="h5">
-                            {/* <Trans>Sign up</Trans> */}
-                        Sign up
                         </Typography>
+                        <Typography variant="body2">
+                            {showRegister && t('Register_data')}
+
+                        </Typography>
+
 
                         <p></p>
                         <FormEnhanced
-                            className='fortest'
-                            handleSubmit={this.onSubmit}
-                            initialState={
-                                {
-                                    name: "Pablo",
-                                    surname: "Ruiz",
-                                    email: "pabloruiz@ctnaval.com",
-                                    tag: "lifestyle"
-                                }
-                            }
+                            handleSubmit={onSubmit}
+                            initialState={initialState}
                         >
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <InputEnhanced type='text' name='name' />
-                                </Grid>
-
-                                <Grid item xs={12} sm={6}>
-                                    <InputEnhanced type='text' name='surname' />
-                                </Grid>
 
                                 <Grid item xs={12}>
-                                    <InputEnhanced type='email' name='email' />
+                                    <InputEnhanced
+                                        type='text'
+                                        name='username'
+                                        component={TextField}
+                                        fullWidth
+                                        variant="outlined"
+                                        required />
                                 </Grid>
+
+
+                                {showRegister &&
+                                    <Grid item xs={12}>
+                                        <InputEnhanced
+                                            type='email'
+                                            name='email'
+                                            component={TextField}
+                                            fullWidth
+                                            variant="outlined"
+                                            required />
+                                    </Grid>
+                                }
+
+                                <Grid item xs={12}>
+                                    <InputEnhanced
+                                        type='password'
+                                        name='password'
+                                        component={TextField}
+                                        fullWidth
+                                        variant="outlined"
+                                        required />
+                                </Grid>
+
                             </Grid>
 
-
-                            <div className="submit">
+                            <div className={style.loginSubmit}>
                                 <Button
                                     label="Continue"
                                     type='submit'
-                                    fullWidth
                                     variant="contained"
                                     color="primary"
                                 >
-                                    Enter
+                                    {showLogin && t('LoginButton')}
+                                    {showRegister && t('RegisterButton')}
                                 </Button>
                             </div>
 
+                            {error && <Error error={error} />}
+
                         </FormEnhanced>
 
-
-                        <Grid container justify="center">
-
-                            <Grid item xs={12}>
-                                <Box textAlign="justify">
-                                    <h3>By pressing the button below you can check Error Boundary functionality.
-                                Remember to test this functionality in production mode.</h3>
-                                </Box>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    fullWidth
-                                    onClick={this.checkError}
-                                    label="Error Boundary"
-                                >
-                                    Check Error
-                            </Button>
-                            </Grid>
-                        </Grid>
-
-                        <Box mt={5}>
-                            <Copyright />
-                        </Box>
+                        <Copyright />
 
                     </div>
 
-                    {
-                        check
-                        &&
-                        undefined.methodDoesNotExist()
-                    }
-
                 </Container>
+            </div>
 
-            </React.Fragment>
 
-        );
-    }
+        </React.Fragment>
+
+    );
+
 }
 
 
-export default Login;
+Login.propTypes = {
+    error: T.instanceOf(Error),
+    isFetching: T.bool,
+    isLogin: T.bool,
+    login: T.func,
+    register: T.func,
+    goApp: T.func,
+    showLogin: T.bool,
+    showRegister: T.bool,
+};

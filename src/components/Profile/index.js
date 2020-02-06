@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
 
 import Profile from './Profile';
-import { deleteUser } from '../../store/actions' 
+import { logout } from '../../store/actions' 
 
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+
+  };
 }
 
-
 const mapDispatchToProps = {
-    deleteUserFromStore: deleteUser,
+    logout: logout
 };
 
 

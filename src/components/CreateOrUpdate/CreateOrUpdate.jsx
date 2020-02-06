@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Profile from '../Profile';
-import { getAdvert } from "../../services/AdvertDBService";
+import { getOneAdvert } from "../../services/AdvertDBService";
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -49,7 +49,7 @@ class CreateOrUpdate extends Component {
 
   componentDidMount() {
     const { checkUser, history } = this.props;
-    
+
     if (checkUser.exist) {
       this.checkCreateorUpdate();
     } else {
@@ -95,7 +95,7 @@ class CreateOrUpdate extends Component {
     const advertID = this.props.match.params.id;
 
     if (advertID) {
-      getAdvert(advertID).then(advert => {
+      getOneAdvert(advertID).then(advert => {
         if (advert.success === false) {
           this.props.history.push("/404");
         } else {
@@ -145,7 +145,7 @@ class CreateOrUpdate extends Component {
       }
     } else {
       this.setState(({ advert }) => ({
-        
+
         advert: {
           ...advert,
           [name]: value
@@ -179,9 +179,8 @@ class CreateOrUpdate extends Component {
           user
           &&
           <Profile
-            name={user.name}
-            surname={user.surname}
-            tag={user.tag}
+            username='en pruebas'
+            email={user.email}
           > </Profile>
         }
 

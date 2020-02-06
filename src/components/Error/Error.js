@@ -1,20 +1,28 @@
 import React from 'react';
 import T from 'prop-types';
-import classNames from 'classnames';
+
 
 import './styles.css';
+import { useStyles } from '../../styles';
+import { useTranslation } from 'react-i18next';
 
-export default function Loading({ className, error }) {
+
+export default function Loading({ error }) {
+
+  const style = useStyles();
+  const [t] = useTranslation();
+
   return (
-    <div className={classNames('error', className)}>
-      Oooops! Something went wrong:{' '}
-      <strong className="error-message">{error.message}</strong>Please, reload
-      page.
+    
+    <div className={style.errorError}>
+      {t('General_error')}
+      <br></br>
+      <strong className={style.errorMessage}>{error.message}</strong>
     </div>
+    
   );
 }
 
 Loading.propTypes = {
   error: T.instanceOf(Error).isRequired,
-  className: T.string,
 };

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Profile from '../Profile';
 import Loading from '../Loading';
 import Error from '../Error';
+import Login from '../Login';
 
 import Box from '@material-ui/core/Box';
 import Pagination from '../Pagination/Pagination';
@@ -16,8 +18,6 @@ import Grid from '@material-ui/core/Grid';
 
 import "./Home.css"
 
-import { useTranslation } from 'react-i18next';
-
 
 export default function Home(props) {
 
@@ -26,11 +26,9 @@ export default function Home(props) {
     'buy',
   ];
 
-  const { adverts, checkUser, error, history, isFetching, loadAdverts, user, tagList } = props;
+  const { adverts, error, isFetching, loadAdverts, user, tagList, showLogin, showRegister, goLogin, goRegister } = props;
 
   const [t, i18n] = useTranslation();
-
-
 
   const [filters, setFilters] = useState({
     nombre: '',
@@ -42,14 +40,8 @@ export default function Home(props) {
   const [update, setUpdate] = useState(true);
 
   useEffect(() => {
-    if (checkUser.exist) {
-      loadAdverts("tag=" + checkUser.user.tag).then(() => setUpdate(true))
-      
-    } else {
-      history.push("/login");
-    }
-
-  }, [checkUser.exist, loadAdverts, checkUser.user.tag, history]);
+    loadAdverts().then(() => setUpdate(true));
+  }, [loadAdverts]);
 
 
   function disableUpdate() {
@@ -126,16 +118,22 @@ export default function Home(props) {
 
   return (
     <React.Fragment>
+
+      {!user && showLogin && <Login />}
+      {!user && showRegister && <Login />}
+
       {
         user
         &&
         <Profile
-          name={user.name}
-          surname={user.surname}
+          username='en pruebas'
           email={user.email}
-          tag={user.tag}
         > </Profile>
       }
+
+      {!user && <Button onClick={() => goRegister() }>Register</Button>}
+      {!user && <Button onClick={() => goLogin() }>Login</Button>}
+
 
       <form className="filter-form" onSubmit={onSubmit}>
 
@@ -207,16 +205,16 @@ export default function Home(props) {
                 variant="contained"
                 color="primary"
                 type='submit'
-              
+
               >
                 {t('filtering')}
 
-            </Button>
+              </Button>
             </Box>
           </Grid>
         </Grid>
 
-        <Button onClick={() => {i18n.changeLanguage("es")}}>TEST</Button>
+        <Button onClick={() => { i18n.changeLanguage("es") }}>Traduce a español</Button>
 
       </form>
 

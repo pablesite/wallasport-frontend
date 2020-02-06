@@ -1,8 +1,24 @@
-export const ADVERTS_REQUEST = 'ADVERTS_REQUEST';
-export const ADVERTS_FAILURE = 'FETCH_ADVERTS_FAILURE';
-export const ADVERTS_SUCCESS = 'FETCH_ADVERTS_SUCCESS';
-export const TAGS_REQUEST = 'TAGS_REQUEST';
-export const TAGS_FAILURE = 'FETCH_TAGS_FAILURE';
-export const TAGS_SUCCESS = 'FETCH_TAGS_SUCCESS';
-export const SAVE_USER = 'SET_USER';
-export const DELETE_USER = 'DELETE_USER';
+export const API_REQUEST = 'API_REQUEST';
+export const API_FAILURE = 'API_FAILURE';
+export const GO_LOGIN = 'GO_LOGIN';
+export const GO_REGISTER = 'GO_REGISTER';
+export const GO_APP = 'GO_APP';
+
+
+// export const GOHOME_SUCCESS = 'GOHOME_SUCCESS';
+
+
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_INVALID = 'REGISTER_INVALID';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_INVALID = 'LOGIN_INVALID';
+
+
+
+
+export const ADVERTS_SUCCESS = 'ADVERTS_SUCCESS';
+
+export const GET_TAGS_SUCCESS = 'GET_TAGS_SUCCESS';
+

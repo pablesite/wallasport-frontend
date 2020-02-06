@@ -1,4 +1,4 @@
-
+//Listo
 export const saveUserInLS = user => {
 	localStorage.setItem('data', JSON.stringify(user));
 };
