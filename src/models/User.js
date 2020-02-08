@@ -5,6 +5,7 @@ export default class User {
      */
   
     constructor(
+      // _id = null,
       username = null,
       email = null,
       password = null,

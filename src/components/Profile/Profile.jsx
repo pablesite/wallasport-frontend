@@ -81,7 +81,6 @@ export default function Profile(props) {
               <Grid item className={style.profileItemsLeft}>
                 <Link to='/'>
                   <HomeIcon className={style.profileHomeIcon} fontSize="large" />
-
                 </Link>
               </Grid>
 

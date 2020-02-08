@@ -16,7 +16,7 @@ const getRequest = (url, token) => {
       headers:
       {
         'Accept': "application/json, text/plain, */*",
-        'Authorization': token
+        'Authorization': token 
       }
     }
   )
@@ -83,33 +83,33 @@ const getTags = () => {
 }
 
 const getOneAdvert = (advertID) => {
-  return getRequest(`${API_URL}/anuncios/${advertID}`)
+  return getRequest(`${API_URL}/adverts/${advertID}`)
     .then(res => new Advert(res.advert))
 
 
 }
 
 const discoverAdverts = () => {
-  return getRequest(`${API_URL}/anuncios/`)
+  return getRequest(`${API_URL}/adverts/`)
     .then(res => res.list.map(adv => new Advert(adv)))
 
 }
 
-const searchAdverts = (query, token) => {
-  return getRequest(`${API_URL}/anuncios?${query}`, token)
+const getAdverts = (query) => {
+  return getRequest(`${API_URL}/adverts?${query}`)
     .then(res => res.list.map(adv => new Advert(adv)))
 
 }
 
-const createAdvert = (advert) => {
-  return createRequest(`${API_URL}/anuncios`, advert)
+const createAdvert = (advert, token) => {
+  return createRequest(`${API_URL}/adverts`, advert, token)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 
 }
 
 const updateAdvert = (advert, id) => {
-  return updateRequest(`${API_URL}/anuncios/${id}`, advert)
+  return updateRequest(`${API_URL}/adverts/${id}`, advert)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 
@@ -119,7 +119,7 @@ export {
   getTags,
   getOneAdvert,
   discoverAdverts,
-  searchAdverts,
+  getAdverts,
   createAdvert,
   updateAdvert,
   loginJWT,

@@ -48,6 +48,9 @@ export const apiFailure = error => ({
   error,
 });
 
+
+/* ----- UI Actions----- */
+
 // Testeada
 export const goLogin = () => ({
   type: GO_LOGIN,
@@ -69,7 +72,6 @@ export const goUserRegistered = () => ({
 export const goApp = () => ({
   type: GO_APP,
 });
-
 
 
 /* ----- User Thunks and Actions----- */
@@ -179,11 +181,11 @@ export const deleteUserSuccess = () => ({
 
 /* ----- Adverts Thunks and Actions----- */
 
-export const getAdverts = (tag) => {
+export const getAdverts = (query) => {
   return async function (dispatch, _getState, { services: { AdvertsService } }) {
     dispatch(apiRequest());
     try {
-      const adverts = await AdvertsService.searchAdverts(tag)
+      const adverts = await AdvertsService.getAdverts(query)
       dispatch(AdvertsSuccess(adverts));
 
     } catch (error) {

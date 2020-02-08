@@ -108,7 +108,11 @@ export default class Pagination extends Component {
         return (
             <React.Fragment>
                 <div className="grid"> 
-                <Grid container alignItems='center' alignContent='center' spacing={2}>
+                <Grid 
+                    container 
+                    alignItems='center' 
+                    alignContent='space-between' 
+                    spacing={1}>
                     <AdvertList adverts={advertActualPage} />
                 </Grid>
                 </div>

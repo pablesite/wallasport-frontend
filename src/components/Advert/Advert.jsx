@@ -1,76 +1,83 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-
+import React from 'react';
+import cx from 'clsx';
+import { makeStyles } from '@material-ui/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import FavoriteBorderRounded from '@material-ui/icons/FavoriteBorderRounded';
+import Share from '@material-ui/icons/Share';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
+import { useSlopeCardMediaStyles } from '@mui-treasury/styles/cardMedia/slope';
+import { useBlogCardContentStyles } from '@mui-treasury/styles/cardContent/blog';
+import TextInfoCardContent from '@mui-treasury/components/cardContent/textInfo';
 
-import "./Advert.css"
+import { styles } from './styles';
 
-class Advert extends Component {
-  goToDetail = () => {
-    this.props.history.push(`/detail/${this.props.advert._id}`);
-  };
 
-  render() {
-    const { advert } = this.props;
+const useStyles = makeStyles(styles);
 
-    return (
-      <React.Fragment>
-        <Grid
-          onClick={this.goToDetail}
-          item xs={10}
-          sm={4}>
+export default function Advert(props) {
+  const cardStyles = useStyles();
+  const mediaStyles = useSlopeCardMediaStyles();
+  const shadowStyles = useSoftRiseShadowStyles();
+  const textCardContentStyles = useBlogCardContentStyles();
 
-          <Card className="card">
-            <div className="card">
-              <CardHeader
-                className="limit-height-12vh"
-                avatar={
-                  <Avatar aria-label="recipe"  className='avatar'>
-                      {advert.venta}
-                  </Avatar>
-                  
-                }
-                action={
-                  <IconButton aria-label="settings">
-                    <MoreVertIcon />
-                  </IconButton>
-                }
+  const { advert } = props;
 
-                title={advert.name}
-                subheader={'Tags: ' + advert.tags.map((tags, i) => (
-                  i === (advert.tags.length - 1) ? ` ${tags}.` : ` ${tags}`
-                ))}
+  return (
 
-              />
-              <CardMedia
-                className="media"
-                image={advert.photo !== 'noPhoto' ? `http://localhost:3003/${advert.photo}` : `http://localhost:3003/noHayImagen.gif`}
-                title={advert.name}
-              />
-              <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p" className="limit-height-6vh">
-                  {advert.description}
-                </Typography>
-                
-                <div className="price-text">
-                    Precio: {advert.price} €.
-                </div>
-               
-              </CardContent>
-            </div>
-          </Card>
-        </Grid >
-      </React.Fragment>
-    );
-  }
-}
+    <Grid
+      item 
+      sm = {4}
+      >
 
-export default withRouter(Advert);
+
+      <Card className={cx(cardStyles.root, shadowStyles.root)}>
+        <CardMedia
+          classes={mediaStyles}
+          image={advert.photo !== 'noPhoto' ? `http://localhost:3003/${advert.photo}` : `http://localhost:3003/noHayImagen.gif`}
+
+        />
+
+        <Avatar className={cardStyles.avatar} src={'https://i.pravatar.cc/300'} />
+
+        <CardContent className={cardStyles.content}>
+
+          <TextInfoCardContent
+            classes={textCardContentStyles}
+            overline={advert.name}
+            heading={advert.price + '€'}
+            body={advert.description}
+
+          />
+
+          <Typography 
+            className={cardStyles.advertTags} 
+            color="textSecondary"
+            variant='caption'>
+            {'' + advert.tags.map((tags, i) => (
+              i === (advert.tags.length - 1) ? ` ${tags}.` : ` ${tags}`
+            ))}
+          </Typography>
+
+        </CardContent>
+
+        <Box px={2} pb={2} mt={-1}>
+          <IconButton>
+            <Share />
+          </IconButton>
+          <IconButton>
+            <FavoriteBorderRounded />
+          </IconButton>
+
+        </Box>
+      </Card>
+    </Grid >
+  );
+};
+

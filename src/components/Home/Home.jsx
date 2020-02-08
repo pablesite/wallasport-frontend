@@ -126,7 +126,7 @@ export default function Home(props) {
        {<Profile/>} 
 
 
-      <form className="filter-form" onSubmit={onSubmit}>
+      {/* <form className="filter-form" onSubmit={onSubmit}>
 
         <Grid container alignItems='center' justify='center' spacing={3}>
 
@@ -207,7 +207,7 @@ export default function Home(props) {
 
         <Button onClick={() => { i18n.changeLanguage("es") }}>Traduce a español</Button>
 
-      </form>
+      </form> */}
 
       {isFetching && <Loading className="app-loading" />}
       {error && <Error className="app-error" error={error} />}

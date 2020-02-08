@@ -194,6 +194,8 @@ describe('actions', () => {
 
     });
 
+
+    
     /* ----- Adverts tests ----- */
 
     it('should create an AdvertsSuccess action', () => {
