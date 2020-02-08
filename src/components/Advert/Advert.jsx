@@ -32,9 +32,9 @@ export default function Advert(props) {
   return (
 
     <Grid
-      item 
-      sm = {4}
-      >
+      item
+      sm={4}
+    >
 
 
       <Card className={cx(cardStyles.root, shadowStyles.root)}>
@@ -56,8 +56,8 @@ export default function Advert(props) {
 
           />
 
-          <Typography 
-            className={cardStyles.advertTags} 
+          <Typography
+            className={cardStyles.advertTags}
             color="textSecondary"
             variant='caption'>
             {'' + advert.tags.map((tags, i) => (
@@ -74,8 +74,8 @@ export default function Advert(props) {
           <IconButton>
             <FavoriteBorderRounded />
           </IconButton>
-
         </Box>
+
       </Card>
     </Grid >
   );

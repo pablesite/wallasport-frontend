@@ -22,6 +22,9 @@ import {
   ADVERTS_SUCCESS, //GET, CREATE OR UPDATE
   //DELETE_ADVERT
 
+  DIVIDE_IN_PAGES,
+
+
   GET_TAGS_SUCCESS,
   // SHOW_REGISTER,
 
@@ -153,7 +156,7 @@ export const loginSuccess = user => ({
 //Testeada
 export const registerSuccess = () => ({
   type: REGISTER_SUCCESS,
- 
+
 });
 
 
@@ -186,7 +189,10 @@ export const getAdverts = (query) => {
     dispatch(apiRequest());
     try {
       const adverts = await AdvertsService.getAdverts(query)
-      dispatch(AdvertsSuccess(adverts));
+
+      dispatch(divideInPages(adverts, 6));
+      dispatch(AdvertsSuccess());
+      
 
     } catch (error) {
       dispatch(apiFailure(error));
@@ -237,10 +243,41 @@ export const updateAdvert = (advert, id) => {
 // export const deleteAdvert = () => {} 
 
 //Testeada
-export const AdvertsSuccess = adverts => ({
+export const AdvertsSuccess = () => ({
   type: ADVERTS_SUCCESS,
-  adverts: adverts,
+  // adverts: adverts,
 });
+
+
+/* ----- Divide In Pages Actions----- */
+
+
+export const divideInPages = (adverts, numberPerPage) => {
+
+  const numberOfPages = Math.ceil(adverts.length / numberPerPage);
+  
+  const actualPage = 1;
+  let advertsInPages = {}
+  let index = 0;
+
+
+  adverts.forEach(function (advert, key) {
+    if ((key) % numberPerPage === 0) {
+      index += 1;
+      advertsInPages = {
+        ...advertsInPages,
+        [index]: []
+      }
+    }
+    advertsInPages[index].push(advert);
+  });
+
+
+  return {
+    type: DIVIDE_IN_PAGES,
+    adverts: {actualPage, numberOfPages, advertsInPages }
+  }
+}
 
 
 /* ----- Tags Thunks and Actions----- */

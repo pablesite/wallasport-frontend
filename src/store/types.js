@@ -21,5 +21,7 @@ export const LOGIN_INVALID = 'LOGIN_INVALID';
 
 export const ADVERTS_SUCCESS = 'ADVERTS_SUCCESS';
 
+export const DIVIDE_IN_PAGES = 'DIVIDE_IN_PAGES';
+
 export const GET_TAGS_SUCCESS = 'GET_TAGS_SUCCESS';
 

@@ -5,9 +5,11 @@ import Profile from '../Profile';
 import Loading from '../Loading';
 import Error from '../Error';
 import Login from '../Login';
+import AdvertList from '../AdvertList/AdvertList';
+import Advert from '../Advert/Advert'
 
 import Box from '@material-ui/core/Box';
-import Pagination from '../Pagination/Pagination';
+
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -26,7 +28,7 @@ export default function Home(props) {
     'buy',
   ];
 
-  const { adverts, error, isFetching, loadAdverts, user, tagList, showLogin, showRegister, showUserRegistered } = props;
+  const { adverts, error, isFetching, loadAdverts, actualPage, user, tagList, showLogin, showRegister, showUserRegistered } = props;
 
   const [t, i18n] = useTranslation();
 
@@ -39,8 +41,11 @@ export default function Home(props) {
 
   const [update, setUpdate] = useState(true);
 
+  // console.log(adverts, 'test ', actualPage, advertsInPages)
+
   useEffect(() => {
     loadAdverts().then(() => setUpdate(true));
+
   }, [loadAdverts]);
 
 
@@ -123,7 +128,7 @@ export default function Home(props) {
       {showRegister && <Login />}
       {showUserRegistered && <Login />}
 
-       {<Profile/>} 
+      {<Profile />}
 
 
       {/* <form className="filter-form" onSubmit={onSubmit}>
@@ -209,18 +214,43 @@ export default function Home(props) {
 
       </form> */}
 
+
+
+
       {isFetching && <Loading className="app-loading" />}
       {error && <Error className="app-error" error={error} />}
 
+
+
       {
-        !isFetching
-        &&
+        !isFetching && adverts && adverts.length === 0 &&
+
+        <h3>No hay anuncios. Pruebe otra búsqueda por favor.</h3>
+      }
+
+
+      {
         adverts
         &&
-        !adverts.length
+        adverts.length !== 0
         &&
-        <h2>No hay anuncios. Pruebe otra búsqueda por favor.</h2>
+        <div className="grid">
+          < Grid
+            container
+            alignItems='center'
+            alignContent='space-between'
+            spacing={1}>
+
+            {
+              adverts[1].map(function (advert, i) {
+                return <Advert key={i} advert={advert} />
+              })
+            }
+
+          </Grid>
+        </div>
       }
+
 
       {
         adverts
@@ -228,17 +258,17 @@ export default function Home(props) {
         adverts.length !== 0
         &&
 
-        <Pagination
+        <AdvertList
           totalAdverts={adverts.length}
-          numberPerPage='3'
+          numberPerPage='6'
           adverts={adverts}
           disableUpdate={disableUpdate}
           update={update}
         >
 
-        </Pagination>
+        </AdvertList>
       }
 
-    </React.Fragment>
+    </React.Fragment >
   );
 }

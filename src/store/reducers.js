@@ -7,6 +7,8 @@ const initialState = {
 
     adverts: [],
 
+    advertsInPages: [],
+
     tags: [],
 
     ui: {
@@ -47,12 +49,18 @@ export const adverts = (state = initialState.adverts, action) => {
     switch (action.type) {
 
         case TYPES.ADVERTS_SUCCESS:
+            return state;
+
+        case TYPES.DIVIDE_IN_PAGES:
             return action.adverts;
 
         default:
             return state;
     }
 };
+
+
+
 
 
 export const tags = (state = initialState.tags, action) => {
@@ -72,7 +80,6 @@ export const ui = (state = initialState.ui, action) => {
 
     if (/_REQUEST$/.test(action.type)) {
         return {
-
             isFetching: true,
             error: null,
         };
