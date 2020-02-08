@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import { getAdverts, goLogin, goRegister } from '../../store/actions';
+import { getAdverts} from '../../store/actions';
 
 
 function mapStateToProps(state) {
@@ -13,14 +13,13 @@ function mapStateToProps(state) {
     tagList: state.tags,
     showLogin: state.homeModals.showLogin,
     showRegister: state.homeModals.showRegister,
+    showUserRegistered: state.homeModals.showUserRegistered,
 
   }
 }
 
 const mapDispatchToProps = {
-  loadAdverts: getAdverts,
-  goLogin: goLogin,
-  goRegister: goRegister,
+  loadAdverts: getAdverts
 
 };
 

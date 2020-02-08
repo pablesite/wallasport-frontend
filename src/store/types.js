@@ -2,6 +2,7 @@ export const API_REQUEST = 'API_REQUEST';
 export const API_FAILURE = 'API_FAILURE';
 export const GO_LOGIN = 'GO_LOGIN';
 export const GO_REGISTER = 'GO_REGISTER';
+export const GO_USER_REGISTERED = 'GO_USER_REGISTERED';
 export const GO_APP = 'GO_APP';
 
 

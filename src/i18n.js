@@ -9,6 +9,7 @@ const resources = {
       "filtering": "Filtering!",
       'Welcome': 'Welcome again!',
       'Register': 'Sign Up in WallaSport!',
+      'UserRegistered': 'User has been registered succesfully. Please, go to login: ',
       'Register_data': 'Please, insert your personal data',
       'LoginButton': 'Login',
       'RegisterButton': 'Create a new account',
@@ -17,7 +18,9 @@ const resources = {
       'General_error': 'Ooops! Something went wrong:',
       'API_Unavailable': 'API Unavailable ;(',
       'Logout': 'Log out',
-      
+      'CreateProduct': 'Upload new product',
+      'Messages': 'Messages',
+      'SearchProduct': 'Search products',
       
     }
   },
@@ -26,6 +29,7 @@ const resources = {
       "filtering": "Filtra!",
       'Welcome': '¡Bienvenido de nuevo!',
       'Register': '¡Regístrate en WallaSport!',
+      'UserRegistered': 'El usuario se ha registrado correctamente. Por favor, ve a la sección de inicio de sesión: ',
       'Register_data': 'Por favor, inserta tus datos personales',
       'LoginButton': 'Inicia sesión',
       'RegisterButton': 'Crea una cuenta',
@@ -34,6 +38,9 @@ const resources = {
       'General_error': '¡Vaya! Algo no ha ido bien:',
       'API_Unavailable': 'API No Disponible ;(',
       'Logout': 'Cerrar sesión',
+      'CreateProduct': 'Sube un nuevo producto',
+      'Messages': 'Mensajes',
+      'SearchProduct': 'Busca productos',
 
     }
   }

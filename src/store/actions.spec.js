@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 import * as actions from './actions';
 import * as types from "./types";
 import * as  AdvertsService from '../services/AdvertDBService'
+import User from '../models/User';
 
 
 const history = createBrowserHistory();
@@ -36,6 +37,7 @@ const error = new Error('Login invalid');
 
 
 
+
 // Esto es interesante para mockear el resultado de una función del servicio de la API
 jest.mock('../services/AdvertDBService');
 //AdvertsService.discoverAdverts.mockResolvedValueOnce(adverts);
@@ -49,14 +51,49 @@ describe('actions', () => {
     });
 
 
+
+    /* ----- UI tests ----- */
+
+    it('should create an goApp action', () => {
+        const expectedAction = {
+            type: types.GO_APP,
+          
+        };
+        expect(actions.goApp()).toEqual(expectedAction);
+
+    });
+
+    it('should create an goLogin action', () => {
+        const expectedAction = {
+            type: types.GO_LOGIN,
+          
+        };
+        expect(actions.goLogin()).toEqual(expectedAction);
+
+    });
+
+    it('should create an goRegister action', () => {
+        const expectedAction = {
+            type: types.GO_REGISTER,
+          
+        };
+        expect(actions.goRegister()).toEqual(expectedAction);
+
+    });
+
+
+
+
     /* ----- Register tests ----- */
     // Async test
     it('should dispatch a register action', async () => {
         const expectedActions = [{
             type: types.API_REQUEST,
         }, {
-            type: types.REGISTER_SUCCESS,
-            user
+            type: types.GO_USER_REGISTERED,
+        }, 
+        { type: types.REGISTER_SUCCESS,
+            
         }];
 
         // Mockeo la función de login y digo que devuelva un true.
@@ -71,7 +108,7 @@ describe('actions', () => {
 
         const expectedAction = {
             type: types.REGISTER_SUCCESS,
-            user,
+          
         };
         expect(actions.registerSuccess(user)).toEqual(expectedAction);
 
@@ -93,6 +130,8 @@ describe('actions', () => {
     it('should dispatch a login action', async () => {
         const expectedActions = [{
             type: types.API_REQUEST,
+        }, {
+            type: types.GO_APP,   
         }, {
             type: types.LOGIN_SUCCESS,
             user    
@@ -136,7 +175,7 @@ describe('actions', () => {
 
         const expectedActions = [{
             type: types.DELETE_USER_SUCCESS,
-            user: null
+            user: new User()
         }];
 
         await store.dispatch(actions.logout());
@@ -149,7 +188,7 @@ describe('actions', () => {
 
         const expectedAction = {
             type: types.DELETE_USER_SUCCESS,
-            user: null
+            user: new User()
         };
         expect(actions.deleteUserSuccess()).toEqual(expectedAction);
 

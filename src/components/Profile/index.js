@@ -1,17 +1,19 @@
 import { connect } from 'react-redux';
 
 import Profile from './Profile';
-import { logout } from '../../store/actions' 
+import { logout, goLogin, goRegister } from '../../store/actions';
 
 
 function mapStateToProps(state) {
   return {
-
+    user: state.user
   };
 }
 
 const mapDispatchToProps = {
-    logout: logout
+  logout: logout,
+  goLogin: goLogin,
+  goRegister: goRegister,
 };
 
 

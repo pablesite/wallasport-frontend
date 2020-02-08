@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 
 import Login from './Login';
-import { register, login, goApp } from '../../store/actions';
+import { register, login, goApp, goLogin } from '../../store/actions';
 
 
 function mapStateToProps(state) {
@@ -11,6 +11,7 @@ function mapStateToProps(state) {
     error: state.ui.error,
     showLogin: state.homeModals.showLogin,
     showRegister: state.homeModals.showRegister,
+    showUserRegistered: state.homeModals.showUserRegistered,
   };
 }
 
@@ -18,6 +19,7 @@ const mapDispatchToProps = {
   login: login,
   register: register,
   goApp: goApp,
+  goLogin: goLogin,
 };
 
 export default connect(

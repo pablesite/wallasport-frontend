@@ -4,6 +4,7 @@ import {
   API_FAILURE,
   GO_LOGIN,
   GO_REGISTER,
+  GO_USER_REGISTERED,
   GO_APP,
 
 
@@ -27,6 +28,8 @@ import {
 
 } from './types';
 
+import User from '../models/User';
+
 import { saveUserInLS, deleteLS } from '../services/Storage';
 
 import i18n from 'i18next';
@@ -35,7 +38,7 @@ import i18n from 'i18next';
 
 /* ----- API Generic Actions----- */
 
-
+// Testeada indirectamente
 export const apiRequest = () => ({
   type: API_REQUEST,
 });
@@ -45,14 +48,24 @@ export const apiFailure = error => ({
   error,
 });
 
+// Testeada
 export const goLogin = () => ({
   type: GO_LOGIN,
 });
 
+// Testeada
 export const goRegister = () => ({
   type: GO_REGISTER,
+
 });
 
+// Testeada indirectamente
+export const goUserRegistered = () => ({
+  type: GO_USER_REGISTERED,
+
+});
+
+// Testeada
 export const goApp = () => ({
   type: GO_APP,
 });
@@ -71,9 +84,10 @@ export const register = (user) => {
       const { success } = await AdvertsService.registerNewUser(user)
 
       if (success === true) {
-        dispatch(goLogin());
-        dispatch(registerSuccess(user));
-        history.push("/login");
+        // dispatch(goLogin());
+        dispatch(goUserRegistered());
+        dispatch(registerSuccess());
+        // history.push("/login");
       } else {
         dispatch(registerInvalid(new Error(i18n.t('Invalid_data_registered'))));
       }
@@ -121,6 +135,7 @@ export const login = (user) => {
 export const logout = () => {
   return async function (dispatch, _getState, { history }) {
     deleteLS();
+    // dispatch(goLogin());
     dispatch(deleteUserSuccess());
   };
 };
@@ -134,9 +149,9 @@ export const loginSuccess = user => ({
 
 
 //Testeada
-export const registerSuccess = user => ({
+export const registerSuccess = () => ({
   type: REGISTER_SUCCESS,
-  user,
+ 
 });
 
 
@@ -157,7 +172,7 @@ export const registerInvalid = error => ({
 //Testeada
 export const deleteUserSuccess = () => ({
   type: DELETE_USER_SUCCESS,
-  user: null,
+  user: new User(),
 });
 
 

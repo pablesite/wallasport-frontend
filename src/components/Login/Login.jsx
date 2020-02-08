@@ -1,13 +1,11 @@
 
 // Listo
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
-import { Link } from 'react-router-dom'
 
 import FormEnhanced from '../FormEnhanced'
 import InputEnhanced from '../InputEnhanced'
-import Home from '../Home';
 
 import Loading from '../Loading';
 import Error from '../Error';
@@ -20,29 +18,24 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { TextField } from '@material-ui/core';
-import { useStyles } from '../../styles';
+import { mdiArrowLeftThick } from '@mdi/js';
+import Icon from '@mdi/react'
 
 
-import SvgIcon from '@material-ui/core/SvgIcon';
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../../styles';
+import { styles } from './styles';
 
-function HomeIcon(props) {
-    return (
-        <SvgIcon {...props}>
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </SvgIcon>
-    );
-}
 
+const useStyles = makeStyles(styles);
 
 export default function Login(props) {
 
-    const { login, register, isFetching, error, goApp, showLogin, showRegister } = props;
+    const { login, register, isFetching, error, goApp, showLogin, goLogin, showRegister, showUserRegistered } = props;
 
     const [t, i18n] = useTranslation();
     const style = useStyles();
-    const classes = useStyles();
-
-
+   
     const initialState = showLogin ? { username: "pablesite", password: "1234" } : { username: "", password: "" };
 
 
@@ -52,9 +45,7 @@ export default function Login(props) {
         } else {
             register(user);
         }
-
     };
-
 
     return (
         <React.Fragment>
@@ -67,82 +58,109 @@ export default function Login(props) {
 
                     <div className={style.loginForm}>
 
-                        <div className={style.homeIcon}>
-                            <HomeIcon onClick={() => goApp()} fontSize="large" />
+                        <div className={style.loginArrow}>
+                        
+                            <Icon
+                            onClick={() => goApp()} 
+                            path={mdiArrowLeftThick}
+                                size={1}
+                                horizontal
+                                rotate={180}
+                                color={theme.palette.primary.main}
+                            />
+                       
                         </div>
 
-                        <Avatar className={style.loginAvatar}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                       
+                        {!showUserRegistered &&
+                            <Avatar className={style.loginAvatar}>
+                                <LockOutlinedIcon />
+                            </Avatar>}
+
                         <Typography component="h1" variant="h6">
                             {showLogin && t('Welcome')}
                             {showRegister && t('Register')}
-
                         </Typography>
+
                         <Typography variant="body2">
                             {showRegister && t('Register_data')}
 
                         </Typography>
 
+                        <Typography component="h1" variant="h6">
+                            {showUserRegistered && t('UserRegistered')}
+                        </Typography>
 
                         <p></p>
-                        <FormEnhanced
-                            handleSubmit={onSubmit}
-                            initialState={initialState}
-                        >
-                            <Grid container spacing={2}>
 
-                                <Grid item xs={12}>
-                                    <InputEnhanced
-                                        type='text'
-                                        name='username'
-                                        component={TextField}
-                                        fullWidth
-                                        variant="outlined"
-                                        required />
-                                </Grid>
+                        {showUserRegistered &&
+                            <Button
+                                className={style.profileButton}
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => goLogin()}>
+                                {t('LoginButton')}
+                            </Button>}
+                        {showUserRegistered && <p></p>}
 
+                        {!showUserRegistered &&
+                            <FormEnhanced
+                                handleSubmit={onSubmit}
+                                initialState={initialState}
+                            >
+                                <Grid container spacing={2}>
 
-                                {showRegister &&
                                     <Grid item xs={12}>
                                         <InputEnhanced
-                                            type='email'
-                                            name='email'
+                                            type='text'
+                                            name='username'
                                             component={TextField}
                                             fullWidth
                                             variant="outlined"
                                             required />
                                     </Grid>
-                                }
 
-                                <Grid item xs={12}>
-                                    <InputEnhanced
-                                        type='password'
-                                        name='password'
-                                        component={TextField}
-                                        fullWidth
-                                        variant="outlined"
-                                        required />
+
+                                    {showRegister && !showUserRegistered &&
+                                        <Grid item xs={12}>
+                                            <InputEnhanced
+                                                type='email'
+                                                name='email'
+                                                component={TextField}
+                                                fullWidth
+                                                variant="outlined"
+                                                required />
+                                        </Grid>
+                                    }
+
+                                    <Grid item xs={12}>
+                                        <InputEnhanced
+                                            type='password'
+                                            name='password'
+                                            component={TextField}
+                                            fullWidth
+                                            variant="outlined"
+                                            required />
+                                    </Grid>
+
                                 </Grid>
 
-                            </Grid>
 
-                            <div className={style.loginSubmit}>
-                                <Button
-                                    label="Continue"
-                                    type='submit'
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    {showLogin && t('LoginButton')}
-                                    {showRegister && t('RegisterButton')}
-                                </Button>
-                            </div>
+                                <div className={style.loginSubmit}>
+                                    <Button
+                                        label="Continue"
+                                        type='submit'
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        {showLogin && t('LoginButton')}
+                                        {showRegister && t('RegisterButton')}
+                                    </Button>
+                                </div>
 
-                            {error && <Error error={error} />}
+                                {error && <Error error={error} />}
 
-                        </FormEnhanced>
+                            </FormEnhanced>}
 
                         <Copyright />
 
@@ -150,7 +168,6 @@ export default function Login(props) {
 
                 </Container>
             </div>
-
 
         </React.Fragment>
 
@@ -168,4 +185,5 @@ Login.propTypes = {
     goApp: T.func,
     showLogin: T.bool,
     showRegister: T.bool,
+    showUserRegistered: T.bool,
 };

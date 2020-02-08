@@ -1,6 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Login from './Login'
+import User from '../../models/User'
+
 
 describe('Login Component', () => {
 
@@ -8,21 +10,24 @@ describe('Login Component', () => {
         const props = {
             login: jest.fn(),
             register: jest.fn(),
-
-            user: {
-                username: '',
-                email: '',
-                password: ''
-            },
-
-            isLogin: true,
-
+            isFetching: false,
+            error: undefined,
+            goApp: jest.fn(),
+            showLogin: true,
+            goLogin: jest.fn(),
+            showRegister: false,
+            showUserRegistered: false,
+            // user: new User(),
+                       
+        }
+        const user = {
+            username: 'pablesite',
+            password: '1234',
         }
 
         const wrapper = shallow(<Login {...props} />);
-
-        wrapper.find('FormEnhanced').props().handleSubmit(props.user);
-        expect(props.login).toHaveBeenCalledWith(props.user);
+        wrapper.find('FormEnhanced').props().handleSubmit(user);
+        expect(props.login).toHaveBeenCalledWith(user);
 
     });
 

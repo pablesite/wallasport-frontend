@@ -33,6 +33,10 @@ export const user = (state = initialState.user, action) => {
         case TYPES.LOGIN_SUCCESS:
             return action.user;
 
+
+        case TYPES.REGISTER_SUCCESS:
+            return state;
+
         default:
             return state;
     }
@@ -110,18 +114,28 @@ export const homeModals = (state = initialState.homeModals, action) => {
             return {
                 showLogin: true,
                 showRegister: false,
+                showUserRegistered: false,
             }
 
         case TYPES.GO_REGISTER:
             return {
                 showLogin: false,
                 showRegister: true,
+                showUserRegistered: false,
+            }
+
+        case TYPES.GO_USER_REGISTERED:
+            return {
+                showLogin: false,
+                showRegister: false,
+                showUserRegistered: true,
             }
 
         case TYPES.GO_APP:
             return {
                 showLogin: false,
                 showRegister: false,
+                showUserRegistered: false,
             }
 
         default:

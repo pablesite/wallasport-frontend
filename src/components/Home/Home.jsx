@@ -26,7 +26,7 @@ export default function Home(props) {
     'buy',
   ];
 
-  const { adverts, error, isFetching, loadAdverts, user, tagList, showLogin, showRegister, goLogin, goRegister } = props;
+  const { adverts, error, isFetching, loadAdverts, user, tagList, showLogin, showRegister, showUserRegistered } = props;
 
   const [t, i18n] = useTranslation();
 
@@ -119,20 +119,11 @@ export default function Home(props) {
   return (
     <React.Fragment>
 
-      {!user && showLogin && <Login />}
-      {!user && showRegister && <Login />}
+      {showLogin && <Login />}
+      {showRegister && <Login />}
+      {showUserRegistered && <Login />}
 
-      {
-        user
-        &&
-        <Profile
-          username='en pruebas'
-          email={user.email}
-        > </Profile>
-      }
-
-      {!user && <Button onClick={() => goRegister() }>Register</Button>}
-      {!user && <Button onClick={() => goLogin() }>Login</Button>}
+       {<Profile/>} 
 
 
       <form className="filter-form" onSubmit={onSubmit}>
