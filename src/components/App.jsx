@@ -30,7 +30,7 @@ export default class App extends Component {
                 {/* <Route exact path='/login/' component={Login}  /> */}
                 <Route exact path='/login/' ><Login isLogin={true} /></Route>
                 <Route exact path='/home/' component={Home} />
-                <Route exact path='/detail/:id' component={AdvertDetail} />
+                <Route exact path='/advert/:id' component={AdvertDetail} />
                 <PrivateRoute exact path='/createOrUpdate/' component={CreateOrUpdate} />
                 <PrivateRoute exact path='/createOrUpdate/:id' component={CreateOrUpdate} />
                 <Route component={Home} />

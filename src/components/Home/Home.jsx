@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Profile from '../Profile';
+import Footer from '../Footer';
 import Loading from '../Loading';
 import Error from '../Error';
 import Login from '../Login';
-import AdvertList from '../AdvertList/AdvertList';
-import Advert from '../Advert/Advert'
+import Pagination from '../Pagination';
+import Advert from '../Advert'
 
 import Box from '@material-ui/core/Box';
-
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -18,8 +18,16 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import "./Home.css"
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../../styles';
+import { styles } from './styles';
 
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import RestoreIcon from '@material-ui/icons/Restore';
+
+
+const useStyles = makeStyles(styles);
 
 export default function Home(props) {
 
@@ -32,6 +40,8 @@ export default function Home(props) {
 
   const [t, i18n] = useTranslation();
 
+  const styles = useStyles();
+
   const [filters, setFilters] = useState({
     nombre: '',
     precio: '',
@@ -41,12 +51,10 @@ export default function Home(props) {
 
   const [update, setUpdate] = useState(true);
 
-  // console.log(adverts, 'test ', actualPage, advertsInPages)
+  // useEffect(() => {
+  //   loadAdverts().then(() => setUpdate(true));
 
-  useEffect(() => {
-    loadAdverts().then(() => setUpdate(true));
-
-  }, [loadAdverts]);
+  // }, [loadAdverts]);
 
 
   function disableUpdate() {
@@ -128,7 +136,7 @@ export default function Home(props) {
       {showRegister && <Login />}
       {showUserRegistered && <Login />}
 
-      {<Profile />}
+      <Profile />
 
 
       {/* <form className="filter-form" onSubmit={onSubmit}>
@@ -215,26 +223,18 @@ export default function Home(props) {
       </form> */}
 
 
-
-
       {isFetching && <Loading className="app-loading" />}
       {error && <Error className="app-error" error={error} />}
 
 
+      {!isFetching && adverts && adverts.length === 0 &&
 
-      {
-        !isFetching && adverts && adverts.length === 0 &&
-
-        <h3>No hay anuncios. Pruebe otra búsqueda por favor.</h3>
-      }
+        <h3>No hay anuncios. Pruebe otra búsqueda por favor.</h3>}
 
 
-      {
-        adverts
-        &&
-        adverts.length !== 0
-        &&
-        <div className="grid">
+      {adverts && adverts.length !== 0 &&
+
+        <div className={styles.grid}>
           < Grid
             container
             alignItems='center'
@@ -242,32 +242,34 @@ export default function Home(props) {
             spacing={1}>
 
             {
-              adverts[1].map(function (advert, i) {
+              adverts[actualPage].map(function (advert, i) {
                 return <Advert key={i} advert={advert} />
               })
             }
 
           </Grid>
+        </div>}
+
+
+      
+        <div className={styles.gridPagination}>
+          < Grid
+            container
+            alignItems='center'
+            alignContent='space-between'
+            spacing={1}>
+
+            <Pagination />
+
+          </Grid>
         </div>
-      }
 
 
-      {
-        adverts
-        &&
-        adverts.length !== 0
-        &&
-
-        <AdvertList
-          totalAdverts={adverts.length}
-          numberPerPage='6'
-          adverts={adverts}
-          disableUpdate={disableUpdate}
-          update={update}
-        >
-
-        </AdvertList>
-      }
+      
+        <div className={styles.footer}>
+          <Footer />
+        </div>
+      
 
     </React.Fragment >
   );

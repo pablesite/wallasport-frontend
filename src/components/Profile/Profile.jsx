@@ -187,7 +187,8 @@ export default function Profile(props) {
                     size="small"
                     variant="contained"
                     color="primary"
-                    onClick={1}>
+                    // onClick={1}
+                    >
                     {t('CreateProduct')}
                   </Button>}
                 </Grid>}

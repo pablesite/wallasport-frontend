@@ -6,6 +6,7 @@ import {
   GO_REGISTER,
   GO_USER_REGISTERED,
   GO_APP,
+  // GO_DETAIL,
 
 
   // GET_USER_SUCCESS,
@@ -20,9 +21,13 @@ import {
 
 
   ADVERTS_SUCCESS, //GET, CREATE OR UPDATE
+  ONE_ADVERT_SUCCESS,
   //DELETE_ADVERT
 
   DIVIDE_IN_PAGES,
+  PAGE_BACK,
+  PAGE_FORWARD,
+
 
 
   GET_TAGS_SUCCESS,
@@ -32,6 +37,7 @@ import {
 } from './types';
 
 import User from '../models/User';
+import Advert from '../models/Advert';
 
 import { saveUserInLS, deleteLS } from '../services/Storage';
 
@@ -190,9 +196,9 @@ export const getAdverts = (query) => {
     try {
       const adverts = await AdvertsService.getAdverts(query)
 
-      dispatch(divideInPages(adverts, 6));
-      dispatch(AdvertsSuccess());
-      
+      dispatch(divideInPages(adverts, 6, false));
+      dispatch(AdvertsSuccess(false));
+
 
     } catch (error) {
       dispatch(apiFailure(error));
@@ -200,18 +206,101 @@ export const getAdverts = (query) => {
   };
 };
 
+export const divideInPages = (adverts, numberPerPage, detail) => {
+
+  const numberOfPages = Math.ceil(adverts.length / numberPerPage);
+  const actualPage = 1;
+  let advertsInPages = {}
+  let index = 0;
+
+  const filledAdverts = numberPerPage * numberOfPages - adverts.length;
+  for (var i = 0; i < filledAdverts; i++) {
+    adverts.push(new Advert({
+      _0: undefined,
+      _id: undefined,
+      description: undefined,
+      name: undefined,
+      photo: undefined,
+      price: null,
+      reserved: undefined,
+      sold: undefined,
+      tags: [],
+      type: undefined,
+      userOwner: undefined
+    }))
+  }
+
+  adverts.forEach(function (advert, key) {
+    if ((key) % numberPerPage === 0) {
+      index += 1;
+      advertsInPages = {
+        ...advertsInPages,
+        [index]: []
+      }
+    }
+    advertsInPages[index].push(advert);
+  });
+
+  return {
+    type: DIVIDE_IN_PAGES,
+    adverts: { actualPage, numberOfPages, advertsInPages, detail }
+  }
+}
+
+
+export const pageBack = (actualPage, numberOfPages) => {
+  if (actualPage > 1) {
+    actualPage = actualPage - 1;
+  } else {
+    actualPage = numberOfPages;
+  }
+
+  return {
+    type: PAGE_BACK,
+    actualPage: actualPage
+
+  }
+}
+
+export const pageForward = (actualPage, numberOfPages) => {
+  if (actualPage < numberOfPages) {
+    actualPage = actualPage + 1;
+  } else {
+    actualPage = 1;
+  }
+
+  return {
+    type: PAGE_FORWARD,
+    actualPage: actualPage
+  }
+}
+
+
+
+// Para petición a la API...me hace falta?
+// export const getOneAdvert = (id) => {
+//   return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+//     dispatch(apiRequest());
+//     try {
+//       const advert = await AdvertsService.getOneAdvert(id)
+
+//       dispatch(divideInPages([advert], 1, true));
+//       dispatch(AdvertsSuccess());
+//       history.push(`/advert/${id}`);
+//     } catch (error) {
+//       dispatch(apiFailure(error));
+//     }
+//   };
+// };
 
 export const getOneAdvert = (id) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {
-    dispatch(apiRequest());
-    try {
-      const advert = await AdvertsService.getOneAdvert(id)
-      dispatch(AdvertsSuccess([advert]));
-    } catch (error) {
-      dispatch(apiFailure(error));
-    }
+  return async function (dispatch, _getState, { history }) {
+    history.push(`/advert/${id}`);
+    dispatch(OneAdvertSuccess(true));
+
   };
 };
+
 
 
 export const createAdvert = (advert) => {
@@ -243,41 +332,21 @@ export const updateAdvert = (advert, id) => {
 // export const deleteAdvert = () => {} 
 
 //Testeada
-export const AdvertsSuccess = () => ({
+export const AdvertsSuccess = (detail) => ({
   type: ADVERTS_SUCCESS,
+  detail,
   // adverts: adverts,
 });
 
 
-/* ----- Divide In Pages Actions----- */
+export const OneAdvertSuccess = (detail) => ({
+  type: ONE_ADVERT_SUCCESS,
+  detail,
+});
 
 
-export const divideInPages = (adverts, numberPerPage) => {
-
-  const numberOfPages = Math.ceil(adverts.length / numberPerPage);
-  
-  const actualPage = 1;
-  let advertsInPages = {}
-  let index = 0;
 
 
-  adverts.forEach(function (advert, key) {
-    if ((key) % numberPerPage === 0) {
-      index += 1;
-      advertsInPages = {
-        ...advertsInPages,
-        [index]: []
-      }
-    }
-    advertsInPages[index].push(advert);
-  });
-
-
-  return {
-    type: DIVIDE_IN_PAGES,
-    adverts: {actualPage, numberOfPages, advertsInPages }
-  }
-}
 
 
 /* ----- Tags Thunks and Actions----- */

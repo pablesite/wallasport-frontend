@@ -55,6 +55,8 @@ export const styles = {
   },
 
   profileTranslate: {
+    marginRight: '.5em',
+    marginLeft: '.3em',
     color: theme.palette.primary.main,
     fontSize: '.85em',
     '&:hover': {
@@ -64,6 +66,8 @@ export const styles = {
   },
 
   profileTranslateDark: {
+    marginRight: '.5em',
+    marginLeft: '.3em',
     color: theme.palette.primary.dark,
     fontSize: '.85em',
     '&:hover': {

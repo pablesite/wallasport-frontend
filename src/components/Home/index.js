@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import { getAdverts, divideInPages} from '../../store/actions';
+import { getAdverts} from '../../store/actions';
 
 
 function mapStateToProps(state) {

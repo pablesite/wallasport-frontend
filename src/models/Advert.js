@@ -3,15 +3,15 @@
 export default class Advert {
   _id;
   // creationDate;
-  // userOwner;
+  userOwner;
   name;
-  // description;
+  description;
   photo;
   type;
   price;
   tags;
-  // reserved;
-  // sold;
+  reserved;
+  sold;
   // chat;
 
   constructor(value) {

@@ -5,9 +5,12 @@ const initialState = {
 
     user: new User(),
 
-    adverts: [],
-
-    advertsInPages: [],
+    adverts: {
+        advertsInPages: [],
+        actualPage: 1,
+        numberOfPages: 1,
+        detail: true
+    },
 
     tags: [],
 
@@ -49,10 +52,31 @@ export const adverts = (state = initialState.adverts, action) => {
     switch (action.type) {
 
         case TYPES.ADVERTS_SUCCESS:
-            return state;
+            return {
+                ...state,
+                detail: action.detail,
+            };
+
+        case TYPES.ONE_ADVERT_SUCCESS:
+            return {
+                ...state,
+                detail: action.detail,
+            };
 
         case TYPES.DIVIDE_IN_PAGES:
             return action.adverts;
+
+        case TYPES.PAGE_BACK:
+            return {
+                ...state,
+                actualPage: action.actualPage,
+            };
+
+        case TYPES.PAGE_FORWARD:
+            return {
+                ...state,
+                actualPage: action.actualPage,
+            };
 
         default:
             return state;
@@ -102,7 +126,6 @@ export const ui = (state = initialState.ui, action) => {
     }
 
     if (/_INVALID$/.test(action.type)) {
-        console.log(action.type, action.error)
         return {
             apiConnection: true,
             isFetching: false,

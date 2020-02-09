@@ -4,6 +4,7 @@ export const GO_LOGIN = 'GO_LOGIN';
 export const GO_REGISTER = 'GO_REGISTER';
 export const GO_USER_REGISTERED = 'GO_USER_REGISTERED';
 export const GO_APP = 'GO_APP';
+// export const GO_DETAIL = 'GO_DETAIL';
 
 
 // export const GOHOME_SUCCESS = 'GOHOME_SUCCESS';
@@ -20,8 +21,11 @@ export const LOGIN_INVALID = 'LOGIN_INVALID';
 
 
 export const ADVERTS_SUCCESS = 'ADVERTS_SUCCESS';
+export const ONE_ADVERT_SUCCESS = 'ONE_ADVERT_SUCCESS';
 
 export const DIVIDE_IN_PAGES = 'DIVIDE_IN_PAGES';
+export const PAGE_BACK = 'PAGE_BACK';
+export const PAGE_FORWARD = 'PAGE_FORWARD';
 
 export const GET_TAGS_SUCCESS = 'GET_TAGS_SUCCESS';
 

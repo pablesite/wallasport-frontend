@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
 
 import Profile from '../Profile';
+import Footer from '../Footer';
 import Loading from '../Loading';
 import Error from '../Error';
+import Advert from '../Advert'
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -17,65 +19,60 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import './AdvertDetail.css'
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../../styles';
+import { styles } from './styles';
+
+// import './AdvertDetail.css'
+
+const useStyles = makeStyles(styles);
+
+export default function AdvertDetail(props) {
 
 
-class AdvertDetail extends Component {
-  constructor(props) {
-    super(props);
+  const styles = useStyles();
 
-    this.goHome = this.goHome.bind(this);
-    this.updateAdvert = this.updateAdvert.bind(this);
+  const { user, adverts, isFetching, error, goDetail, checkUser, actualPage, numberOfPages, location, locateAdvertFromUrl, advertsState } = props;
 
-  }
-
-
-  // checkUserExist() {
-  //   if (this.props.checkUser.exist) {
-  //     return true;
-  //   } else {
-  //     this.props.history.push("/login");
-  //     return false;
-  //   }
-  // }
+  useEffect(() => {
+    goDetail(locateAdvertFromUrl._id)
+  }, [locateAdvertFromUrl]);
 
 
-  componentDidMount() {
-    // if (this.checkUserExist()) {
-      this.props.getOneAdvert(this.props.match.params.id)
-    // }
-  }
 
-  goHome() {
-    this.props.history.push('/home');
-  }
+  return (
+    <React.Fragment>
 
-  updateAdvert() {
-    this.props.history.push(`/createOrUpdate/${this.props.match.params.id}`);
+      <Profile />
 
-  }
+      {isFetching && <Loading className="app-loading" />}
+      {error && <Error className="app-error" error={error} />}
 
 
-  render() {
+      {!isFetching && adverts && adverts.length === 0 &&
 
-    const { user, isFetching, error } = this.props;
-
-    const advert = this.props.adverts[0];
-
-    return (
-      <React.Fragment>
-
-        {
-          user
-          &&
-          <Profile
-            username='en pruebas'
-            email={user.email}
-          > </Profile>
-        }
+        <h4>No hay anuncios. Pruebe otra búsqueda por favor.</h4>}
 
 
-        <div className="container">
+      {adverts && adverts.length !== 0 &&
+
+        <div className={styles.grid}>
+          < Grid
+            container
+            alignItems='center'
+            alignContent='space-between'
+            spacing={1}>
+
+            {/* <Advert advert={adverts[actualPage][0]} /> */}
+            <Advert advert={locateAdvertFromUrl} />
+          </Grid>
+        </div>}
+
+        <div className={styles.footer}>
+          <Footer />
+        </div>
+
+      {/* <div className="container">
           {
             advert
             &&
@@ -166,12 +163,11 @@ class AdvertDetail extends Component {
             <h1>There is not adverts...</h1>
           }
 
-        </div>
+        </div> */}
 
 
-      </React.Fragment>
-    )
-  }
+    </React.Fragment>
+  )
 }
 
-export default AdvertDetail;
+
