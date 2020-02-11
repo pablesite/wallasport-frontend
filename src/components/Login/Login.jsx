@@ -115,6 +115,7 @@ export default function Login(props) {
                                             type='text'
                                             name='username'
                                             component={TextField}
+                                            selectValues={null}
                                             fullWidth
                                             variant="outlined"
                                             required />
@@ -127,6 +128,7 @@ export default function Login(props) {
                                                 type='email'
                                                 name='email'
                                                 component={TextField}
+                                                selectValues={null}
                                                 fullWidth
                                                 variant="outlined"
                                                 required />
@@ -138,6 +140,7 @@ export default function Login(props) {
                                             type='password'
                                             name='password'
                                             component={TextField}
+                                            selectValues={null}
                                             fullWidth
                                             variant="outlined"
                                             required />

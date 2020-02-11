@@ -21,6 +21,7 @@ const resources = {
       'CreateProduct': 'Upload new product',
       'Messages': 'Messages',
       'SearchProduct': 'Search products',
+      'CreateAdvert': 'Upload a new product',
       
     }
   },
@@ -41,6 +42,7 @@ const resources = {
       'CreateProduct': 'Sube un nuevo producto',
       'Messages': 'Mensajes',
       'SearchProduct': 'Busca productos',
+      'CreateAdvert': 'Subir nuevo producto',
 
     }
   }

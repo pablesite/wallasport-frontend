@@ -24,12 +24,14 @@ export const locateAdvertFromUrl = (location, state) => {
     let advertUrl = null;
     const path = location.pathname.split('/')
     for (let i = 1; i < state.numberOfPages + 1; i++) {
+    
         advertUrl = state.advertsInPages[i].find(advert => advert._id === path[2]);
-        if (advertUrl !== null) {
+        if (advertUrl !== null && advertUrl !== undefined) {
             i = state.numberOfPages + 1;
         }
     }
-    return advertUrl
+
+    return advertUrl;
 
 }
 

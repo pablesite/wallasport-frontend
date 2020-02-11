@@ -63,6 +63,12 @@ export const adverts = (state = initialState.adverts, action) => {
                 detail: action.detail,
             };
 
+        case TYPES.ADVERT_CREATED_SUCCESS:
+            return {
+                ...state,
+                detail: action.detail,
+            };
+
         case TYPES.DIVIDE_IN_PAGES:
             return action.adverts;
 

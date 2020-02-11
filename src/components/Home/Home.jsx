@@ -239,6 +239,7 @@ export default function Home(props) {
             container
             alignItems='center'
             alignContent='space-between'
+            justify="center"
             spacing={1}>
 
             {
@@ -265,10 +266,9 @@ export default function Home(props) {
         </div>
 
 
-      
-        <div className={styles.footer}>
+    
           <Footer />
-        </div>
+      
       
 
     </React.Fragment >

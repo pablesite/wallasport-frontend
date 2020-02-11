@@ -22,6 +22,7 @@ import {
 
   ADVERTS_SUCCESS, //GET, CREATE OR UPDATE
   ONE_ADVERT_SUCCESS,
+  ADVERT_CREATED_SUCCESS,
   //DELETE_ADVERT
 
   DIVIDE_IN_PAGES,
@@ -196,7 +197,7 @@ export const getAdverts = (query) => {
     try {
       const adverts = await AdvertsService.getAdverts(query)
 
-      dispatch(divideInPages(adverts, 6, false));
+      dispatch(divideInPages(adverts, 6, false)); //Parámetro (el 6) debería ser modificable por el usuario.
       dispatch(AdvertsSuccess(false));
 
 
@@ -308,7 +309,7 @@ export const createAdvert = (advert) => {
     dispatch(apiRequest());
     try {
       await AdvertsService.createAdvert(advert)
-      dispatch(AdvertsSuccess([advert])); //revisar si funciona entre corchetes
+      dispatch(AdvertCreatedSuccess(true)); //revisar si funciona entre corchetes
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -336,6 +337,11 @@ export const AdvertsSuccess = (detail) => ({
   type: ADVERTS_SUCCESS,
   detail,
   // adverts: adverts,
+});
+
+export const AdvertCreatedSuccess = (detail) => ({
+  type: ADVERT_CREATED_SUCCESS,
+  detail
 });
 
 

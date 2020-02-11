@@ -17,6 +17,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../../styles';
 import { styles } from './styles';
@@ -38,21 +39,34 @@ export default function Advert(props) {
   const { advert, goToDetail, detail } = props;
 
   return (
-    <Card 
-      className={detail===false ? style.root : style.root1}>
-
+    <Card
+      className={detail === false ? style.root : style.rootDetail}>
 
       <CardMedia
         className={style.media}
-        image={advert.photo !== 'noPhoto' ? `http://localhost:3003/${advert.photo}` : `http://localhost:3003/noHayImagen.gif`}
+        image={advert.photo !== 'noPhoto' ? `https://localhost:3002/img/${advert.photo}` : `https://localhost:3002/img/noHayImagen.gif`}
         title={advert.name}
-        onClick={()=> goToDetail(advert._id) }
+        onClick={() => goToDetail(advert._id)}
       />
+
+      <Typography
+        className={detail === false ? style.userOwner : style.userOwnerDetail}
+        variant="body2" color="inherit" >
+        '{advert.userOwner}'
+      </Typography>
+
+      <Avatar
+        className={detail === false ? style.avatar : style.avatarDetail}
+        src={'https://i.pravatar.cc/300'} />
 
       {advert.name &&
         <CardHeader
+        classes={{
+          title: detail === false ? style.cardHeaderTitle : style.cardHeaderTitleDetail,
+          root: detail === false ? style.cardHeaderRoot : style.cardHeaderRootDetail,
+        }}
+        // className={detail === false ? style.cardHeader : style.cardHeaderDetail}
           avatar={
-
             advert.type ?
               <Avatar className={style.avatarSale}>
                 Sale
@@ -61,7 +75,6 @@ export default function Advert(props) {
               <Avatar className={style.avatarBuy}>
                 Buy
              </Avatar>
-
           }
           //esto lo puedo usar para editar el anuncio en la versión privada
           // action={
@@ -82,12 +95,15 @@ export default function Advert(props) {
         </CardContent>}
 
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography 
+        className={detail === false ? style.description : style.descriptionDetail}
+        
+        variant="body2" color="textSecondary" component="p">
           {advert.description}
         </Typography>
       </CardContent>
 
-      {advert.name &&
+      {advert.name && detail &&
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />

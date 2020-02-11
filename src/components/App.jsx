@@ -31,7 +31,7 @@ export default class App extends Component {
                 <Route exact path='/login/' ><Login isLogin={true} /></Route>
                 <Route exact path='/home/' component={Home} />
                 <Route exact path='/advert/:id' component={AdvertDetail} />
-                <PrivateRoute exact path='/createOrUpdate/' component={CreateOrUpdate} />
+                <Route exact path='/createOrUpdate/' component={CreateOrUpdate} /> {/*Debe ser PrivateRoute*/}
                 <PrivateRoute exact path='/createOrUpdate/:id' component={CreateOrUpdate} />
                 <Route component={Home} />
               </Switch>

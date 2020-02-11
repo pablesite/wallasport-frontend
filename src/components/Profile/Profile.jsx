@@ -181,16 +181,16 @@ export default function Profile(props) {
 
               {(user.username !== null) &&
                 <Grid item className={style.profileItemsRight}>
-                  {/* <Link to='/createOrUpdate/'>Upload new product</Link> */}
-                  {<Button
+                   <Link to='/createOrUpdate/'>Upload new product</Link> 
+                   {/* <Button
                     className={style.profileButton}
                     size="small"
                     variant="contained"
                     color="primary"
-                    // onClick={1}
+                    // onClick={}
                     >
                     {t('CreateProduct')}
-                  </Button>}
+                  </Button> */}
                 </Grid>}
 
             </Grid>

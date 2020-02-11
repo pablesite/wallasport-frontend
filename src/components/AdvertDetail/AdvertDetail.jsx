@@ -60,7 +60,7 @@ export default function AdvertDetail(props) {
           < Grid
             container
             alignItems='center'
-            alignContent='space-between'
+            justify="center"
             spacing={1}>
 
             {/* <Advert advert={adverts[actualPage][0]} /> */}

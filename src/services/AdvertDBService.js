@@ -4,7 +4,7 @@ import Advert from '../models/Advert';
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Token aquí para pruebas. Hay que cogerlo siempre del store de Redux.
-const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTM0NmY1NzNlMmQwZjBhMzg3Y2U0M2EiLCJpYXQiOjE1ODA1NTQ0MDAsImV4cCI6MTU4MDcyNzIwMH0.NhmWWzP6nL4alyszgoxxa3wp73n1_nrgIIiS-xCWMUo';
+const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTNlZmQ2YTE0ZmZhMjQxMmNkZjBmNjMiLCJpYXQiOjE1ODEzNzY1MzEsImV4cCI6MTU4MTU0OTMzMX0.BvDO94PYotwQfCIOxXqgDAlMTYFulIRCcfNJOUrb9Lk';
 
 /* ------ API generic requests ------ */
 
@@ -26,6 +26,7 @@ const getRequest = (url, token) => {
 
 
 const createRequest = (url, body, token) => {
+
   return fetch(
     url,
     {
@@ -36,11 +37,40 @@ const createRequest = (url, body, token) => {
         'Authorization': tokenJWT
       },
       body: JSON.stringify(body)
+
     }
   )
     .catch(err => console.log(err))
     .then(res => res.json());
 }
+
+
+const createRequestWithPhoto = (url, body, token) => {
+
+  const formData = new FormData()
+
+  for(const name in body) {
+    formData.append(name, body[name]);
+  }
+
+  return fetch(
+    url,
+    {
+      method: 'POST',
+      headers:
+      {
+         'Authorization': tokenJWT
+      },
+      body: formData,
+    }
+  )
+    .catch(err => console.log(err))
+    .then(res => res.json());
+
+
+}
+
+
 
 const updateRequest = (url, body, token) => {
   return fetch(
@@ -102,7 +132,7 @@ const getAdverts = (query) => {
 }
 
 const createAdvert = (advert, token) => {
-  return createRequest(`${API_URL}/adverts`, advert, token)
+  return createRequestWithPhoto(`${API_URL}/adverts`, advert, token)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 

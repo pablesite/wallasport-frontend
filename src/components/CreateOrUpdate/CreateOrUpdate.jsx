@@ -1,6 +1,17 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
 
 import Profile from '../Profile';
+import Footer from '../Footer';
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
+
+import Loading from '../Loading';
+import Error from '../Error';
+
+import FormEnhanced from '../FormEnhanced'
+import InputEnhanced from '../InputEnhanced'
+
+
 import { getOneAdvert } from "../../services/AdvertDBService";
 
 import Button from '@material-ui/core/Button';
@@ -15,333 +26,447 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import './CreateOrUpdate.css'
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../../styles';
+import { styles } from './styles';
 
-const ventas = [
+
+
+ const useStyles = makeStyles(styles);
+
+
+
+const types = [
   'buy',
-  'sell',
+  'sale',
 ];
 
 
-class CreateOrUpdate extends Component {
-  constructor(props) {
-    super(props);
+export default function CreateOrUpdate(props) {
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      advert: {
-        description: '',
-        nombre: '',
-        foto: '',
-        precio: '',
-        tags: [],
-        venta: '',
-        _id: null
-      },
-      update: true,
+  //   this.state = {
+  //     advert: {
+  //       description: '',
+  //       nombre: '',
+  //       foto: '',
+  //       precio: '',
+  //       tags: [],
+  //       venta: '',
+  //       _id: null
+  //     },
+  //     update: true,
 
-    };
+  //   };
 
-    this.checkCreateorUpdate = this.checkCreateorUpdate.bind(this);
-    this.goHome = this.goHome.bind(this);
+  //   this.checkCreateorUpdate = this.checkCreateorUpdate.bind(this);
+  //   this.goHome = this.goHome.bind(this);
 
-  };
-
-
-  componentDidMount() {
-    const { checkUser, history } = this.props;
-
-    if (checkUser.exist) {
-      this.checkCreateorUpdate();
-    } else {
-      history.push("/login");
-    }
-  }
+  // };
 
 
-  componentDidUpdate() {
-    const { update } = this.state;
+  // componentDidMount() {
+  //   const { checkUser, history } = this.props;
 
-    if (!this.props.match.params.id && update) {
-      this.setState({
-        advert: {
-          description: '',
-          nombre: '',
-          foto: '',
-          precio: '',
-          tags: [],
-          venta: '',
-          _id: null,
-
-        },
-        update: false
-      })
-    }
-  }
+  //   // if (checkUser.exist) {
+  //     this.checkCreateorUpdate();
+  //   // } else {
+  //   //   history.push("/login");
+  //   // }
+  // }
 
 
-  createOrUpdateAdvert = () => {
-    const { _id } = this.state.advert;
+  // componentDidUpdate() {
+  //   const { update } = this.state;
 
-    if (_id) {
-      this.props.updateAdvert(this.state.advert, _id).then(() => { this.props.history.push(`/detail/${_id}`) });
-    } else {
-      this.props.createAdvert(this.state.advert).then(() => { this.props.history.push(`/home/`) });
-    }
-  }
+  //   if (!this.props.match.params.id && update) {
+  //     this.setState({
+  //       advert: {
+  //         description: '',
+  //         nombre: '',
+  //         foto: '',
+  //         precio: '',
+  //         tags: [],
+  //         venta: '',
+  //         _id: null,
+
+  //       },
+  //       update: false
+  //     })
+  //   }
+  // }
 
 
-  checkCreateorUpdate() {
-    // Tenemos el ID del path param ? Sí: Pues es un update: No: Pues es un create
-    const advertID = this.props.match.params.id;
+  // createOrUpdateAdvert = () => {
+  //   const { _id } = this.state.advert;
 
-    if (advertID) {
-      getOneAdvert(advertID).then(advert => {
-        if (advert.success === false) {
-          this.props.history.push("/404");
-        } else {
-          this.setState({ advert });
-        }
-      })
-    } else {
-      this.setState({
-        advert: {
-          description: '',
-          nombre: '',
-          foto: '',
-          precio: '',
-          tags: [],
-          venta: '',
-          _id: null
+  //   if (_id) {
+  //     this.props.updateAdvert(this.state.advert, _id).then(() => { this.props.history.push(`/detail/${_id}`) });
+  //   } else {
+  //     this.props.createAdvert(this.state.advert).then(() => { this.props.history.push(`/home/`) });
+  //   }
+  // }
 
-        },
-        update: true,
-      });
-    }
-  }
 
-  onSubmit = (event) => {
-    event && event.preventDefault();
-    this.createOrUpdateAdvert();
-    this.setState({ update: true });
-  }
+  // checkCreateorUpdate() {
+  //   // Tenemos el ID del path param ? Sí: Pues es un update: No: Pues es un create
+  //   const advertID = this.props.match.params.id;
 
-  goHome() {
-    this.props.history.push('/home');
-  }
+  //   if (advertID) {
+  //     getOneAdvert(advertID).then(advert => {
+  //       if (advert.success === false) {
+  //         this.props.history.push("/404");
+  //       } else {
+  //         this.setState({ advert });
+  //       }
+  //     })
+  //   } else {
+  //     this.setState({
+  //       advert: {
+  //         description: '',
+  //         nombre: '',
+  //         foto: '',
+  //         precio: '',
+  //         tags: [],
+  //         venta: '',
+  //         _id: null
 
-  onInputChange = (event) => {
-    const { name, value } = event.target;
+  //       },
+  //       update: true,
+  //     });
+  //   }
+  // }
 
-    if (name === 'precio') {
+  // onSubmit = (event) => {
+  //   event && event.preventDefault();
+  //   this.createOrUpdateAdvert();
+  //   this.setState({ update: true });
+  // }
 
-      if ((!/\D/.exec(value))) {
-        this.setState(({ advert }) => ({
-          advert: {
-            ...advert,
-            [name]: value
-          }
-        }));
+  // goHome() {
+  //   this.props.history.push('/home');
+  // }
 
-      }
-    } else {
-      this.setState(({ advert }) => ({
+  // onInputChange = (event) => {
+  //   const { name, value } = event.target;
 
-        advert: {
-          ...advert,
-          [name]: value
-        }
-      }));
-    }
-  };
+  //   if (name === 'precio') {
 
-  onFileSelected = event => {
+  //     if ((!/\D/.exec(value))) {
+  //       this.setState(({ advert }) => ({
+  //         advert: {
+  //           ...advert,
+  //           [name]: value
+  //         }
+  //       }));
+
+  //     }
+  //   } else {
+  //     this.setState(({ advert }) => ({
+
+  //       advert: {
+  //         ...advert,
+  //         [name]: value
+  //       }
+  //     }));
+  //   }
+  // };
+
+
+
+
     //const value = event.target.files[0].name;
-    this.setState(({ advert }) => ({
-      advert: {
-        ...advert,
-        //photo: value,
-        foto: 'noPhoto' //This functionality is deactivated while APi has not an endpoint to upload files.
-      }
-    }));
+    // this.setState(({ advert }) => ({
+    //   advert: {
+    //     ...advert,
+    //     //photo: value,
+    //     foto: 'noPhoto' //This functionality is deactivated while APi has not an endpoint to upload files.
+    //   }
+    // }));
+
+
+
+  // const { user, tagList } = props;
+  const { isFetching, error, adverts, showLogin, showRegister, createAdvert, tagList } = props;
+
+  const [t, i18n] = useTranslation();
+
+  const [advert, setAdvert] = useState()
+  const [photo, setPhoto] = useState()
+
+  const style = useStyles();
+
+  
+
+  useEffect(() => {
+     if (advert && photo) {
+      console.log('Renderiz! ', { ...advert,  photo})
+       createAdvert({ ...advert,  photo})
+
+     }
+  },[advert, photo]);
+
+
+  const initialState = { 
+    userOwner: '',
+    name: '',
+    description: '',
+    photo: '',
+    type: '',
+    price: '',
+    tags: [],
+    reserved: '',
+    sold: '',
+  
+  };
+
+  const onFileSelected = event => {
+    // console.log( event.target.files[0])
+    setPhoto( 
+       event.target.files[0] 
+    )
 
   }
 
 
-  render() {
+  const onSubmit = (advert) => {
 
-    const { user, tagList } = this.props;
-    const { description, nombre, foto, precio, tags, venta, _id } = this.state.advert;
-
-    return (
-      <React.Fragment>
-
-        {
-          user
-          &&
-          <Profile
-            username='en pruebas'
-            email={user.email}
-          > </Profile>
-        }
-
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-
-          <div className='paper'>
-
-            <Typography component="h1" variant="h5">
-              New Advert
-                        </Typography>
-
-            <form className='form' onSubmit={this.onSubmit}>
-              <Grid container justify="center" spacing={2}>
-
-                <Grid item xs={12} >
-                  <TextField
-                    label="Advert name"
-                    value={nombre}
-                    name="nombre"
-                    onChange={this.onInputChange}
-                    fullWidth
-                    variant="filled"
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12} >
-                  <TextField
-                    label="Description"
-                    value={description}
-                    name="description"
-                    onChange={this.onInputChange}
-                    fullWidth
-                    variant="filled"
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <FormControl required fullWidth variant="filled" >
-                    <InputLabel >Venta</InputLabel>
-                    <Select
-                      label="Venta"
-                      value={venta}
-                      name="venta"
-                      onChange={this.onInputChange}
-                      required
-                    >
-
-                      {ventas.map(venta => (
-                        <MenuItem key={venta} value={venta} >
-                          {venta}
-                        </MenuItem>
-                      ))}
-                    </Select>
-
-                  </FormControl >
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <FormControl required fullWidth variant="filled">
-                    <InputLabel >Tags</InputLabel>
-                    <Select
-                      multiple
-                      label="Tag"
-                      value={tags}
-                      name="tags"
-                      onChange={this.onInputChange}
-                      required
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-
-                      {tagList.map(tags => (
-                        <MenuItem key={tags} value={tags} >
-                          {tags}
-                        </MenuItem>
-                      ))}
-
-                    </Select>
-
-                  </FormControl>
-                </Grid>
+    setAdvert({
+      ...advert,
+      price: parseInt(advert.price, 10),
+      type: advert.type==='sale' ? true : false,
+      userOwner: 'pablesite',
+      reserved: false,
+      sold: false,
+    })
 
 
 
-                <Grid item xs={12}>
-                  <TextField
-                    label={venta === 'buy' ? "Precio máximo" : "Precio"}
-                    value={precio}
-                    name="precio"
-                    onChange={this.onInputChange}
-                    fullWidth
-                    variant="filled"
-                    required
+    // if (showLogin) {
+    //     login(user);
+    // } else {
+    //     register(user);
+    // }
+  };
 
-                  />
-                </Grid>
 
-                <Grid item xs={12} >
-                  <input
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    id="raised-button-file"
-                    multiple
-                    type="file"
-                    onChange={this.onFileSelected}
+  return (
+    <React.Fragment>
 
-                  />
-                  <label htmlFor="raised-button-file">
-                    <Button
-                      component="span"
-                      fullWidth
-                      variant="outlined"
-                      color="primary"
-                    >
-                      Upload an image
+      <Profile />
+
+      <Container
+        classes={{
+          root: style.root,
+        }}
+        component="main"
+        maxWidth="xs"
+      >
+
+        {isFetching && <Loading />}
+
+        <FormEnhanced
+          handleSubmit={onSubmit}
+          initialState={initialState}
+        >
+          <Grid container spacing={2}>
+
+            <Grid item xs={12}>
+              <InputEnhanced
+                type='text'
+                name='name'
+                selectValues={null}
+                component={TextField}
+                fullWidth
+                variant="outlined"
+                required />
+            </Grid>
+
+
+
+            <Grid item xs={12}>
+              <InputEnhanced
+                type='text'
+                name='description'
+                selectValues={null}
+                component={TextField}
+                fullWidth
+                variant="outlined"
+                required />
+            </Grid>
+
+
+            <Grid item xs={12}>
+              <FormControl variant="outlined" fullWidth >
+                <InputEnhanced
+                  type='text'
+                  name='type'
+                  selectValues={types}
+                  component={Select}
+                  fullWidth
+                  variant="outlined"
+                  required />
+              </FormControl>
+            </Grid>
+
+
+            <Grid item xs={12}>
+              <FormControl variant="outlined" fullWidth >
+                <InputEnhanced
+                  type='text'
+                  name='tags'
+                  selectValues={tagList}
+                  component={Select}
+                  fullWidth
+                  variant="outlined"
+                  required />
+              </FormControl>
+            </Grid>
+
+
+            <Grid item xs={12}>
+              <InputEnhanced
+                type='number'
+                name='price'
+                selectValues={null}
+                component={TextField}
+                fullWidth
+                variant="outlined"
+                required />
+            </Grid>
+
+            <Grid item xs={12}>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                multiple
+                type="file"
+                onChange={onFileSelected}
+
+              />
+
+              <label htmlFor="raised-button-file">
+                <Button
+                className={style.buttonUpload}
+                  component="span"
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                >
+                  Upload an image
                 </Button>
-                  </label>
-                  <Box textAlign="justify">
-                    <h3>The photo entered has the name: {foto}.
-                    Attention: This functionality is disabled because the API does not have an endpoint to upload photos.</h3>
-                  </Box>
+              </label>
+              
+                <Typography variant="body2" color="inherit" >
+                  {photo !== null && `The photo entered has the name: ${photo}`}
+                </Typography>
+       
 
-                </Grid>
+            </Grid>
 
-                <Grid item xs={12} >
-                  <Button
-                    label="Create"
-                    type='submit'
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    {_id ? 'Update advert' : 'Create a new advert'}
-                  </Button>
-                </Grid>
+          </Grid>
 
-                <div className="back-home">
-                  <Grid item xs={12} >
-                    <Button variant="contained"
-                      color="secondary"
-                      className="button is-link"
-                      onClick={this.goHome}
-                    >
-                      Back to home
-                </Button>
-                  </Grid>
-                </div>
-              </Grid>
-            </form>
-
+       
+  
+  
+          <div className={style.loginSubmit}>
+            <Button
+              label="Continue"
+              type='submit'
+              variant="contained"
+              color="primary"
+            >
+              {t('CreateAdvert')}
+              {/* {showRegister && t('RegisterButton')} */}
+            </Button>
           </div>
 
-        </Container>
 
-      </React.Fragment>
-    );
-  }
+          {error && <Error error={error} />}
+
+        </FormEnhanced>
+
+      </Container>
+
+      <Footer />
+
+
+
+      {/* <Container component="main" maxWidth="xs">
+        <CssBaseline />
+
+        <div className='paper'>
+
+          <Typography component="h1" variant="h5">
+            New Advert
+                        </Typography>
+
+          <form className='form' onSubmit={this.onSubmit}>
+            <Grid container justify="center" spacing={2}>
+
+
+
+              <Grid item xs={12} >
+                <input
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  id="raised-button-file"
+                  multiple
+                  type="file"
+                  onChange={this.onFileSelected}
+
+                />
+                <label htmlFor="raised-button-file">
+                  <Button
+                    component="span"
+                    fullWidth
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Upload an image
+                </Button>
+                </label>
+                <Box textAlign="justify">
+                  <h3>The photo entered has the name: {foto}.
+                    Attention: This functionality is disabled because the API does not have an endpoint to upload photos.</h3>
+                </Box>
+
+              </Grid>
+
+              <Grid item xs={12} >
+                <Button
+                  label="Create"
+                  type='submit'
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                >
+                  {_id ? 'Update advert' : 'Create a new advert'}
+                </Button>
+              </Grid>
+
+              <div className="back-home">
+                <Grid item xs={12} >
+                  <Button variant="contained"
+                    color="secondary"
+                    className="button is-link"
+                    onClick={this.goHome}
+                  >
+                    Back to home
+                </Button>
+                </Grid>
+              </div>
+            </Grid>
+          </form>
+
+        </div>
+
+      </Container> */}
+
+
+
+    </React.Fragment>
+  );
 }
-
-export default CreateOrUpdate;
