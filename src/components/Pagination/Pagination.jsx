@@ -21,7 +21,7 @@ export default function Pagination(props) {
         <React.Fragment>
 
             <Grid container alignItems='center' alignContent='space-between' spacing={1} justify='center'>
-                <Grid item xs={1} sm={2}>
+                <Grid item sm={2}>
                     <Box textAlign="center" className={styles.paginationArrow} >
                         <Icon className='login-arrow'
                             onClick={() => pageBack(actualPage, numberOfPages)}
@@ -34,13 +34,13 @@ export default function Pagination(props) {
                     </Box>
                 </Grid>
 
-                <Grid item xs={1} sm={2}   >
+                <Grid item sm={2}   >
                     <Box textAlign="center" className={styles.pages}>
                         {`${actualPage} of ${numberOfPages}`}
                     </Box>
                 </Grid>
 
-                <Grid item xs={1} sm={2} >
+                <Grid item  sm={2} >
                     <Box textAlign="center" className={styles.paginationArrow} >
                         <Icon className='login-arrow'
                             onClick={() => pageForward(actualPage, numberOfPages)}

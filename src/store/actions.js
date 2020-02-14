@@ -6,6 +6,8 @@ import {
   GO_REGISTER,
   GO_USER_REGISTERED,
   GO_APP,
+  SHOW_CREATION_ADVERT,
+  SHOW_UPDATE_ADVERT,
   // GO_DETAIL,
 
 
@@ -82,6 +84,26 @@ export const goUserRegistered = () => ({
 export const goApp = () => ({
   type: GO_APP,
 });
+
+
+export const goHome = () => {
+  return async function (dispatch, _getState, { history }) {
+    history.push(`/home/`);
+    // dispatch(AdvertCreatedSuccess(false));
+
+  };
+};
+
+export const showCreationAdvert = () => ({
+  type: SHOW_CREATION_ADVERT,
+});
+
+
+export const showUpdateAdvert = () => ({
+  type: SHOW_UPDATE_ADVERT,
+});
+
+
 
 
 /* ----- User Thunks and Actions----- */
@@ -196,10 +218,8 @@ export const getAdverts = (query) => {
     dispatch(apiRequest());
     try {
       const adverts = await AdvertsService.getAdverts(query)
-
-      dispatch(divideInPages(adverts, 6, false)); //Parámetro (el 6) debería ser modificable por el usuario.
+      dispatch(divideInPages(adverts, 8)); //Parámetro (el 6) debería ser modificable por el usuario.
       dispatch(AdvertsSuccess(false));
-
 
     } catch (error) {
       dispatch(apiFailure(error));
@@ -207,11 +227,11 @@ export const getAdverts = (query) => {
   };
 };
 
-export const divideInPages = (adverts, numberPerPage, detail) => {
+export const divideInPages = (adverts, numberPerPage) => {
 
   const numberOfPages = Math.ceil(adverts.length / numberPerPage);
   const actualPage = 1;
-  let advertsInPages = {}
+  let advertsInPages = {};
   let index = 0;
 
   const filledAdverts = numberPerPage * numberOfPages - adverts.length;
@@ -219,6 +239,7 @@ export const divideInPages = (adverts, numberPerPage, detail) => {
     adverts.push(new Advert({
       _0: undefined,
       _id: undefined,
+      creationDate: undefined,
       description: undefined,
       name: undefined,
       photo: undefined,
@@ -227,7 +248,7 @@ export const divideInPages = (adverts, numberPerPage, detail) => {
       sold: undefined,
       tags: [],
       type: undefined,
-      userOwner: undefined
+      userOwner: undefined,
     }))
   }
 
@@ -236,7 +257,7 @@ export const divideInPages = (adverts, numberPerPage, detail) => {
       index += 1;
       advertsInPages = {
         ...advertsInPages,
-        [index]: []
+        [index]: [],
       }
     }
     advertsInPages[index].push(advert);
@@ -244,7 +265,7 @@ export const divideInPages = (adverts, numberPerPage, detail) => {
 
   return {
     type: DIVIDE_IN_PAGES,
-    adverts: { actualPage, numberOfPages, advertsInPages, detail }
+    adverts: { actualPage, numberOfPages, advertsInPages },
   }
 }
 
@@ -294,9 +315,9 @@ export const pageForward = (actualPage, numberOfPages) => {
 //   };
 // };
 
-export const getOneAdvert = (id) => {
+export const getOneAdvert = (slugName) => {
   return async function (dispatch, _getState, { history }) {
-    history.push(`/advert/${id}`);
+    history.push(`/advert/${slugName}`);
     dispatch(OneAdvertSuccess(true));
 
   };
@@ -305,24 +326,33 @@ export const getOneAdvert = (id) => {
 
 
 export const createAdvert = (advert) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {    
     dispatch(apiRequest());
     try {
-      await AdvertsService.createAdvert(advert)
-      dispatch(AdvertCreatedSuccess(true)); //revisar si funciona entre corchetes
+      await AdvertsService.createAdvert(advert) //Falta el token
+      dispatch(AdvertCreatedSuccess(true)); 
+      dispatch(getAdverts()) 
     } catch (error) {
       dispatch(apiFailure(error));
     }
   };
 };
 
+export const goUpdateAdvert = (slugName) => {
+  return async function (dispatch, _getState, { history }) {
+    history.push(`/createOrUpdate/${slugName}`);
+    dispatch(showUpdateAdvert());
 
-export const updateAdvert = (advert, id) => {
+  };
+};
+
+export const updateAdvert = (advert) => {
   return async function (dispatch, _getState, { services: { AdvertsService } }) {
     dispatch(apiRequest());
     try {
-      const { result } = await AdvertsService.updateAdvert(advert, id)
-      dispatch(AdvertsSuccess([result])); //revisar si funciona entre corchetes
+      await AdvertsService.updateAdvert(advert, advert.slugName) //Falta el token, también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      dispatch(AdvertsSuccess(true)); //revisar si funciona entre corchetes
+      dispatch(getAdverts()) 
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -331,6 +361,23 @@ export const updateAdvert = (advert, id) => {
 
 
 // export const deleteAdvert = () => {} 
+
+export const deleteAdvert = (slugName) => {
+  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      await AdvertsService.deleteAdvert(slugName) //Falta el token, también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      dispatch(AdvertsSuccess(false)); //revisar si funciona entre corchetes
+      history.push(`/home/`);
+      dispatch(getAdverts()) 
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+
+
 
 //Testeada
 export const AdvertsSuccess = (detail) => ({

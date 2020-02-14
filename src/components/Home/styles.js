@@ -1,14 +1,15 @@
 
-import { theme } from '../../styles';
+// import { theme } from '../../styles';
 
 export const styles = {
 
     grid: {
-        margin: '2em 25vw 2em 25vw'
+        margin: '2em 23vw 2em 23vw',
+        flexWrap: 'wrap'
     }, 
 
     gridPagination: {
-        margin: '0em 25vw 7vh 25vw'
+        margin: '0em 23vw 7vh 23vw'
     }, 
     
 }

@@ -1,22 +1,5 @@
 export function isAuthorized(user) {
-
-    return { exist: Boolean(user && user.email) } //Añadirle user.username cuando lo tenga implementado. Quitarle también lo de exist...
-
-    // if ((user !== undefined && user !== null )  && 
-    //     (user.username !== '' && user.email !== '')
-    //     ) {
-    //     return {
-    //         exist: true,
-    //         user: user
-    //     }
-    // }
-    // else {
-    //         return {
-    //             exist: false,
-    //             user: {}
-    //         }
-    //     }
-
+    return  Boolean(user && user.username)  
 }
 
 export const locateAdvertFromUrl = (location, state) => {
@@ -25,7 +8,7 @@ export const locateAdvertFromUrl = (location, state) => {
     const path = location.pathname.split('/')
     for (let i = 1; i < state.numberOfPages + 1; i++) {
     
-        advertUrl = state.advertsInPages[i].find(advert => advert._id === path[2]);
+        advertUrl = state.advertsInPages[i].find(advert => advert.slugName === path[2]);
         if (advertUrl !== null && advertUrl !== undefined) {
             i = state.numberOfPages + 1;
         }

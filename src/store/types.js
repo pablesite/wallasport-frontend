@@ -4,6 +4,8 @@ export const GO_LOGIN = 'GO_LOGIN';
 export const GO_REGISTER = 'GO_REGISTER';
 export const GO_USER_REGISTERED = 'GO_USER_REGISTERED';
 export const GO_APP = 'GO_APP';
+export const SHOW_CREATION_ADVERT = 'SHOW_CREATION_ADVERT';
+export const SHOW_UPDATE_ADVERT = 'SHOW_UPDATE_ADVERT';
 // export const GO_DETAIL = 'GO_DETAIL';
 
 

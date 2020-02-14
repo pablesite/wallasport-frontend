@@ -35,7 +35,7 @@ function HomeIcon(props) {
 
 
 export default function Profile(props) {
-  const { user, logout, goLogin, goRegister } = props;
+  const { user, logout, goLogin, goRegister, getAdverts } = props;
 
   const [t, i18n] = useTranslation();
   const style = useStyles();
@@ -105,7 +105,7 @@ export default function Profile(props) {
                 >
                   en
                 </div>
-            
+
               </Grid>
 
               <Grid item xs={10} sm className={style.profileItemsLeft}>
@@ -115,7 +115,9 @@ export default function Profile(props) {
                   style={{ margin: 8 }}
                   placeholder={t("SearchProduct")}
                   fullWidth
-                  color='secondary'
+                  onChange={(e) => {
+                    getAdverts(`name=${e.target.value}`)
+                  }}
                   startAdornment={<Icon path={mdiMagnify}
                     size={1}
                     horizontal
@@ -127,7 +129,7 @@ export default function Profile(props) {
 
 
               {(user.username === null) &&
-                <Grid item item className={style.profileItemsRight}>
+                <Grid item className={style.profileItemsRight}>
                   <Button
                     // classes={{
                     //   root: style.profileButton
@@ -181,16 +183,16 @@ export default function Profile(props) {
 
               {(user.username !== null) &&
                 <Grid item className={style.profileItemsRight}>
-                   <Link to='/createOrUpdate/'>Upload new product</Link> 
-                   {/* <Button
+                  <Button
                     className={style.profileButton}
                     size="small"
                     variant="contained"
                     color="primary"
                     // onClick={}
-                    >
+                    href='/createOrUpdate/'
+                  >
                     {t('CreateProduct')}
-                  </Button> */}
+                  </Button>
                 </Grid>}
 
             </Grid>

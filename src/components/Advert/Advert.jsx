@@ -1,26 +1,24 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Button from '@material-ui/core/Button';
 
 
 import { makeStyles } from '@material-ui/core/styles';
-import { theme } from '../../styles';
+// import { theme } from '../../styles';
 import { styles } from './styles';
+// import { user } from '../../store/reducers';
 
 const useStyles = makeStyles(styles);
 
@@ -29,43 +27,48 @@ export default function Advert(props) {
   const [t, i18n] = useTranslation();
   const style = useStyles();
 
+  const { advert, user, goToDetail, detail, goUpdateAdvert, deleteAdvert } = props;
 
-  const [expanded, setExpanded] = React.useState(false);
+  // const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  // const editAdvert = () => {
+  //     goUpdateAdvert(advert.slugName)
+  // };
 
-  const { advert, goToDetail, detail } = props;
-
+  console.log('anuncio que llega a advert' , advert)
+ 
   return (
     <Card
       className={detail === false ? style.root : style.rootDetail}>
 
-      <CardMedia
-        className={style.media}
-        image={advert.photo !== 'noPhoto' ? `https://localhost:3002/img/${advert.photo}` : `https://localhost:3002/img/noHayImagen.gif`}
-        title={advert.name}
-        onClick={() => goToDetail(advert._id)}
-      />
+      {advert.name &&
+        <CardMedia
+          className={style.media}
+          image={advert.photo !== '' ? `https://localhost:3002/img/${advert.photo}` : `https://localhost:3002/img/no-photo.gif`}
+          title={advert.name}
+          onClick={() => goToDetail(advert.slugName)}
+        />}
 
-      <Typography
-        className={detail === false ? style.userOwner : style.userOwnerDetail}
-        variant="body2" color="inherit" >
-        '{advert.userOwner}'
-      </Typography>
+      {advert.name &&
+        <Typography
+          className={detail === false ? style.userOwner : style.userOwnerDetail}
+          variant="body2" color="inherit" >
+          '{advert.userOwner}'
+      </Typography>}
 
-      <Avatar
-        className={detail === false ? style.avatar : style.avatarDetail}
-        src={'https://i.pravatar.cc/300'} />
+
+      {advert.name &&
+        <Avatar
+          className={detail === false ? style.avatar : style.avatarDetail}
+          src={'https://i.pravatar.cc/300'} />}
 
       {advert.name &&
         <CardHeader
-        classes={{
-          title: detail === false ? style.cardHeaderTitle : style.cardHeaderTitleDetail,
-          root: detail === false ? style.cardHeaderRoot : style.cardHeaderRootDetail,
-        }}
-        // className={detail === false ? style.cardHeader : style.cardHeaderDetail}
+          classes={{
+            title: detail === false ? style.cardHeaderTitle : style.cardHeaderTitleDetail,
+            root: detail === false ? style.cardHeaderRoot : style.cardHeaderRootDetail,
+          }}
+          // className={detail === false ? style.cardHeader : style.cardHeaderDetail}
           avatar={
             advert.type ?
               <Avatar className={style.avatarSale}>
@@ -76,12 +79,6 @@ export default function Advert(props) {
                 Buy
              </Avatar>
           }
-          //esto lo puedo usar para editar el anuncio en la versión privada
-          // action={
-          //   <IconButton aria-label="settings">
-          //     <MoreVertIcon />
-          //   </IconButton>
-          // }
           title={advert.price && advert.price + '€'}
           subheader={advert.name}
         />
@@ -90,20 +87,42 @@ export default function Advert(props) {
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             No esperes más. Sube ya tu producto.
-        </Typography>
-          {/* <Button>Sube producto</Button> */}
+            </Typography>
+          <Button
+
+            className={style.advertButton}
+            size="small"
+            variant="outlined"
+            color="primary"
+            href='/createOrUpdate/'
+          >
+            {t('CreateAdvert')}
+          </Button>
+
         </CardContent>}
 
       <CardContent>
-        <Typography 
-        className={detail === false ? style.description : style.descriptionDetail}
-        
-        variant="body2" color="textSecondary" component="p">
+        <Typography
+          className={detail === false ? style.description : style.descriptionDetail}
+
+          variant="body2" color="textSecondary" component="p">
           {advert.description}
         </Typography>
+
+        {detail &&
+          <Typography
+            className={detail === false ? style.tags : style.tags}
+            variant="body2" color="textSecondary" component="p">
+
+            {'Tags: ' + advert.tags.map((tags, i) => (
+              i === (advert.tags.length - 1) ? ` ${tags}.` : ` ${tags}`))}
+
+          </Typography>}
+
+
       </CardContent>
 
-      {advert.name && detail &&
+      {advert.name && detail && 
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
@@ -111,16 +130,17 @@ export default function Advert(props) {
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
-          <IconButton
-            className={clsx(style.expand, {
-              [style.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
+          
+          {(advert.userOwner == user.username) &&
+          <IconButton onClick={() => goUpdateAdvert(advert.slugName)} > 
+            <MoreVertIcon />
+          </IconButton> }
+
+          {(advert.userOwner == user.username) &&
+          <IconButton onClick={() => deleteAdvert(advert.slugName)} > 
+            <MoreVertIcon />
+          </IconButton> }
+
         </CardActions>}
 
     </Card>

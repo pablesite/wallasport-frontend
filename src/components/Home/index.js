@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import { getAdverts} from '../../store/actions';
+ import { AdvertsSuccess} from '../../store/actions';
 
 
 function mapStateToProps(state) {
   return {
     adverts: state.adverts.advertsInPages,
     actualPage: state.adverts.actualPage,
-    user: state.user,
+
     isFetching: state.ui.isFetching,
     error: state.ui.error,
-    tagList: state.tags,
+
     showLogin: state.homeModals.showLogin,
     showRegister: state.homeModals.showRegister,
     showUserRegistered: state.homeModals.showUserRegistered,
@@ -20,7 +20,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  loadAdverts: getAdverts,
+  // getAdverts: getAdverts,
+  advertsSuccess: AdvertsSuccess,
 
 };
 

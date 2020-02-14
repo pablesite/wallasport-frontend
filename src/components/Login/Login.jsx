@@ -19,25 +19,28 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { TextField } from '@material-ui/core';
 import { mdiArrowLeftThick } from '@mdi/js';
-import Icon from '@mdi/react'
+import Icon from '@mdi/react';
 
 
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../../styles';
 import { styles } from './styles';
+// import { goHome } from '../../store/actions';
 
 
 const useStyles = makeStyles(styles);
 
 export default function Login(props) {
 
-    const { login, register, isFetching, error, goApp, showLogin, goLogin, showRegister, showUserRegistered } = props;
-
+    const { login, register, isFetching, error, goApp, goHome, showLogin, goLogin, showRegister, showUserRegistered, location } = props;
     const [t, i18n] = useTranslation();
     const style = useStyles();
-   
-    const initialState = showLogin ? { username: "pablesite", password: "1234" } : { username: "", password: "" };
 
+    if (!showLogin && !showRegister && !showUserRegistered) {
+        goLogin();
+    }
+
+    const initialState = showLogin ? { username: "pablesite", password: "1234" } : { username: "", password: "" };
 
     const onSubmit = (user) => {
         if (showLogin) {
@@ -59,16 +62,23 @@ export default function Login(props) {
                     <div className={style.loginForm}>
 
                         <div className={style.loginArrow}>
-                        
+
                             <Icon
-                            onClick={() => goApp()} 
-                            path={mdiArrowLeftThick}
+                                onClick={() => {
+                                    if (location && location.pathname === '/login') {
+                                        goHome();
+                                        goApp();
+                                    } else {
+                                        goApp();
+                                    }
+                                }}
+                                path={mdiArrowLeftThick}
                                 size={1}
                                 horizontal
                                 rotate={180}
                                 color={theme.palette.primary.main}
                             />
-                       
+
                         </div>
 
                         {!showUserRegistered &&

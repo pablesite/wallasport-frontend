@@ -6,7 +6,7 @@ import Login from './Login'
 import Home from './Home'
 import AdvertDetail from './AdvertDetail'
 import CreateOrUpdate from './CreateOrUpdate'
-import PrivateRoute from './PrivateRoute'
+import PrivateRoute  from './PrivateRoute'
 
 import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
 
@@ -27,12 +27,12 @@ export default class App extends Component {
           <MuiThemeProvider theme={theme} >
             <Router history={history}>
               <Switch>
-                {/* <Route exact path='/login/' component={Login}  /> */}
-                <Route exact path='/login/' ><Login isLogin={true} /></Route>
+                <Route exact path='/login/' component={Login}  />
+                {/* <Route exact path='/login/' ><Login {...props} /></Route> */}
                 <Route exact path='/home/' component={Home} />
-                <Route exact path='/advert/:id' component={AdvertDetail} />
-                <Route exact path='/createOrUpdate/' component={CreateOrUpdate} /> {/*Debe ser PrivateRoute*/}
-                <PrivateRoute exact path='/createOrUpdate/:id' component={CreateOrUpdate} />
+                <Route exact path='/advert/:slugName' component={AdvertDetail} />
+                <PrivateRoute exact path='/createOrUpdate/' component={CreateOrUpdate} /> {/*Debe ser PrivateRoute*/}
+                <PrivateRoute exact path='/createOrUpdate/:slugName' component={CreateOrUpdate} />
                 <Route component={Home} />
               </Switch>
             </Router>

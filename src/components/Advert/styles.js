@@ -1,13 +1,16 @@
 import { theme } from '../../styles';
+import { mdiArmFlex } from '@mdi/js';
 
 export const styles = {
   root: {
     margin: 5,
     // maxWidth: 245,
     width: 225,
+    // width: '13vw',
 
     // maxHeight: 545,
     height: 330,
+    // height: '17vw',
   },
 
   rootDetail: {
@@ -38,14 +41,20 @@ export const styles = {
   },
   avatarSale: {
     backgroundColor: theme.palette.primary.main,
+    width: '2vw',
+    height: '2vw',
   },
   avatarBuy: {
     backgroundColor: theme.palette.secondary.main,
+    width: '2vw',
+    height: '2vw',
   },
 
   avatar: {
     width: 50,
     height: 50,
+    // width: '3vw',
+    // height: '3vw',
     border: '2px solid #fff',
     margin: '-43px 22px 0 auto',
     '& > img': {
@@ -98,7 +107,8 @@ export const styles = {
 
   description: {
     fontSize: 'small',
-    maxHeight: 110,
+    maxHeight: 78,
+    // maxHeight: '4vh',
     overflow: 'hidden',
   },
 
@@ -106,5 +116,11 @@ export const styles = {
     fontSize: 'medium',
     minHeight: 100,
   },
+  advertButton: {
+    borderRadius: '20px 20px 20px 20px',
+    textTransform: 'none',
+  },
+
+
 
 }

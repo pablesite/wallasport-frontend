@@ -2,27 +2,25 @@ import { connect } from 'react-redux';
 import AdvertDetail from './AdvertDetail';
 
 import { getOneAdvert } from '../../store/actions';
-import { isAuthorized, locateAdvertFromUrl } from '../../store/selectors';
+import { locateAdvertFromUrl } from '../../store/selectors';
 
 
 function mapStateToProps(state, props) {
   return {
-    advertsState: state,
     adverts: state.adverts.advertsInPages,
-    actualPage: state.adverts.actualPage,
-    numberOfPages: state.adverts.numberOfPages,
-    user: state.user,
     isFetching: state.ui.isFetching,
     error: state.ui.error,
-    checkUser: isAuthorized(state.user),
-    locateAdvertFromUrl: locateAdvertFromUrl(props.location, state.adverts)
+    locateAdvertFromUrl: locateAdvertFromUrl(props.location, state.adverts),
+
+    showLogin: state.homeModals.showLogin,
+    showRegister: state.homeModals.showRegister,
+    showUserRegistered: state.homeModals.showUserRegistered,
+    
   }
 }
 
 const mapDispatchToProps = {
    goDetail: getOneAdvert
-  
-
 };
 
 

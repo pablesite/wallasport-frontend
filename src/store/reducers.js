@@ -23,6 +23,11 @@ const initialState = {
     homeModals: {
         showLogin: false,
         showRegister: false,
+        showUserRegistered: false,
+        showCreateAdvert: true,
+     
+
+                
     }
 
 };
@@ -148,6 +153,7 @@ export const homeModals = (state = initialState.homeModals, action) => {
 
         case TYPES.GO_LOGIN:
             return {
+                ...state,
                 showLogin: true,
                 showRegister: false,
                 showUserRegistered: false,
@@ -155,6 +161,7 @@ export const homeModals = (state = initialState.homeModals, action) => {
 
         case TYPES.GO_REGISTER:
             return {
+                ...state,
                 showLogin: false,
                 showRegister: true,
                 showUserRegistered: false,
@@ -162,6 +169,7 @@ export const homeModals = (state = initialState.homeModals, action) => {
 
         case TYPES.GO_USER_REGISTERED:
             return {
+                ...state,
                 showLogin: false,
                 showRegister: false,
                 showUserRegistered: true,
@@ -169,9 +177,22 @@ export const homeModals = (state = initialState.homeModals, action) => {
 
         case TYPES.GO_APP:
             return {
+                ...state,
                 showLogin: false,
                 showRegister: false,
                 showUserRegistered: false,
+            }
+
+        case TYPES.SHOW_CREATION_ADVERT:
+            return {
+                ...state,
+                showCreateAdvert: true,
+            }
+
+        case TYPES.SHOW_UPDATE_ADVERT:
+            return {
+                ...state,
+                showCreateAdvert: false,
             }
 
         default:

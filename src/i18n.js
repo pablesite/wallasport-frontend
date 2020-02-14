@@ -22,6 +22,8 @@ const resources = {
       'Messages': 'Messages',
       'SearchProduct': 'Search products',
       'CreateAdvert': 'Upload a new product',
+      'UpdateAdvert': 'Edit this product',
+      'FilteringButton': 'Filter products',
       
     }
   },
@@ -43,6 +45,8 @@ const resources = {
       'Messages': 'Mensajes',
       'SearchProduct': 'Busca productos',
       'CreateAdvert': 'Subir nuevo producto',
+      'UpdateAdvert': 'Edita este producto',
+      'FilteringButton': 'Filtra productos',
 
     }
   }

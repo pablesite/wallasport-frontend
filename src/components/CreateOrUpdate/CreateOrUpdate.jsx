@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 
 import Profile from '../Profile';
 import Footer from '../Footer';
@@ -11,20 +12,21 @@ import Error from '../Error';
 import FormEnhanced from '../FormEnhanced'
 import InputEnhanced from '../InputEnhanced'
 
+import slugify from 'react-slugify';
 
-import { getOneAdvert } from "../../services/AdvertDBService";
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Avatar from '@material-ui/core/Avatar';
+import { mdiArrowLeftThick } from '@mdi/js';
+import Icon from '@mdi/react';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../../styles';
@@ -32,7 +34,7 @@ import { styles } from './styles';
 
 
 
- const useStyles = makeStyles(styles);
+const useStyles = makeStyles(styles);
 
 
 
@@ -43,27 +45,6 @@ const types = [
 
 
 export default function CreateOrUpdate(props) {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     advert: {
-  //       description: '',
-  //       nombre: '',
-  //       foto: '',
-  //       precio: '',
-  //       tags: [],
-  //       venta: '',
-  //       _id: null
-  //     },
-  //     update: true,
-
-  //   };
-
-  //   this.checkCreateorUpdate = this.checkCreateorUpdate.bind(this);
-  //   this.goHome = this.goHome.bind(this);
-
-  // };
 
 
   // componentDidMount() {
@@ -148,47 +129,10 @@ export default function CreateOrUpdate(props) {
   //   this.props.history.push('/home');
   // }
 
-  // onInputChange = (event) => {
-  //   const { name, value } = event.target;
-
-  //   if (name === 'precio') {
-
-  //     if ((!/\D/.exec(value))) {
-  //       this.setState(({ advert }) => ({
-  //         advert: {
-  //           ...advert,
-  //           [name]: value
-  //         }
-  //       }));
-
-  //     }
-  //   } else {
-  //     this.setState(({ advert }) => ({
-
-  //       advert: {
-  //         ...advert,
-  //         [name]: value
-  //       }
-  //     }));
-  //   }
-  // };
 
 
 
-
-    //const value = event.target.files[0].name;
-    // this.setState(({ advert }) => ({
-    //   advert: {
-    //     ...advert,
-    //     //photo: value,
-    //     foto: 'noPhoto' //This functionality is deactivated while APi has not an endpoint to upload files.
-    //   }
-    // }));
-
-
-
-  // const { user, tagList } = props;
-  const { isFetching, error, adverts, showLogin, showRegister, createAdvert, tagList } = props;
+  const { isFetching, error, adverts, showLogin, showRegister, createAdvert, updateAdvert, showCreateAdvert, getOneAdvert, showUserRegistered, goApp, getAdverts, goHome, tagList, advertToEdit, user } = props;
 
   const [t, i18n] = useTranslation();
 
@@ -197,20 +141,12 @@ export default function CreateOrUpdate(props) {
 
   const style = useStyles();
 
-  
-
-  useEffect(() => {
-     if (advert && photo) {
-      console.log('Renderiz! ', { ...advert,  photo})
-       createAdvert({ ...advert,  photo})
-
-     }
-  },[advert, photo]);
 
 
-  const initialState = { 
+  let initialState = {
     userOwner: '',
     name: '',
+    slugName: '',
     description: '',
     photo: '',
     type: '',
@@ -218,29 +154,51 @@ export default function CreateOrUpdate(props) {
     tags: [],
     reserved: '',
     sold: '',
-  
+
   };
 
-  const onFileSelected = event => {
-    // console.log( event.target.files[0])
-    setPhoto( 
-       event.target.files[0] 
-    )
+  useEffect(() => {
 
+    if (advert && showCreateAdvert) {
+      advert.slugName = slugify(advert.name);
+      if (photo) {
+        createAdvert({ ...advert, photo })
+      } else {
+        createAdvert({ ...advert })
+      }
+       //getOneAdvert(advert.slugName);
+      goHome()
+    }
+
+    if (advert && !showCreateAdvert) {
+      if (photo) {
+        updateAdvert({ ...advert, photo })
+      } else {
+        updateAdvert({ ...advert })
+      }
+      getOneAdvert(advert.slugName);
+    }
+
+  }, [advert, photo]);
+
+
+
+  const onFileSelected = event => {
+    setPhoto(event.target.files[0])
   }
 
 
   const onSubmit = (advert) => {
 
+    console.log('onSubmit ', advert)
     setAdvert({
       ...advert,
       price: parseInt(advert.price, 10),
-      type: advert.type==='sale' ? true : false,
-      userOwner: 'pablesite',
+      type: advert.type === 'sale' ? true : false,
+      userOwner: user.username, //userOwner es undefined!
       reserved: false,
       sold: false,
     })
-
 
 
     // if (showLogin) {
@@ -256,21 +214,45 @@ export default function CreateOrUpdate(props) {
 
       <Profile />
 
+
       <Container
         classes={{
           root: style.root,
         }}
         component="main"
-        maxWidth="xs"
+        maxWidth="sm"
       >
+
+        <div className={style.loginArrow}>
+          <Link to='/'>
+            <Icon
+              path={mdiArrowLeftThick}
+              size={1}
+              horizontal
+              rotate={180}
+              color={theme.palette.primary.main}
+            />
+          </Link>
+        </div>
+
+
+        <Typography className={style.header} component="h1" variant="h6">
+          {showCreateAdvert && t('CreateAdvert')}
+          {!showCreateAdvert && t('UpdateAdvert')}
+        </Typography>
+
+        <p></p>
+
 
         {isFetching && <Loading />}
 
         <FormEnhanced
           handleSubmit={onSubmit}
-          initialState={initialState}
+          initialState={
+            !showCreateAdvert ? { ...advertToEdit, price: parseInt(advertToEdit.price), type: advertToEdit.type ? 'sale' : 'buy' } : initialState
+          }
         >
-          <Grid container spacing={2}>
+          <Grid container justify="center" spacing={2}>
 
             <Grid item xs={12}>
               <InputEnhanced
@@ -292,12 +274,14 @@ export default function CreateOrUpdate(props) {
                 selectValues={null}
                 component={TextField}
                 fullWidth
+                multiline
+                rows="5"
                 variant="outlined"
                 required />
             </Grid>
 
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <FormControl variant="outlined" fullWidth >
                 <InputEnhanced
                   type='text'
@@ -311,7 +295,7 @@ export default function CreateOrUpdate(props) {
             </Grid>
 
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <FormControl variant="outlined" fullWidth >
                 <InputEnhanced
                   type='text'
@@ -325,9 +309,9 @@ export default function CreateOrUpdate(props) {
             </Grid>
 
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <InputEnhanced
-                type='number'
+                type='text'
                 name='price'
                 selectValues={null}
                 component={TextField}
@@ -336,7 +320,7 @@ export default function CreateOrUpdate(props) {
                 required />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <input
                 accept="image/*"
                 style={{ display: 'none' }}
@@ -345,127 +329,53 @@ export default function CreateOrUpdate(props) {
                 type="file"
                 onChange={onFileSelected}
 
+
               />
 
               <label htmlFor="raised-button-file">
                 <Button
-                className={style.buttonUpload}
+                  className={style.buttonUpload}
                   component="span"
                   fullWidth
                   variant="outlined"
                   color="primary"
+                  size="medium"
                 >
                   Upload an image
                 </Button>
               </label>
-              
-                <Typography variant="body2" color="inherit" >
-                  {photo !== null && `The photo entered has the name: ${photo}`}
-                </Typography>
-       
 
             </Grid>
 
+
+            <Typography className={style.createTypography} variant="body2" color="inherit" >
+              {photo !== undefined && photo !== null && `The photo entered has the name: ${photo.name}`}
+            </Typography>
+
+
+            {/* <div className={style.loginSubmit}> */}
+            <Grid item xs={12}>
+              <Button
+                label="Continue"
+                type='submit'
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                {t('CreateAdvert')}
+                {/* {showRegister && t('RegisterButton')} */}
+              </Button>
+            </Grid>
+            {/* </div> */}
+
+
+            {error && <Error error={error} />}
           </Grid>
-
-       
-  
-  
-          <div className={style.loginSubmit}>
-            <Button
-              label="Continue"
-              type='submit'
-              variant="contained"
-              color="primary"
-            >
-              {t('CreateAdvert')}
-              {/* {showRegister && t('RegisterButton')} */}
-            </Button>
-          </div>
-
-
-          {error && <Error error={error} />}
-
         </FormEnhanced>
 
       </Container>
 
       <Footer />
-
-
-
-      {/* <Container component="main" maxWidth="xs">
-        <CssBaseline />
-
-        <div className='paper'>
-
-          <Typography component="h1" variant="h5">
-            New Advert
-                        </Typography>
-
-          <form className='form' onSubmit={this.onSubmit}>
-            <Grid container justify="center" spacing={2}>
-
-
-
-              <Grid item xs={12} >
-                <input
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="raised-button-file"
-                  multiple
-                  type="file"
-                  onChange={this.onFileSelected}
-
-                />
-                <label htmlFor="raised-button-file">
-                  <Button
-                    component="span"
-                    fullWidth
-                    variant="outlined"
-                    color="primary"
-                  >
-                    Upload an image
-                </Button>
-                </label>
-                <Box textAlign="justify">
-                  <h3>The photo entered has the name: {foto}.
-                    Attention: This functionality is disabled because the API does not have an endpoint to upload photos.</h3>
-                </Box>
-
-              </Grid>
-
-              <Grid item xs={12} >
-                <Button
-                  label="Create"
-                  type='submit'
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                >
-                  {_id ? 'Update advert' : 'Create a new advert'}
-                </Button>
-              </Grid>
-
-              <div className="back-home">
-                <Grid item xs={12} >
-                  <Button variant="contained"
-                    color="secondary"
-                    className="button is-link"
-                    onClick={this.goHome}
-                  >
-                    Back to home
-                </Button>
-                </Grid>
-              </div>
-            </Grid>
-          </form>
-
-        </div>
-
-      </Container> */}
-
-
 
     </React.Fragment>
   );

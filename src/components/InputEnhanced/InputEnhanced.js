@@ -14,9 +14,6 @@ export default function InputEnhanced({
 
   const formContext = useContext(FormContext);
 
-
-  
-
   return (
     // <Component
     //   type={type}

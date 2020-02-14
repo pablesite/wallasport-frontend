@@ -15,11 +15,57 @@ export default function FormEnhanced(props) {
   }
 
   const onInputChange = (name, value) => {
-    setState({
-      ...state,
-      [name]: value
-    })
+    // setState({
+    //   ...state,
+    //   [name]: value
+    // })
+
+    if (name === 'price') {
+
+      //   if ((!/\D/.exec(value))) {
+      //     setState({
+      //       ...state,
+      //       [name]: value
+      //     });
+      //   }
+      // } else {
+      //   setState({
+      //     ...state,
+      //     [name]: value
+      //   });
+      // }
+
+      if (name === 'price') {
+        const regExp = /\d*(?:-)\d*/;
+        let newValue = regExp.exec(value);
+        if (newValue == null) {
+          if (!(/\D/.exec(value))) {
+            setState({
+              ...state,
+              [name]: value
+            });
+          }
+        } else {
+          setState({
+            ...state,
+            [name]: newValue[0]
+          });
+        }
+      }
+    } else {
+      setState({
+        ...state,
+        [name]: value
+      });
+    }
+
   }
+
+
+
+
+
+
 
   return (
     <form onSubmit={handleSubmit1}  >

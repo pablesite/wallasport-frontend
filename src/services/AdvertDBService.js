@@ -4,7 +4,7 @@ import Advert from '../models/Advert';
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Token aquí para pruebas. Hay que cogerlo siempre del store de Redux.
-const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTNlZmQ2YTE0ZmZhMjQxMmNkZjBmNjMiLCJpYXQiOjE1ODEzNzY1MzEsImV4cCI6MTU4MTU0OTMzMX0.BvDO94PYotwQfCIOxXqgDAlMTYFulIRCcfNJOUrb9Lk';
+const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTQ0NDg4ODIzNmEyNjUzMzg4ZDdhNmEiLCJpYXQiOjE1ODE2NzAzMzMsImV4cCI6MTU4MTg0MzEzM30.Ik1IeQlZVkriFu3WtwQaPL5NxsSblw6to3dxLPrndDY';
 
 /* ------ API generic requests ------ */
 
@@ -66,8 +66,6 @@ const createRequestWithPhoto = (url, body, token) => {
   )
     .catch(err => console.log(err))
     .then(res => res.json());
-
-
 }
 
 
@@ -83,6 +81,51 @@ const updateRequest = (url, body, token) => {
         'Content-Type': 'application/json',
         'Authorization': tokenJWT
       },
+    }
+  )
+    .catch(err => console.log(err))
+    .then(res => res.json());
+}
+
+
+const updateRequestWithPhoto = (url, body, token) => {
+
+  const formData = new FormData()
+
+  for(const name in body) {
+    formData.append(name, body[name]);
+  }
+
+  return fetch(
+    url,
+    {
+      method: 'PUT',
+      headers:
+      {
+         'Authorization': tokenJWT
+      },
+      body: formData,
+    }
+  )
+    .catch(err => console.log(err))
+    .then(res => res.json());
+}
+
+
+
+const deleteRequest = (url, body, token) => {
+
+  return fetch(
+    url,
+    {
+      method: 'DELETE',
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'Authorization': tokenJWT
+      },
+      body: JSON.stringify(body)
+
     }
   )
     .catch(err => console.log(err))
@@ -112,6 +155,7 @@ const getTags = () => {
 
 }
 
+// De momento no se usa
 const getOneAdvert = (advertID) => {
   return getRequest(`${API_URL}/adverts/${advertID}`)
     .then(res => new Advert(res.advert))
@@ -138,12 +182,18 @@ const createAdvert = (advert, token) => {
 
 }
 
-const updateAdvert = (advert, id) => {
-  return updateRequest(`${API_URL}/adverts/${id}`, advert)
+const updateAdvert = (advert, slugName, token) => {
+  return updateRequestWithPhoto(`${API_URL}/adverts/${slugName}`, advert, token)
     .catch(error => console.error('Error:', error))
     .then(response => response)
-
 }
+
+const deleteAdvert = (slugName, token) => {
+  return deleteRequest(`${API_URL}/adverts/${slugName}`, token)
+    .catch(error => console.error('Error:', error))
+    .then(response => response)
+}
+
 
 export {
   getTags,
@@ -152,6 +202,7 @@ export {
   getAdverts,
   createAdvert,
   updateAdvert,
+  deleteAdvert,
   loginJWT,
   registerNewUser,
 };

@@ -10,7 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import { getUserFromLS } from './services/Storage';
 import { configureStore } from './store';
 
-import { getAdverts, fetchTags, OneAdvertSuccess } from './store/actions'
+import { getAdverts, fetchTags} from './store/actions'
 
 import * as  AdvertsService from './services/AdvertDBService'
 
@@ -67,6 +67,7 @@ store.subscribe(() => {
 
 
 // The tags are rendered
+// store.dispatch(getAdverts('sort=creationDate'));
 store.dispatch(getAdverts());
 store.dispatch(fetchTags());
 
