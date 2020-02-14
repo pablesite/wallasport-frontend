@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CreateOrUpdate from './CreateOrUpdate';
 
-import { createAdvert, updateAdvert, getOneAdvert, getAdverts, goHome, goApp } from '../../store/actions';
+import { createAdvert, updateAdvert, getOneAdvert, getAdverts,  goApp, showList } from '../../store/actions';
 import { isAuthorized, locateAdvertFromUrl } from '../../store/selectors';
 
 
@@ -25,8 +25,9 @@ const mapDispatchToProps = {
   updateAdvert: updateAdvert,
   getOneAdvert: getOneAdvert,
   getAdverts: getAdverts,
-  goHome: goHome,
+  // goToHome: goToHome,
   goApp: goApp,
+  showList: showList,
 };
 
 

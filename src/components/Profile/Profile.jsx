@@ -35,7 +35,7 @@ function HomeIcon(props) {
 
 
 export default function Profile(props) {
-  const { user, logout, goLogin, goRegister, getAdverts } = props;
+  const { user, logout, goLogin, goRegister, getAdverts, goToCreateAdvert } = props;
 
   const [t, i18n] = useTranslation();
   const style = useStyles();
@@ -79,9 +79,13 @@ export default function Profile(props) {
               alignItems="center" >
 
               <Grid item className={style.profileItemsLeft}>
-                <Link to='/'>
-                  <HomeIcon className={style.profileHomeIcon} fontSize="large" />
-                </Link>
+                {/* <Link to='/'> */}
+                  <HomeIcon 
+                  className={style.profileHomeIcon} 
+                  fontSize="large" 
+                  onClick ={() => getAdverts()}
+                  />
+                {/* </Link> */}
               </Grid>
 
               <Grid item >
@@ -188,8 +192,8 @@ export default function Profile(props) {
                     size="small"
                     variant="contained"
                     color="primary"
-                    // onClick={}
-                    href='/createOrUpdate/'
+                    onClick={()=> goToCreateAdvert()}
+                    // href='/createOrUpdate/' //cambiar a goToCreateAdvert
                   >
                     {t('CreateProduct')}
                   </Button>

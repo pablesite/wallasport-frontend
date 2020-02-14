@@ -16,6 +16,7 @@ export const styles = {
         // zIndex: '1',
         paddingTop: '.5em',
         // paddingBottom: '1em',
+        zIndex: '1'
 
     },
     filteringForm: {

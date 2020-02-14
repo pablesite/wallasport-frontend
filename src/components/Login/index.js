@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 
 import Login from './Login';
-import { register, login, goApp, goLogin, goHome } from '../../store/actions';
+import { register, login, goApp, goLogin } from '../../store/actions';
 
 
 function mapStateToProps(state, props) {
@@ -22,7 +22,7 @@ const mapDispatchToProps = {
   register: register,
   goApp: goApp,
   goLogin: goLogin,
-  goHome: goHome,
+  // goToHome: goToHome,
 };
 
 export default connect(

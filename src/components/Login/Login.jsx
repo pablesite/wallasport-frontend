@@ -25,14 +25,14 @@ import Icon from '@mdi/react';
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../../styles';
 import { styles } from './styles';
-// import { goHome } from '../../store/actions';
+
 
 
 const useStyles = makeStyles(styles);
 
 export default function Login(props) {
 
-    const { login, register, isFetching, error, goApp, goHome, showLogin, goLogin, showRegister, showUserRegistered, location } = props;
+    const { login, register, isFetching, error, goApp, showLogin, goLogin, showRegister, showUserRegistered, location } = props;
     const [t, i18n] = useTranslation();
     const style = useStyles();
 
@@ -63,15 +63,18 @@ export default function Login(props) {
 
                         <div className={style.loginArrow}>
 
+
                             <Icon
-                                onClick={() => {
-                                    if (location && location.pathname === '/login') {
-                                        goHome();
-                                        goApp();
-                                    } else {
-                                        goApp();
-                                    }
-                                }}
+                                // onClick={() => {
+                                //     if (location && location.pathname === '/login') {
+                                //         goToHome();
+                                //         goApp();
+                                //     } else {
+                                //         goApp();
+                                //     }
+                                // }}
+                                onClick={() => goApp()}
+
                                 path={mdiArrowLeftThick}
                                 size={1}
                                 horizontal

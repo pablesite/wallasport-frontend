@@ -9,7 +9,6 @@ const initialState = {
         advertsInPages: [],
         actualPage: 1,
         numberOfPages: 1,
-        detail: true
     },
 
     tags: [],
@@ -24,10 +23,11 @@ const initialState = {
         showLogin: false,
         showRegister: false,
         showUserRegistered: false,
+        showAdvertDetail: true, //seguro?
         showCreateAdvert: true,
-     
 
-                
+
+
     }
 
 };
@@ -56,26 +56,27 @@ export const user = (state = initialState.user, action) => {
 export const adverts = (state = initialState.adverts, action) => {
     switch (action.type) {
 
-        case TYPES.ADVERTS_SUCCESS:
-            return {
-                ...state,
-                detail: action.detail,
-            };
+        // case TYPES.ADVERTS_SUCCESS:
+        //     return {
+        //         ...state,
+              
+        //     };
 
-        case TYPES.ONE_ADVERT_SUCCESS:
-            return {
-                ...state,
-                detail: action.detail,
-            };
+        // case TYPES.ONE_ADVERT_SUCCESS:
+        //     return {
+        //         ...state,
+        //         detail: action.detail,
+        //     };
 
-        case TYPES.ADVERT_CREATED_SUCCESS:
-            return {
-                ...state,
-                detail: action.detail,
-            };
+        // case TYPES.ADVERT_CREATED_SUCCESS:
+        //     return {
+        //         ...state,
+        //         detail: action.detail,
+        //     };
 
         case TYPES.DIVIDE_IN_PAGES:
-            return action.adverts;
+
+            return action.adverts; 
 
         case TYPES.PAGE_BACK:
             return {
@@ -183,12 +184,23 @@ export const homeModals = (state = initialState.homeModals, action) => {
                 showUserRegistered: false,
             }
 
-        case TYPES.SHOW_CREATION_ADVERT:
+
+        case TYPES.SHOW_ADVERT_DETAIL:
+            return {
+                ...state,
+                showAdvertDetail: true,
+            }
+        case TYPES.SHOW_LIST:
+            return {
+                ...state,
+                showAdvertDetail: false,
+            }
+
+        case TYPES.SHOW_CREATE_ADVERT:
             return {
                 ...state,
                 showCreateAdvert: true,
             }
-
         case TYPES.SHOW_UPDATE_ADVERT:
             return {
                 ...state,

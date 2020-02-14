@@ -20,10 +20,10 @@ export default function AdvertDetail(props) {
 
   const styles = useStyles();
 
-  const { adverts, isFetching, error, goDetail, locateAdvertFromUrl, showLogin, showRegister, showUserRegistered } = props;
+  const { showLogin, showRegister, showUserRegistered, adverts, isFetching, error, getOneAdvert, locateAdvertFromUrl  } = props;
 
   useEffect(() => {
-    goDetail(locateAdvertFromUrl.slugName)
+    getOneAdvert(locateAdvertFromUrl.slugName)
   }, [locateAdvertFromUrl]);
 
 

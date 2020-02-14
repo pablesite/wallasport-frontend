@@ -26,6 +26,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
 import { mdiArrowLeftThick } from '@mdi/js';
 import Icon from '@mdi/react';
+import Input from '@material-ui/core/Input';
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -125,14 +126,14 @@ export default function CreateOrUpdate(props) {
   //   this.setState({ update: true });
   // }
 
-  // goHome() {
+  // goToHome() {
   //   this.props.history.push('/home');
   // }
 
 
 
 
-  const { isFetching, error, adverts, showLogin, showRegister, createAdvert, updateAdvert, showCreateAdvert, getOneAdvert, showUserRegistered, goApp, getAdverts, goHome, tagList, advertToEdit, user } = props;
+  const { isFetching, error, adverts, showList, showLogin, showRegister, createAdvert, updateAdvert, showCreateAdvert, getOneAdvert, showUserRegistered, goApp, getAdverts,  tagList, advertToEdit, user } = props;
 
   const [t, i18n] = useTranslation();
 
@@ -162,19 +163,19 @@ export default function CreateOrUpdate(props) {
     if (advert && showCreateAdvert) {
       advert.slugName = slugify(advert.name);
       if (photo) {
-        createAdvert({ ...advert, photo })
+        createAdvert({ ...advert, photo }, user.token)
       } else {
-        createAdvert({ ...advert })
+        createAdvert({ ...advert }, user.token)
       }
-       //getOneAdvert(advert.slugName);
-      goHome()
+
+      // goToHome()
     }
 
     if (advert && !showCreateAdvert) {
       if (photo) {
-        updateAdvert({ ...advert, photo })
+        updateAdvert({ ...advert, photo }, user.token)
       } else {
-        updateAdvert({ ...advert })
+        updateAdvert({ ...advert }, user.token)
       }
       getOneAdvert(advert.slugName);
     }
@@ -190,7 +191,6 @@ export default function CreateOrUpdate(props) {
 
   const onSubmit = (advert) => {
 
-    console.log('onSubmit ', advert)
     setAdvert({
       ...advert,
       price: parseInt(advert.price, 10),
@@ -214,7 +214,6 @@ export default function CreateOrUpdate(props) {
 
       <Profile />
 
-
       <Container
         classes={{
           root: style.root,
@@ -224,7 +223,11 @@ export default function CreateOrUpdate(props) {
       >
 
         <div className={style.loginArrow}>
-          <Link to='/'>
+          <Link
+            to='/'
+            onClick={() => {
+              showList();
+            }} >
             <Icon
               path={mdiArrowLeftThick}
               size={1}

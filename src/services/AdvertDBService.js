@@ -1,14 +1,13 @@
 import Advert from '../models/Advert';
 
-
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Token aquí para pruebas. Hay que cogerlo siempre del store de Redux.
-const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTQ0NDg4ODIzNmEyNjUzMzg4ZDdhNmEiLCJpYXQiOjE1ODE2NzAzMzMsImV4cCI6MTU4MTg0MzEzM30.Ik1IeQlZVkriFu3WtwQaPL5NxsSblw6to3dxLPrndDY';
+// // Token aquí para pruebas. Hay que cogerlo siempre del store de Redux.
+// const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTQ0NDg4ODIzNmEyNjUzMzg4ZDdhNmEiLCJpYXQiOjE1ODE2NzAzMzMsImV4cCI6MTU4MTg0MzEzM30.Ik1IeQlZVkriFu3WtwQaPL5NxsSblw6to3dxLPrndDY';
 
 /* ------ API generic requests ------ */
 
-const getRequest = (url, token) => {
+const getRequest = (url) => {
   return fetch(
     url,
     {
@@ -16,7 +15,7 @@ const getRequest = (url, token) => {
       headers:
       {
         'Accept': "application/json, text/plain, */*",
-        'Authorization': token 
+        // 'Authorization': token 
       }
     }
   )
@@ -25,7 +24,7 @@ const getRequest = (url, token) => {
 }
 
 
-const createRequest = (url, body, token) => {
+const createRequestPublic = (url, body) => {
 
   return fetch(
     url,
@@ -34,7 +33,7 @@ const createRequest = (url, body, token) => {
       headers:
       {
         'Content-Type': 'application/json',
-        'Authorization': tokenJWT
+        // 'Authorization': token
       },
       body: JSON.stringify(body)
 
@@ -44,6 +43,24 @@ const createRequest = (url, body, token) => {
     .then(res => res.json());
 }
 
+const createRequestPrivate = (url, body, token) => {
+
+  return fetch(
+    url,
+    {
+      method: 'POST',
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify(body)
+
+    }
+  )
+    .catch(err => console.log(err))
+    .then(res => res.json());
+}
 
 const createRequestWithPhoto = (url, body, token) => {
 
@@ -59,7 +76,7 @@ const createRequestWithPhoto = (url, body, token) => {
       method: 'POST',
       headers:
       {
-         'Authorization': tokenJWT
+         'Authorization': token
       },
       body: formData,
     }
@@ -79,7 +96,7 @@ const updateRequest = (url, body, token) => {
       headers:
       {
         'Content-Type': 'application/json',
-        'Authorization': tokenJWT
+        'Authorization': token
       },
     }
   )
@@ -102,7 +119,7 @@ const updateRequestWithPhoto = (url, body, token) => {
       method: 'PUT',
       headers:
       {
-         'Authorization': tokenJWT
+         'Authorization': token
       },
       body: formData,
     }
@@ -113,7 +130,7 @@ const updateRequestWithPhoto = (url, body, token) => {
 
 
 
-const deleteRequest = (url, body, token) => {
+const deleteRequest = (url, token) => {
 
   return fetch(
     url,
@@ -122,9 +139,9 @@ const deleteRequest = (url, body, token) => {
       headers:
       {
         'Content-Type': 'application/json',
-        'Authorization': tokenJWT
+        'Authorization': token
       },
-      body: JSON.stringify(body)
+      // body: JSON.stringify(body)
 
     }
   )
@@ -136,14 +153,14 @@ const deleteRequest = (url, body, token) => {
 /* ------ Specific functions ------ */
 
 const loginJWT = (user) => {
-  return createRequest(`${API_URL}/login`, user)
+  return createRequestPublic(`${API_URL}/login`, user)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 
 }
 
 const registerNewUser = (user) => {
-  return createRequest(`${API_URL}/register`, user)
+  return createRequestPublic(`${API_URL}/register`, user)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 
@@ -163,6 +180,7 @@ const getOneAdvert = (advertID) => {
 
 }
 
+// De momento no se usa
 const discoverAdverts = () => {
   return getRequest(`${API_URL}/adverts/`)
     .then(res => res.list.map(adv => new Advert(adv)))

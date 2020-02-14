@@ -27,11 +27,10 @@ export default class App extends Component {
           <MuiThemeProvider theme={theme} >
             <Router history={history}>
               <Switch>
-                <Route exact path='/login/' component={Login}  />
-                {/* <Route exact path='/login/' ><Login {...props} /></Route> */}
-                <Route exact path='/home/' component={Home} />
+                {/* <Route exact path='/login/' component={Login}  /> */}
+                <Route exact path='/' component={Home} />
                 <Route exact path='/advert/:slugName' component={AdvertDetail} />
-                <PrivateRoute exact path='/createOrUpdate/' component={CreateOrUpdate} /> {/*Debe ser PrivateRoute*/}
+                <PrivateRoute exact path='/createOrUpdate/' component={CreateOrUpdate} />
                 <PrivateRoute exact path='/createOrUpdate/:slugName' component={CreateOrUpdate} />
                 <Route component={Home} />
               </Switch>

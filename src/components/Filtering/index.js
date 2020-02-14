@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 
 import Filtering from './Filtering';
-import { register, login, goApp, goLogin, goHome, getAdverts } from '../../store/actions';
+import { register, login, goApp, goLogin, goToHome, getAdverts } from '../../store/actions';
 
 
 function mapStateToProps(state, props) {
@@ -22,7 +22,7 @@ const mapDispatchToProps = {
   // register: register,
   // goApp: goApp,
   // goLogin: goLogin,
-  // goHome: goHome,
+  // goToHome: goToHome,
   filterAdverts: getAdverts,
 };
 

@@ -4,12 +4,15 @@ export const GO_LOGIN = 'GO_LOGIN';
 export const GO_REGISTER = 'GO_REGISTER';
 export const GO_USER_REGISTERED = 'GO_USER_REGISTERED';
 export const GO_APP = 'GO_APP';
-export const SHOW_CREATION_ADVERT = 'SHOW_CREATION_ADVERT';
+
+export const SHOW_ADVERT_DETAIL = 'SHOW_ADVERT_DETAIL';
+export const SHOW_LIST = 'SHOW_LIST';
+export const SHOW_CREATE_ADVERT = 'SHOW_CREATE_ADVERT';
 export const SHOW_UPDATE_ADVERT = 'SHOW_UPDATE_ADVERT';
 // export const GO_DETAIL = 'GO_DETAIL';
 
 
-// export const GOHOME_SUCCESS = 'GOHOME_SUCCESS';
+// export const GO_TO_HOME_SUCCESS = 'GO_TO_HOME_SUCCESS';
 
 
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';

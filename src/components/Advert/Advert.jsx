@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import DeleteAlert from '../DeleteAlert';
+
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -12,6 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import Button from '@material-ui/core/Button';
 
 
@@ -27,19 +32,11 @@ export default function Advert(props) {
   const [t, i18n] = useTranslation();
   const style = useStyles();
 
-  const { advert, user, goToDetail, detail, goUpdateAdvert, deleteAdvert } = props;
+  const { advert, user, goToDetail, showAdvertDetail, goToUpdateAdvert, deleteAdvert } = props;
 
-  // const [expanded, setExpanded] = React.useState(false);
-
-  // const editAdvert = () => {
-  //     goUpdateAdvert(advert.slugName)
-  // };
-
-  console.log('anuncio que llega a advert' , advert)
- 
   return (
     <Card
-      className={detail === false ? style.root : style.rootDetail}>
+      className={showAdvertDetail === false ? style.root : style.rootDetail}>
 
       {advert.name &&
         <CardMedia
@@ -51,7 +48,7 @@ export default function Advert(props) {
 
       {advert.name &&
         <Typography
-          className={detail === false ? style.userOwner : style.userOwnerDetail}
+          className={showAdvertDetail === false ? style.userOwner : style.userOwnerDetail}
           variant="body2" color="inherit" >
           '{advert.userOwner}'
       </Typography>}
@@ -59,16 +56,15 @@ export default function Advert(props) {
 
       {advert.name &&
         <Avatar
-          className={detail === false ? style.avatar : style.avatarDetail}
+          className={showAdvertDetail === false ? style.avatar : style.avatarDetail}
           src={'https://i.pravatar.cc/300'} />}
 
       {advert.name &&
         <CardHeader
           classes={{
-            title: detail === false ? style.cardHeaderTitle : style.cardHeaderTitleDetail,
-            root: detail === false ? style.cardHeaderRoot : style.cardHeaderRootDetail,
+            title: showAdvertDetail === false ? style.cardHeaderTitle : style.cardHeaderTitleDetail,
+            root: showAdvertDetail === false ? style.cardHeaderRoot : style.cardHeaderRootDetail,
           }}
-          // className={detail === false ? style.cardHeader : style.cardHeaderDetail}
           avatar={
             advert.type ?
               <Avatar className={style.avatarSale}>
@@ -103,15 +99,15 @@ export default function Advert(props) {
 
       <CardContent>
         <Typography
-          className={detail === false ? style.description : style.descriptionDetail}
+          className={showAdvertDetail === false ? style.description : style.descriptionDetail}
 
           variant="body2" color="textSecondary" component="p">
           {advert.description}
         </Typography>
 
-        {detail &&
+        {showAdvertDetail &&
           <Typography
-            className={detail === false ? style.tags : style.tags}
+            className={showAdvertDetail === false ? style.tags : style.tags}
             variant="body2" color="textSecondary" component="p">
 
             {'Tags: ' + advert.tags.map((tags, i) => (
@@ -122,7 +118,7 @@ export default function Advert(props) {
 
       </CardContent>
 
-      {advert.name && detail && 
+      {advert.name && showAdvertDetail &&
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
@@ -130,17 +126,14 @@ export default function Advert(props) {
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
-          
-          {(advert.userOwner == user.username) &&
-          <IconButton onClick={() => goUpdateAdvert(advert.slugName)} > 
-            <MoreVertIcon />
-          </IconButton> }
 
           {(advert.userOwner == user.username) &&
-          <IconButton onClick={() => deleteAdvert(advert.slugName)} > 
-            <MoreVertIcon />
-          </IconButton> }
+            <IconButton onClick={() => goToUpdateAdvert(advert.slugName)} >
+              <EditIcon />
+            </IconButton>}
 
+          {(advert.userOwner == user.username) &&
+            <DeleteAlert slugName={advert.slugName} />}
         </CardActions>}
 
     </Card>

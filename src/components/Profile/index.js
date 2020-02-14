@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Profile from './Profile';
-import { logout, goLogin, goRegister,getAdverts } from '../../store/actions';
+import { logout, goLogin, goRegister,getAdverts, goToCreateAdvert } from '../../store/actions';
 
 
 function mapStateToProps(state) {
@@ -15,6 +15,7 @@ const mapDispatchToProps = {
   goLogin: goLogin,
   goRegister: goRegister,
   getAdverts: getAdverts,
+  goToCreateAdvert: goToCreateAdvert,
 };
 
 

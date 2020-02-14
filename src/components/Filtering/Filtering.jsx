@@ -29,14 +29,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../../styles';
 import { styles } from './styles';
-// import { goHome } from '../../store/actions';
+// import { goToHome } from '../../store/actions';
 
 
 const useStyles = makeStyles(styles);
 
 export default function Filtering(props) {
 
-    const { filterAdverts, login, register, isFetching, error, goApp, goHome, showLogin, goLogin, showRegister, showUserRegistered, location } = props;
+    const { filterAdverts, login, register, isFetching, error, goApp, goToHome, showLogin, goLogin, showRegister, showUserRegistered, location } = props;
     const [t, i18n] = useTranslation();
     const style = useStyles();
 

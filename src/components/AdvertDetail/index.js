@@ -20,7 +20,7 @@ function mapStateToProps(state, props) {
 }
 
 const mapDispatchToProps = {
-   goDetail: getOneAdvert
+  getOneAdvert: getOneAdvert
 };
 
 

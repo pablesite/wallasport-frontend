@@ -6,8 +6,10 @@ import {
   GO_REGISTER,
   GO_USER_REGISTERED,
   GO_APP,
-  SHOW_CREATION_ADVERT,
+  SHOW_CREATE_ADVERT,
   SHOW_UPDATE_ADVERT,
+  SHOW_ADVERT_DETAIL,
+  SHOW_LIST,
   // GO_DETAIL,
 
 
@@ -23,8 +25,8 @@ import {
 
 
   ADVERTS_SUCCESS, //GET, CREATE OR UPDATE
-  ONE_ADVERT_SUCCESS,
-  ADVERT_CREATED_SUCCESS,
+  // ONE_ADVERT_SUCCESS,
+  // ADVERT_CREATED_SUCCESS,
   //DELETE_ADVERT
 
   DIVIDE_IN_PAGES,
@@ -61,7 +63,7 @@ export const apiFailure = error => ({
 });
 
 
-/* ----- UI Actions----- */
+/* ----- MODALS Actions----- */
 
 // Testeada
 export const goLogin = () => ({
@@ -86,22 +88,48 @@ export const goApp = () => ({
 });
 
 
-export const goHome = () => {
-  return async function (dispatch, _getState, { history }) {
-    history.push(`/home/`);
-    // dispatch(AdvertCreatedSuccess(false));
 
-  };
-};
 
-export const showCreationAdvert = () => ({
-  type: SHOW_CREATION_ADVERT,
+export const showCreateAdvert = () => ({
+  type: SHOW_CREATE_ADVERT,
 });
-
 
 export const showUpdateAdvert = () => ({
   type: SHOW_UPDATE_ADVERT,
 });
+
+export const showAdvertDetail = () => ({
+  type: SHOW_ADVERT_DETAIL,
+});
+
+export const showList = () => ({
+  type: SHOW_LIST,
+});
+
+
+
+// /* ----- History Actions----- */
+
+// export const goToHome = (history) => {
+//   // return async function (dispatch, _getState, { history }) {
+  
+//     history.push('/home');
+//     console.log(history)
+//   // };
+// };
+
+// export const goToAdvertDetail = (slugName, history) => {
+//   // return async function (dispatch, _getState, { history }) {
+//     history.push(`/advert/${slugName}`);
+// //   };
+// };
+
+// export const goToCreateOrUpdate = (slugName) => {
+//   return async function (dispatch, _getState, { history }) {
+//     history.push(`/createOrUpdate/${slugName}`);
+//   };
+// };
+
 
 
 
@@ -148,9 +176,12 @@ export const login = (user) => {
       if (success === true) {
         user = { ...user, token }
         saveUserInLS(user);
+        
         dispatch(goApp());
+        // history.push("/");
+        // dispatch(showList());
         dispatch(loginSuccess(user));
-        history.push("/home");
+        
       } else {
         dispatch(loginInvalid(new Error(i18n.t('Invalid_credentials'))));
       }
@@ -214,18 +245,125 @@ export const deleteUserSuccess = () => ({
 /* ----- Adverts Thunks and Actions----- */
 
 export const getAdverts = (query) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
     dispatch(apiRequest());
     try {
+
+      history.push("/");
+      // dispatch(goToHome(history)) //no sé si quitarlo la verdad...
       const adverts = await AdvertsService.getAdverts(query)
       dispatch(divideInPages(adverts, 8)); //Parámetro (el 6) debería ser modificable por el usuario.
-      dispatch(AdvertsSuccess(false));
+      dispatch(showList());
+      dispatch(AdvertsSuccess());
 
     } catch (error) {
       dispatch(apiFailure(error));
     }
   };
 };
+
+export const getOneAdvert = (slugName) => {
+ 
+  return async function (dispatch, _getState, { history }) {
+ 
+    // goToAdvertDetail(slugName, history)
+    history.push(`/advert/${slugName}`);
+    dispatch(showAdvertDetail())
+    // dispatch(AdvertsSuccess());
+
+  };
+};
+
+
+// Para petición a la API...me hace falta?
+// export const getOneAdvert = (id) => {
+//   return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+//     dispatch(apiRequest());
+//     try {
+//       const advert = await AdvertsService.getOneAdvert(id)
+
+//       dispatch(divideInPages([advert], 1, true));
+//       dispatch(AdvertsSuccess());
+//       history.push(`/advert/${id}`);
+//     } catch (error) {
+//       dispatch(apiFailure(error));
+//     }
+//   };
+// };
+
+
+export const goToCreateAdvert = () => {
+  return async function (dispatch, _getState, { history }) {
+    history.push(`/createOrUpdate/`);
+    // dispatch(goToCreateOrUpdate());
+    dispatch(showCreateAdvert());
+
+  };
+};
+
+export const createAdvert = (advert, token) => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {    
+    dispatch(apiRequest());
+    try {
+      await AdvertsService.createAdvert(advert, token) 
+      // dispatch(AdvertCreatedSuccess(true)); 
+      dispatch(getAdverts()) 
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+export const goToUpdateAdvert = (slugName) => {
+  return async function (dispatch, _getState, { history }) {
+    history.push(`/createOrUpdate/${slugName}`);
+    // dispatch(goToCreateOrUpdate(slugName));
+    dispatch(showUpdateAdvert());
+
+  };
+};
+
+export const updateAdvert = (advert, token) => {
+  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      await AdvertsService.updateAdvert(advert, advert.slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      // dispatch(AdvertsSuccess(true)); //revisar si funciona entre corchetes
+      dispatch(getAdverts()) 
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+
+export const deleteAdvert = (slugName, token) => {
+  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+    dispatch(apiRequest());
+    try {
+      await AdvertsService.deleteAdvert(slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      // dispatch(AdvertsSuccess(false)); //revisar si funciona entre corchetes
+       history.push(`/`);
+      // dispatch(goToHome())
+      dispatch(getAdverts()) 
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+
+//Testeada
+export const AdvertsSuccess = () => ({
+  type: ADVERTS_SUCCESS,
+  // adverts: adverts,
+});
+
+
+
+
+
+//Intermedias
 
 export const divideInPages = (adverts, numberPerPage) => {
 
@@ -270,6 +408,9 @@ export const divideInPages = (adverts, numberPerPage) => {
 }
 
 
+
+// Paginado
+
 export const pageBack = (actualPage, numberOfPages) => {
   if (actualPage > 1) {
     actualPage = actualPage - 1;
@@ -296,109 +437,6 @@ export const pageForward = (actualPage, numberOfPages) => {
     actualPage: actualPage
   }
 }
-
-
-
-// Para petición a la API...me hace falta?
-// export const getOneAdvert = (id) => {
-//   return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
-//     dispatch(apiRequest());
-//     try {
-//       const advert = await AdvertsService.getOneAdvert(id)
-
-//       dispatch(divideInPages([advert], 1, true));
-//       dispatch(AdvertsSuccess());
-//       history.push(`/advert/${id}`);
-//     } catch (error) {
-//       dispatch(apiFailure(error));
-//     }
-//   };
-// };
-
-export const getOneAdvert = (slugName) => {
-  return async function (dispatch, _getState, { history }) {
-    history.push(`/advert/${slugName}`);
-    dispatch(OneAdvertSuccess(true));
-
-  };
-};
-
-
-
-export const createAdvert = (advert) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {    
-    dispatch(apiRequest());
-    try {
-      await AdvertsService.createAdvert(advert) //Falta el token
-      dispatch(AdvertCreatedSuccess(true)); 
-      dispatch(getAdverts()) 
-    } catch (error) {
-      dispatch(apiFailure(error));
-    }
-  };
-};
-
-export const goUpdateAdvert = (slugName) => {
-  return async function (dispatch, _getState, { history }) {
-    history.push(`/createOrUpdate/${slugName}`);
-    dispatch(showUpdateAdvert());
-
-  };
-};
-
-export const updateAdvert = (advert) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {
-    dispatch(apiRequest());
-    try {
-      await AdvertsService.updateAdvert(advert, advert.slugName) //Falta el token, también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
-      dispatch(AdvertsSuccess(true)); //revisar si funciona entre corchetes
-      dispatch(getAdverts()) 
-    } catch (error) {
-      dispatch(apiFailure(error));
-    }
-  };
-};
-
-
-// export const deleteAdvert = () => {} 
-
-export const deleteAdvert = (slugName) => {
-  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
-    dispatch(apiRequest());
-    try {
-      await AdvertsService.deleteAdvert(slugName) //Falta el token, también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
-      dispatch(AdvertsSuccess(false)); //revisar si funciona entre corchetes
-      history.push(`/home/`);
-      dispatch(getAdverts()) 
-    } catch (error) {
-      dispatch(apiFailure(error));
-    }
-  };
-};
-
-
-
-
-//Testeada
-export const AdvertsSuccess = (detail) => ({
-  type: ADVERTS_SUCCESS,
-  detail,
-  // adverts: adverts,
-});
-
-export const AdvertCreatedSuccess = (detail) => ({
-  type: ADVERT_CREATED_SUCCESS,
-  detail
-});
-
-
-export const OneAdvertSuccess = (detail) => ({
-  type: ONE_ADVERT_SUCCESS,
-  detail,
-});
-
-
-
 
 
 
