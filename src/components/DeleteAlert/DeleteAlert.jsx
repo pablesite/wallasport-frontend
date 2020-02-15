@@ -1,18 +1,32 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+
 
 export default function DeleteAlert(props) {
 
-    const {token, slugName, deleteAdvert} = props;
+    const [t] = useTranslation();
+
+    // Origin props of the component
+    const { slugName } = props;
+
+    // State of store
+    const {
+        token,    //user
+    } = props;
+
+    // Actions of the store
+    const { deleteAdvert } = props;
+
 
     const [open, setOpen] = React.useState(false);
 
@@ -26,19 +40,11 @@ export default function DeleteAlert(props) {
 
     const handleDelete = () => {
         setOpen(false);
-         deleteAdvert(slugName, token);
+        deleteAdvert(slugName, token);
     };
 
     return (
-        <div>
-            {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
-
-
-            {/* <IconButton onClick={() => deleteAdvert(advert.slugName, user.token)} > */}
-
-
+        <React.Fragment>
             <IconButton onClick={handleClickOpen} >
                 <DeleteIcon />
             </IconButton>
@@ -46,24 +52,28 @@ export default function DeleteAlert(props) {
             <Dialog
                 open={open}
                 onClose={handleClose}
-            // aria-labelledby="alert-dialog-title"
-            // aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"¡Atención!"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t('Warning')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Estás a punto de borrar este producto. Esta operación no se puede deshacer.
-          </DialogContentText>
+                        {t('DeleteAlert')}
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
-                        Disagree
-          </Button>
+                        {t('Disagree')}
+                    </Button>
                     <Button onClick={handleDelete} color="primary" autoFocus>
-                        Agree
-          </Button>
+                        {t('Agree')}
+                    </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </React.Fragment>
     );
 }
+
+DeleteAlert.propTypes = {
+    slugName: T.string,
+    token: T.string,
+    deleteAdvert: T.func,
+};

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
 
 import Profile from '../Profile';
 import Footer from '../Footer';
@@ -11,60 +12,28 @@ import Advert from '../Advert'
 import Filtering from '../Filtering'
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
 // import { theme } from '../../styles';
 import { styles } from './styles';
 
 
-
-
 const useStyles = makeStyles(styles);
+
 
 export default function Home(props) {
 
-
-  const { adverts, error, isFetching, actualPage, showLogin, showRegister, showUserRegistered, advertsSuccess } = props;
-
-  // const [t, i18n] = useTranslation();
-
-  const styles = useStyles();
-
-  // const [filters, setFilters] = useState({
-  //   nombre: '',
-  //   precio: '',
-  //   tags: '',
-  //   venta: ''
-  // });
+  const [t] = useTranslation();
+  const style = useStyles();
 
 
-//   const [update, setUpdate] = useState(true);
-
-
-// getAdverts();
-
-  useEffect(() => {
-     advertsSuccess(false);
-
-    // Object.keys(adverts).length
-    
-    // setUpdate(true)
-   
-    // setUpdate(false)
-
-  }, []);
-
-
-  // useEffect(() => {
-  //   // advertsSuccess(false);
-
-  //   if (update) {
-  //     getAdverts();
-  //     setUpdate(false)
-  //   }
-
-  // }, []);
-
+  // State of store
+  const {
+    adverts, actualPage,                         //adverts
+    isFetching, error,                           //ui
+    showLogin, showRegister, showUserRegistered, //appSelector                                  
+  } = props;
 
 
   return (
@@ -76,23 +45,21 @@ export default function Home(props) {
 
       <Profile />
 
+      {isFetching && <Loading />}
+      {error && !showLogin && !showRegister && !showUserRegistered && <Error error={error} />}
 
-      {isFetching && <Loading className="app-loading" />}
-      {error && <Error className="app-error" error={error} />}
-
-
-      {true &&
-        <Filtering />}
-
+      <Filtering />
 
       {!isFetching && adverts && (adverts.length === 0 || Object.keys(adverts).length === 0) &&
-
-        <h3>No hay anuncios. Pruebe otra búsqueda por favor.</h3>}
+        <Typography
+          className={style.homeNoAdverts}
+          variant="body2" color="inherit" >
+          {t('NoAdverts')}
+        </Typography>}
 
 
       {adverts && adverts.length !== 0 && Object.keys(adverts).length !== 0 &&
-
-        <div className={styles.grid}>
+        <div className={style.homeGrid}>
           < Grid
             container
             alignItems='center'
@@ -109,15 +76,12 @@ export default function Home(props) {
           </Grid>
         </div>}
 
-
-
-      <div className={styles.gridPagination}>
+      <div className={style.homeGridPagination}>
         < Grid
           container
           alignItems='center'
           alignContent='space-between'
           spacing={1}>
-
 
           {adverts && adverts.length !== 0 && Object.keys(adverts).length !== 0 &&
             <Pagination />}
@@ -130,3 +94,15 @@ export default function Home(props) {
     </React.Fragment >
   );
 }
+
+Home.propTypes = {
+  adverts: T.object,
+  actualPage: T.number,
+  isFetching: T.bool,
+  error: T.objectOf(Error),
+  showLogin: T.bool,
+  showRegister: T.bool,
+  showUserRegistered: T.bool,
+
+};
+

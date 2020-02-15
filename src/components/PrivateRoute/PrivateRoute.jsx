@@ -1,33 +1,26 @@
-// Listo
 import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import T from 'prop-types';
 
-// const PrivateRoute = ({ authorized, ...props }) =>
-//   authorized ? <Route {...props} /> : <Redirect to="/login" />;
 
 export default function PrivateRoute({ authorized, ...props }) {
 
-  const { goLogin } = props;
+  // Actions of the store
+  const { goToHome } = props;
 
   useEffect(() => {
-    if (!authorized) {
-      goLogin();
-    }
-  }, [authorized]);
+    if (!authorized) { goToHome();}
+  }, [authorized, goToHome]);
 
   return (
     <React.Fragment>
-
       {authorized ? <Route {...props} /> : <Redirect to="/login" />}
-
-      {/* { authorized &&<Route {...props} /> }
-
-      { !authorized && <Redirect to="/login" /> } */}
-
     </React.Fragment>
   );
 }
 
+PrivateRoute.propTypes = {
+  authorized: T.bool,
+  goToHome: T.func,
+};
 
-
-// export default PrivateRoute;

@@ -5,12 +5,12 @@ import { createBrowserHistory } from 'history';
 
 import * as actions from './actions';
 import * as types from "./types";
-import * as  AdvertsService from '../services/AdvertDBService'
+import * as  ApiService from '../services/ApiDBService'
 import User from '../models/User';
 
 
 const history = createBrowserHistory();
-const middlewares = [thunk.withExtraArgument({ history, services: { AdvertsService } })];
+const middlewares = [thunk.withExtraArgument({ history, services: { ApiService } })];
 const mockStore = configureStore(middlewares);
 // const store = mockStore({});
 let store = {};
@@ -39,8 +39,8 @@ const error = new Error('Login invalid');
 
 
 // Esto es interesante para mockear el resultado de una función del servicio de la API
-jest.mock('../services/AdvertDBService');
-//AdvertsService.discoverAdverts.mockResolvedValueOnce(adverts);
+jest.mock('../services/ApiDBService');
+//ApiService.discoverAdverts.mockResolvedValueOnce(adverts);
 
 
 
@@ -97,7 +97,7 @@ describe('actions', () => {
         }];
 
         // Mockeo la función de login y digo que devuelva un true.
-        AdvertsService.registerNewUser.mockResolvedValueOnce({ success: true });
+        ApiService.registerNewUser.mockResolvedValueOnce({ success: true });
         await store.dispatch(actions.register(user));
 
         expect(store.getActions()).toEqual(expectedActions);
@@ -138,7 +138,7 @@ describe('actions', () => {
         }];
 
         // Mockeo la función de login y digo que devuelva un true.
-        AdvertsService.loginJWT.mockResolvedValueOnce({ success: true });
+        ApiService.loginJWT.mockResolvedValueOnce({ success: true });
         await store.dispatch(actions.login(user));
 
         expect(store.getActions()).toEqual(expectedActions);

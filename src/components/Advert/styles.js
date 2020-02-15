@@ -1,60 +1,41 @@
-import { theme } from '../../styles';
-import { mdiArmFlex } from '@mdi/js';
+import { theme } from '../styles';
 
 export const styles = {
-  root: {
+  advertRoot: {
     margin: 5,
-    // maxWidth: 245,
     width: 225,
-    // width: '13vw',
-
-    // maxHeight: 545,
     height: 330,
-    // height: '17vw',
   },
 
-  rootDetail: {
+  advertRootDetail: {
     margin: 5,
-    // maxWidth: 245,
     width: 550,
-
-    // maxHeight: 545,
-    // height: 680,
   },
 
-  media: {
+  advertMedia: {
     height: 0,
     paddingTop: '56.25%', // 16:9
     '&:hover': {
       cursor: 'pointer',
     }
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
+
+  advertUserOwner: {
+    color: theme.palette.primary.main,
+    display: 'inline',
+    paddingLeft: '3em'
+
   },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatarSale: {
-    backgroundColor: theme.palette.primary.main,
-    width: '2vw',
-    height: '2vw',
-  },
-  avatarBuy: {
-    backgroundColor: theme.palette.secondary.main,
-    width: '2vw',
-    height: '2vw',
+  advertUserOwnerDetail: {
+    color: theme.palette.primary.main,
+    paddingTop: '1em',
+    paddingLeft: '3em',
+    fontSize: 'x-large',
   },
 
-  avatar: {
-    width: 50,
-    height: 50,
-    // width: '3vw',
-    // height: '3vw',
+  advertAvatar: {
+    width: 70,
+    height: 70,
     border: '2px solid #fff',
     margin: '-43px 22px 0 auto',
     '& > img': {
@@ -62,7 +43,7 @@ export const styles = {
     },
   },
 
-  avatarDetail: {
+  advertAvatarDetail: {
     width: 100,
     height: 100,
     border: '4px solid #fff',
@@ -72,55 +53,75 @@ export const styles = {
     },
   },
 
-  userOwner: {
-    color: theme.palette.primary.main,
-    display: 'inline',
-    paddingLeft: '3em'
-
-  },
-  userOwnerDetail: {
-    color: theme.palette.primary.main,
-    paddingTop: '1em',
-    paddingLeft: '3em',
-    fontSize: 'x-large',
-  },
-
-  cardHeaderTitle: {
+  advertCardHeaderTitle: {
     color: 'inherit',
     fontSize: 'medium',
   },
 
 
-  cardHeaderTitleDetail: {
+  advertCardHeaderTitleDetail: {
     color: 'inherit',
     fontSize: 'x-large',
   },
 
-  cardHeaderRoot: {
+  advertCardHeaderRoot: {
     paddingTop: 0,
     paddingBottom: 0,
   },
 
-  cardHeaderRootDetail: {
+  advertCardHeaderRootDetail: {
     margin: 0,
   },
 
-  description: {
-    fontSize: 'small',
-    maxHeight: 78,
-    // maxHeight: '4vh',
-    overflow: 'hidden',
+  advertAvatarSale: {
+    backgroundColor: theme.palette.primary.main,
+    width: 50,
+    height: 50,
+    fontSize: 'small'
   },
 
-  descriptionDetail: {
-    fontSize: 'medium',
-    minHeight: 100,
+  advertAvatarSaleDetail: {
+    backgroundColor: theme.palette.primary.main,
+    width: 70,
+    height: 70,
   },
+
+  advertAvatarBuy: {
+    backgroundColor: theme.palette.secondary.main,
+    width: 50,
+    height: 50,
+    fontSize: 'small'
+  },
+
+  advertAvatarBuyDetail: {
+    backgroundColor: theme.palette.secondary.main,
+    width: 70,
+    height: 70,
+  },
+
   advertButton: {
     borderRadius: '20px 20px 20px 20px',
     textTransform: 'none',
   },
 
+  advertDescription: {
+    fontSize: 'small',
+    maxHeight: 78,
+    overflow: 'hidden',
+  },
+
+  advertDescriptionDetail: {
+    fontSize: 'medium',
+    minHeight: 100,
+  },
+
+  advertTags: {
+
+  },
+
+  advertTagsDetail: {
+    
+  },
 
 
 }

@@ -1,24 +1,20 @@
-// Listo
 import { connect } from 'react-redux';
 
 import Advert from './Advert';
- import { getOneAdvert, goToUpdateAdvert, deleteAdvert } from '../../store/actions';
-
+import { getOneAdvert, goToCreateAdvert, goToUpdateAdvert } from '../../store/actions';
+import { showAdvertDetail, user } from '../../store/selectors';
 
 function mapStateToProps(state) {
-  
   return {
-    // isFetching: state.ui.isFetching, 
-    showAdvertDetail: state.homeModals.showAdvertDetail,
-    user: state.user,
+    showAdvertDetail: showAdvertDetail(state),
+    user: user(state),
   };
 }
 
 const mapDispatchToProps = {
-//   login: login,
-goToDetail: getOneAdvert,
-goToUpdateAdvert: goToUpdateAdvert,
-deleteAdvert: deleteAdvert,
+  getOneAdvert: getOneAdvert,
+  goToCreateAdvert: goToCreateAdvert,
+  goToUpdateAdvert: goToUpdateAdvert,
 
 };
 

@@ -2,27 +2,26 @@
 import { connect } from 'react-redux';
 
 import Login from './Login';
-import { register, login, goApp, goLogin } from '../../store/actions';
+import { register, login, goToHome, goLogin } from '../../store/actions';
+import {isFetching, error, showLogin, showRegister, showUserRegistered } from '../../store/selectors';
 
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
 
   return {
-    isFetching: state.ui.isFetching, 
-    error: state.ui.error,
-    showLogin: state.homeModals.showLogin,
-    showRegister: state.homeModals.showRegister,
-    showUserRegistered: state.homeModals.showUserRegistered,
-    location: props.location,
+    isFetching: isFetching(state), 
+    error: error(state),
+    showLogin: showLogin(state),
+    showRegister: showRegister(state),
+    showUserRegistered: showUserRegistered(state),
   };
 }
 
 const mapDispatchToProps = {
   login: login,
   register: register,
-  goApp: goApp,
+  goToHome: goToHome,
   goLogin: goLogin,
-  // goToHome: goToHome,
 };
 
 export default connect(

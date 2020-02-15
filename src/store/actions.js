@@ -2,6 +2,9 @@ import {
 
   API_REQUEST,
   API_FAILURE,
+
+  ERROR_SUCCESS,
+
   GO_LOGIN,
   GO_REGISTER,
   GO_USER_REGISTERED,
@@ -87,7 +90,17 @@ export const goApp = () => ({
   type: GO_APP,
 });
 
+export const errorSuccess = () => ({
+  type: ERROR_SUCCESS,
+});
 
+export const goToHome = () => {
+  return async function (dispatch, _getState, { history }) {
+    dispatch(errorSuccess());
+    dispatch(goApp());
+
+  };
+};
 
 
 export const showCreateAdvert = () => ({
@@ -107,43 +120,16 @@ export const showList = () => ({
 });
 
 
-
-// /* ----- History Actions----- */
-
-// export const goToHome = (history) => {
-//   // return async function (dispatch, _getState, { history }) {
-  
-//     history.push('/home');
-//     console.log(history)
-//   // };
-// };
-
-// export const goToAdvertDetail = (slugName, history) => {
-//   // return async function (dispatch, _getState, { history }) {
-//     history.push(`/advert/${slugName}`);
-// //   };
-// };
-
-// export const goToCreateOrUpdate = (slugName) => {
-//   return async function (dispatch, _getState, { history }) {
-//     history.push(`/createOrUpdate/${slugName}`);
-//   };
-// };
-
-
-
-
-
 /* ----- User Thunks and Actions----- */
 
 //Testeada
 export const register = (user) => {
-  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { history, services: { ApiService } }) {
 
     dispatch(apiRequest());
     try {
 
-      const { success } = await AdvertsService.registerNewUser(user)
+      const { success } = await ApiService.registerNewUser(user)
 
       if (success === true) {
         // dispatch(goLogin());
@@ -166,12 +152,12 @@ export const register = (user) => {
 
 //Testeada
 export const login = (user) => {
-  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { history, services: { ApiService } }) {
 
     dispatch(apiRequest());
     try {
 
-      const { success, token } = await AdvertsService.loginJWT(user)
+      const { success, token } = await ApiService.loginJWT(user)
 
       if (success === true) {
         user = { ...user, token }
@@ -245,15 +231,14 @@ export const deleteUserSuccess = () => ({
 /* ----- Adverts Thunks and Actions----- */
 
 export const getAdverts = (query) => {
-  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { history, services: { ApiService } }) {
     dispatch(apiRequest());
     try {
-
-      history.push("/");
-      // dispatch(goToHome(history)) //no sé si quitarlo la verdad...
-      const adverts = await AdvertsService.getAdverts(query)
-      dispatch(divideInPages(adverts, 8)); //Parámetro (el 6) debería ser modificable por el usuario.
       dispatch(showList());
+      history.push("/");
+      const adverts = await ApiService.getAdverts(query)
+      
+      dispatch(divideInPages(adverts, 8)); //Parámetro (el 6) debería ser modificable por el usuario.
       dispatch(AdvertsSuccess());
 
     } catch (error) {
@@ -277,10 +262,10 @@ export const getOneAdvert = (slugName) => {
 
 // Para petición a la API...me hace falta?
 // export const getOneAdvert = (id) => {
-//   return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+//   return async function (dispatch, _getState, { history, services: { ApiService } }) {
 //     dispatch(apiRequest());
 //     try {
-//       const advert = await AdvertsService.getOneAdvert(id)
+//       const advert = await ApiService.getOneAdvert(id)
 
 //       dispatch(divideInPages([advert], 1, true));
 //       dispatch(AdvertsSuccess());
@@ -302,10 +287,10 @@ export const goToCreateAdvert = () => {
 };
 
 export const createAdvert = (advert, token) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {    
+  return async function (dispatch, _getState, { services: { ApiService } }) {    
     dispatch(apiRequest());
     try {
-      await AdvertsService.createAdvert(advert, token) 
+      await ApiService.createAdvert(advert, token) 
       // dispatch(AdvertCreatedSuccess(true)); 
       dispatch(getAdverts()) 
     } catch (error) {
@@ -324,10 +309,10 @@ export const goToUpdateAdvert = (slugName) => {
 };
 
 export const updateAdvert = (advert, token) => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { services: { ApiService } }) {
     dispatch(apiRequest());
     try {
-      await AdvertsService.updateAdvert(advert, advert.slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      await ApiService.updateAdvert(advert, advert.slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
       // dispatch(AdvertsSuccess(true)); //revisar si funciona entre corchetes
       dispatch(getAdverts()) 
     } catch (error) {
@@ -338,13 +323,12 @@ export const updateAdvert = (advert, token) => {
 
 
 export const deleteAdvert = (slugName, token) => {
-  return async function (dispatch, _getState, { history, services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { history, services: { ApiService } }) {
     dispatch(apiRequest());
     try {
-      await AdvertsService.deleteAdvert(slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      await ApiService.deleteAdvert(slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
       // dispatch(AdvertsSuccess(false)); //revisar si funciona entre corchetes
        history.push(`/`);
-      // dispatch(goToHome())
       dispatch(getAdverts()) 
     } catch (error) {
       dispatch(apiFailure(error));
@@ -444,10 +428,10 @@ export const pageForward = (actualPage, numberOfPages) => {
 
 
 export const fetchTags = () => {
-  return async function (dispatch, _getState, { services: { AdvertsService } }) {
+  return async function (dispatch, _getState, { services: { ApiService } }) {
     dispatch(apiRequest());
     try {
-      const tags = await AdvertsService.getTags();
+      const tags = await ApiService.getTags();
       dispatch(getTagsSuccess(tags));
 
     } catch (error) {

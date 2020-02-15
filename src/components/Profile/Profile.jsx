@@ -1,13 +1,10 @@
 
 
 import React from 'react';
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 
 import Button from '@material-ui/core/Button';
-
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -16,14 +13,13 @@ import { mdiMagnify } from '@mdi/js';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Icon from '@mdi/react';
 
-
-// Hay que importar un json de estilos!. Nunca importar ya los estilos hechos porque entonces se están haciendo en el import, y cuando renderiza el componente se sobreescriben los del componente.
-// Hacer un css por cada componente pero de tipo js, que sólo contengael json. De momento lo voy a hacer todo en styles y si veo que no se repite nada, entonces lo divido
 import { makeStyles } from '@material-ui/core/styles';
-import { theme } from '../../styles';
+import { theme } from '../styles';
 import { styles } from './styles';
 
+
 const useStyles = makeStyles(styles);
+
 
 function HomeIcon(props) {
   return (
@@ -33,18 +29,25 @@ function HomeIcon(props) {
   );
 }
 
-
 export default function Profile(props) {
-  const { user, logout, goLogin, goRegister, getAdverts, goToCreateAdvert } = props;
-
+  
   const [t, i18n] = useTranslation();
   const style = useStyles();
+
+  // State of store
+  const {
+    user,     //user
+  } = props;
+
+  // Actions of the store
+  const { goLogin, logout, goRegister, getAdverts, goToCreateAdvert } = props;
+
 
   const changeStyleToEnglish = () => {
     let spanishChange = document.getElementById("spanish-change");
     let englishChange = document.getElementById("english-change");
 
-    if (englishChange.className == style.profileTranslate) {
+    if (englishChange.className === style.profileTranslate) {
       englishChange.className = style.profileTranslateDark;
       spanishChange.className = style.profileTranslate;
       return;
@@ -55,7 +58,7 @@ export default function Profile(props) {
     let spanishChange = document.getElementById("spanish-change");
     let englishChange = document.getElementById("english-change");
 
-    if (spanishChange.className == style.profileTranslate) {
+    if (spanishChange.className === style.profileTranslate) {
       spanishChange.className = style.profileTranslateDark;
       englishChange.className = style.profileTranslate;
       return;
@@ -79,17 +82,14 @@ export default function Profile(props) {
               alignItems="center" >
 
               <Grid item className={style.profileItemsLeft}>
-                {/* <Link to='/'> */}
                   <HomeIcon 
                   className={style.profileHomeIcon} 
                   fontSize="large" 
                   onClick ={() => getAdverts()}
                   />
-                {/* </Link> */}
               </Grid>
 
               <Grid item >
-
                 <div id='spanish-change'
                   className={style.profileTranslate}
                   onClick={() => {
@@ -109,11 +109,10 @@ export default function Profile(props) {
                 >
                   en
                 </div>
-
               </Grid>
 
               <Grid item xs={10} sm className={style.profileItemsLeft}>
-                <Input className={style.littleText}
+                <Input className={style.proflieLittleText}
                   id="standard-full-width"
                   size='small'
                   style={{ margin: 8 }}
@@ -135,9 +134,6 @@ export default function Profile(props) {
               {(user.username === null) &&
                 <Grid item className={style.profileItemsRight}>
                   <Button
-                    // classes={{
-                    //   root: style.profileButton
-                    // }}
                     className={style.profileButton}
                     size="small"
                     variant="outlined"
@@ -147,7 +143,6 @@ export default function Profile(props) {
                     {t('LoginButton')}
                   </Button>
                 </Grid>}
-
 
               {(user.username === null) &&
                 <Grid item className={style.profileItemsRight}>
@@ -161,7 +156,6 @@ export default function Profile(props) {
                   </Button>
                 </Grid>}
 
-
               {(user.username !== null) &&
                 <Grid item className={style.profileItemsRight}>
                   <Button
@@ -170,7 +164,6 @@ export default function Profile(props) {
                     {t('Messages')}
                   </Button>
                 </Grid>}
-
 
               {(user.username !== null) &&
                 <Grid item className={style.profileItemsRight}>
@@ -193,7 +186,6 @@ export default function Profile(props) {
                     variant="contained"
                     color="primary"
                     onClick={()=> goToCreateAdvert()}
-                    // href='/createOrUpdate/' //cambiar a goToCreateAdvert
                   >
                     {t('CreateProduct')}
                   </Button>
@@ -213,8 +205,9 @@ export default function Profile(props) {
 
 Profile.propTypes = {
   user: T.object,
-  logout: T.func,
   goLogin: T.func,
+  logout: T.func,
   goRegister: T.func,
-
+  getAdverts: T.func,
+  goToCreateAdvert: T.func,
 };

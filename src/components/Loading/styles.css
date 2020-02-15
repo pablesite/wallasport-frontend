@@ -1,5 +1,4 @@
 .loading {
-  
   background: rgba(142, 231, 201, 0.55); 
   display: flex;
   align-items: center;
@@ -7,7 +6,6 @@
   height: 100vh;
   width: 100vw;
   z-index: 1;
-  
 }
 
 .spinner,

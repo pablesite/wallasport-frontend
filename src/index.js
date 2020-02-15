@@ -9,10 +9,9 @@ import * as serviceWorker from './serviceWorker';
 
 import { getUserFromLS } from './services/Storage';
 import { configureStore } from './store';
-
 import { getAdverts, fetchTags} from './store/actions'
 
-import * as  AdvertsService from './services/AdvertDBService'
+import * as  ApiService from './services/ApiDBService'
 
 import './i18n';
 
@@ -46,7 +45,7 @@ const user = getUserFromLS() || undefined;
 // Store configuration
 const store = configureStore({
   history,
-  services: { AdvertsService },
+  services: { ApiService },
 })({
   user,
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
 
 import DeleteAlert from '../DeleteAlert';
 
@@ -13,42 +14,50 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-
 import Button from '@material-ui/core/Button';
-
 
 import { makeStyles } from '@material-ui/core/styles';
 // import { theme } from '../../styles';
 import { styles } from './styles';
-// import { user } from '../../store/reducers';
+
 
 const useStyles = makeStyles(styles);
 
+
 export default function Advert(props) {
 
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const style = useStyles();
 
-  const { advert, user, goToDetail, showAdvertDetail, goToUpdateAdvert, deleteAdvert } = props;
+  // Origin props of the component
+  const { advert } = props;
+
+  // State of store
+  const {
+    user,             //user
+    showAdvertDetail  //appSelector  
+  } = props;
+
+  // Actions of the store
+  const { getOneAdvert, goToCreateAdvert, goToUpdateAdvert } = props;
+
 
   return (
     <Card
-      className={showAdvertDetail === false ? style.root : style.rootDetail}>
+      className={showAdvertDetail === false ? style.advertRoot : style.advertRootDetail}>
 
       {advert.name &&
         <CardMedia
-          className={style.media}
+          className={style.advertMedia}
           image={advert.photo !== '' ? `https://localhost:3002/img/${advert.photo}` : `https://localhost:3002/img/no-photo.gif`}
           title={advert.name}
-          onClick={() => goToDetail(advert.slugName)}
+          onClick={() => getOneAdvert(advert.slugName)}
         />}
 
       {advert.name &&
         <Typography
-          className={showAdvertDetail === false ? style.userOwner : style.userOwnerDetail}
+          className={showAdvertDetail === false ? style.advertUserOwner : style.advertUserOwnerDetail}
           variant="body2" color="inherit" >
           '{advert.userOwner}'
       </Typography>}
@@ -56,24 +65,24 @@ export default function Advert(props) {
 
       {advert.name &&
         <Avatar
-          className={showAdvertDetail === false ? style.avatar : style.avatarDetail}
+          className={showAdvertDetail === false ? style.advertAvatar : style.advertAvatarDetail}
           src={'https://i.pravatar.cc/300'} />}
 
       {advert.name &&
         <CardHeader
           classes={{
-            title: showAdvertDetail === false ? style.cardHeaderTitle : style.cardHeaderTitleDetail,
-            root: showAdvertDetail === false ? style.cardHeaderRoot : style.cardHeaderRootDetail,
+            title: showAdvertDetail === false ? style.advertCardHeaderTitle : style.advertCardHeaderTitleDetail,
+            root: showAdvertDetail === false ? style.advertCardHeaderRoot : style.advertCardHeaderRootDetail,
           }}
           avatar={
             advert.type ?
-              <Avatar className={style.avatarSale}>
-                Sale
-             </Avatar>
+              <Avatar className={showAdvertDetail === false ? style.advertAvatarSale : style.advertAvatarSaleDetail}>
+                {t('Sale')}
+              </Avatar>
               :
-              <Avatar className={style.avatarBuy}>
-                Buy
-             </Avatar>
+              <Avatar className={showAdvertDetail === false ? style.advertAvatarBuy : style.advertAvatarBuyDetail}>
+                {t('Buy')}
+              </Avatar>
           }
           title={advert.price && advert.price + '€'}
           subheader={advert.name}
@@ -82,15 +91,15 @@ export default function Advert(props) {
       {!advert.name &&
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            No esperes más. Sube ya tu producto.
-            </Typography>
+            {t('UploadYourProduct')}
+          </Typography>
           <Button
 
             className={style.advertButton}
             size="small"
             variant="outlined"
             color="primary"
-            href='/createOrUpdate/'
+            onClick={() => goToCreateAdvert() }
           >
             {t('CreateAdvert')}
           </Button>
@@ -99,7 +108,7 @@ export default function Advert(props) {
 
       <CardContent>
         <Typography
-          className={showAdvertDetail === false ? style.description : style.descriptionDetail}
+          className={showAdvertDetail === false ? style.advertDescription : style.advertDescriptionDetail}
 
           variant="body2" color="textSecondary" component="p">
           {advert.description}
@@ -107,7 +116,7 @@ export default function Advert(props) {
 
         {showAdvertDetail &&
           <Typography
-            className={showAdvertDetail === false ? style.tags : style.tags}
+            className={showAdvertDetail === false ? style.advertTags : style.advertTagsDetail}
             variant="body2" color="textSecondary" component="p">
 
             {'Tags: ' + advert.tags.map((tags, i) => (
@@ -127,15 +136,25 @@ export default function Advert(props) {
             <ShareIcon />
           </IconButton>
 
-          {(advert.userOwner == user.username) &&
+          {(advert.userOwner === user.username) &&
             <IconButton onClick={() => goToUpdateAdvert(advert.slugName)} >
               <EditIcon />
             </IconButton>}
 
-          {(advert.userOwner == user.username) &&
+          {(advert.userOwner === user.username) &&
             <DeleteAlert slugName={advert.slugName} />}
         </CardActions>}
 
     </Card>
   );
 }
+
+Advert.propTypes = {
+  advert: T.object,
+  user: T.object,
+  showAdvertDetail: T.bool,
+  getOneAdvert: T.func,
+  goToCreateAdvert: T.func,
+  goToUpdateAdvert: T.func,
+};
+

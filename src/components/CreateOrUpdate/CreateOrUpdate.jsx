@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom'
+import slugify from 'react-slugify';
+import T from 'prop-types';
 
 import Profile from '../Profile';
 import Footer from '../Footer';
-import { useTranslation } from 'react-i18next';
-import T from 'prop-types';
-
 import Loading from '../Loading';
 import Error from '../Error';
-
 import FormEnhanced from '../FormEnhanced'
 import InputEnhanced from '../InputEnhanced'
-
-import slugify from 'react-slugify';
-
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -22,129 +18,40 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Avatar from '@material-ui/core/Avatar';
 import { mdiArrowLeftThick } from '@mdi/js';
 import Icon from '@mdi/react';
-import Input from '@material-ui/core/Input';
-
 
 import { makeStyles } from '@material-ui/core/styles';
-import { theme } from '../../styles';
+import { theme } from '../styles';
 import { styles } from './styles';
-
 
 
 const useStyles = makeStyles(styles);
 
 
-
-const types = [
-  'buy',
-  'sale',
-];
-
-
 export default function CreateOrUpdate(props) {
 
-
-  // componentDidMount() {
-  //   const { checkUser, history } = this.props;
-
-  //   // if (checkUser.exist) {
-  //     this.checkCreateorUpdate();
-  //   // } else {
-  //   //   history.push("/login");
-  //   // }
-  // }
-
-
-  // componentDidUpdate() {
-  //   const { update } = this.state;
-
-  //   if (!this.props.match.params.id && update) {
-  //     this.setState({
-  //       advert: {
-  //         description: '',
-  //         nombre: '',
-  //         foto: '',
-  //         precio: '',
-  //         tags: [],
-  //         venta: '',
-  //         _id: null,
-
-  //       },
-  //       update: false
-  //     })
-  //   }
-  // }
-
-
-  // createOrUpdateAdvert = () => {
-  //   const { _id } = this.state.advert;
-
-  //   if (_id) {
-  //     this.props.updateAdvert(this.state.advert, _id).then(() => { this.props.history.push(`/detail/${_id}`) });
-  //   } else {
-  //     this.props.createAdvert(this.state.advert).then(() => { this.props.history.push(`/home/`) });
-  //   }
-  // }
-
-
-  // checkCreateorUpdate() {
-  //   // Tenemos el ID del path param ? Sí: Pues es un update: No: Pues es un create
-  //   const advertID = this.props.match.params.id;
-
-  //   if (advertID) {
-  //     getOneAdvert(advertID).then(advert => {
-  //       if (advert.success === false) {
-  //         this.props.history.push("/404");
-  //       } else {
-  //         this.setState({ advert });
-  //       }
-  //     })
-  //   } else {
-  //     this.setState({
-  //       advert: {
-  //         description: '',
-  //         nombre: '',
-  //         foto: '',
-  //         precio: '',
-  //         tags: [],
-  //         venta: '',
-  //         _id: null
-
-  //       },
-  //       update: true,
-  //     });
-  //   }
-  // }
-
-  // onSubmit = (event) => {
-  //   event && event.preventDefault();
-  //   this.createOrUpdateAdvert();
-  //   this.setState({ update: true });
-  // }
-
-  // goToHome() {
-  //   this.props.history.push('/home');
-  // }
-
-
-
-
-  const { isFetching, error, adverts, showList, showLogin, showRegister, createAdvert, updateAdvert, showCreateAdvert, getOneAdvert, showUserRegistered, goApp, getAdverts,  tagList, advertToEdit, user } = props;
-
-  const [t, i18n] = useTranslation();
-
-  const [advert, setAdvert] = useState()
-  const [photo, setPhoto] = useState()
-
   const style = useStyles();
+  const [t] = useTranslation();
 
 
+  // State of store
+  const {
+    user,                //user
+    advertToEdit,        //adverts
+    tagList,             //tags
+    isFetching, error,   //ui
+    showCreateAdvert     //appSelectors
+  } = props;
 
-  let initialState = {
+
+  // Actions of the store
+  const { getOneAdvert, createAdvert, updateAdvert, showList } = props;
+
+
+  const types = ['buy', 'sale'];
+
+  const initialState = {
     userOwner: '',
     name: '',
     slugName: '',
@@ -155,57 +62,39 @@ export default function CreateOrUpdate(props) {
     tags: [],
     reserved: '',
     sold: '',
-
   };
 
+
+  const [advert, setAdvert] = useState()
+  const [photo, setPhoto] = useState()
+
+
   useEffect(() => {
-
-    if (advert && showCreateAdvert) {
-      advert.slugName = slugify(advert.name);
-      if (photo) {
-        createAdvert({ ...advert, photo }, user.token)
-      } else {
-        createAdvert({ ...advert }, user.token)
+    if (advert) {
+      if (showCreateAdvert) {
+        advert.slugName = slugify(advert.name);
+        if (photo) { createAdvert({ ...advert, photo }, user.token) }
+        else { createAdvert({ ...advert }, user.token) }
       }
-
-      // goToHome()
-    }
-
-    if (advert && !showCreateAdvert) {
-      if (photo) {
-        updateAdvert({ ...advert, photo }, user.token)
-      } else {
-        updateAdvert({ ...advert }, user.token)
+      if (!showCreateAdvert) {
+        if (photo) { updateAdvert({ ...advert, photo }, user.token) }
+        else { updateAdvert({ ...advert }, user.token) }
+        getOneAdvert(advert.slugName);
       }
-      getOneAdvert(advert.slugName);
     }
-
-  }, [advert, photo]);
-
-
-
-  const onFileSelected = event => {
-    setPhoto(event.target.files[0])
-  }
+  }, [advert, photo, createAdvert, getOneAdvert, showCreateAdvert, updateAdvert, user.token]);
 
 
   const onSubmit = (advert) => {
-
     setAdvert({
       ...advert,
       price: parseInt(advert.price, 10),
       type: advert.type === 'sale' ? true : false,
-      userOwner: user.username, //userOwner es undefined!
+      userOwner: user.username,
       reserved: false,
       sold: false,
     })
 
-
-    // if (showLogin) {
-    //     login(user);
-    // } else {
-    //     register(user);
-    // }
   };
 
 
@@ -214,46 +103,40 @@ export default function CreateOrUpdate(props) {
 
       <Profile />
 
+      {isFetching && <Loading />}
+      {error && <Error />}
+
       <Container
         classes={{
-          root: style.root,
+          root: style.createorUpdateRoot,
         }}
         component="main"
         maxWidth="sm"
       >
 
-        <div className={style.loginArrow}>
-          <Link
-            to='/'
-            onClick={() => {
-              showList();
-            }} >
-            <Icon
-              path={mdiArrowLeftThick}
-              size={1}
-              horizontal
-              rotate={180}
-              color={theme.palette.primary.main}
-            />
-          </Link>
-        </div>
+        <Link
+          to='/'
+          onClick={() => {
+            showList();
+          }} >
+          <Icon
+            path={mdiArrowLeftThick}
+            size={1}
+            horizontal
+            rotate={180}
+            color={theme.palette.primary.main}
+          />
+        </Link>
 
-
-        <Typography className={style.header} component="h1" variant="h6">
+        <Typography className={style.createOrUpdateHeader} component="h1" variant="h6">
           {showCreateAdvert && t('CreateAdvert')}
           {!showCreateAdvert && t('UpdateAdvert')}
         </Typography>
 
-        <p></p>
-
-
-        {isFetching && <Loading />}
 
         <FormEnhanced
           handleSubmit={onSubmit}
-          initialState={
-            !showCreateAdvert ? { ...advertToEdit, price: parseInt(advertToEdit.price), type: advertToEdit.type ? 'sale' : 'buy' } : initialState
-          }
+          initialState={!showCreateAdvert ? { ...advertToEdit, price: parseInt(advertToEdit.price), type: advertToEdit.type ? 'sale' : 'buy' } : initialState}
         >
           <Grid container justify="center" spacing={2}>
 
@@ -261,20 +144,16 @@ export default function CreateOrUpdate(props) {
               <InputEnhanced
                 type='text'
                 name='name'
-                selectValues={null}
                 component={TextField}
                 fullWidth
                 variant="outlined"
                 required />
             </Grid>
 
-
-
             <Grid item xs={12}>
               <InputEnhanced
                 type='text'
                 name='description'
-                selectValues={null}
                 component={TextField}
                 fullWidth
                 multiline
@@ -283,27 +162,25 @@ export default function CreateOrUpdate(props) {
                 required />
             </Grid>
 
-
             <Grid item xs={6}>
               <FormControl variant="outlined" fullWidth >
                 <InputEnhanced
                   type='text'
                   name='type'
-                  selectValues={types}
+                  selectvalues={types}
                   component={Select}
                   fullWidth
                   variant="outlined"
                   required />
               </FormControl>
             </Grid>
-
 
             <Grid item xs={6}>
               <FormControl variant="outlined" fullWidth >
                 <InputEnhanced
                   type='text'
                   name='tags'
-                  selectValues={tagList}
+                  selectvalues={tagList}
                   component={Select}
                   fullWidth
                   variant="outlined"
@@ -311,12 +188,10 @@ export default function CreateOrUpdate(props) {
               </FormControl>
             </Grid>
 
-
             <Grid item xs={6}>
               <InputEnhanced
                 type='text'
                 name='price'
-                selectValues={null}
                 component={TextField}
                 fullWidth
                 variant="outlined"
@@ -330,14 +205,12 @@ export default function CreateOrUpdate(props) {
                 id="raised-button-file"
                 multiple
                 type="file"
-                onChange={onFileSelected}
-
-
+                onChange={(e) => setPhoto(e.target.files[0])}
               />
 
               <label htmlFor="raised-button-file">
                 <Button
-                  className={style.buttonUpload}
+                  className={style.createOrUpdateButtonUpload}
                   component="span"
                   fullWidth
                   variant="outlined"
@@ -350,13 +223,10 @@ export default function CreateOrUpdate(props) {
 
             </Grid>
 
-
-            <Typography className={style.createTypography} variant="body2" color="inherit" >
-              {photo !== undefined && photo !== null && `The photo entered has the name: ${photo.name}`}
+            <Typography className={style.createOrUpdateCreateTypography} variant="body2" color="inherit" >
+              {photo !== undefined && photo !== null && t('NameOfPhoto') + photo.name}
             </Typography>
 
-
-            {/* <div className={style.loginSubmit}> */}
             <Grid item xs={12}>
               <Button
                 label="Continue"
@@ -366,11 +236,8 @@ export default function CreateOrUpdate(props) {
                 fullWidth
               >
                 {t('CreateAdvert')}
-                {/* {showRegister && t('RegisterButton')} */}
               </Button>
             </Grid>
-            {/* </div> */}
-
 
             {error && <Error error={error} />}
           </Grid>
@@ -383,3 +250,17 @@ export default function CreateOrUpdate(props) {
     </React.Fragment>
   );
 }
+
+CreateOrUpdate.propTypes = {
+  user: T.object,
+  advertToEdit: T.object,
+  tagList: T.array,
+  isFetching: T.bool,
+  error: T.objectOf(Error),
+  showCreateAdvert: T.bool,
+  getOneAdvert: T.func,
+  createAdvert: T.func,
+  updateAdvert: T.func,
+  showList: T.func,
+};
+

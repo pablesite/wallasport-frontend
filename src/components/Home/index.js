@@ -1,27 +1,26 @@
 import { connect } from 'react-redux';
 
 import Home from './Home';
- import { AdvertsSuccess} from '../../store/actions';
+ import { advertsInPages, actualPage, isFetching, error, showLogin, showRegister, showUserRegistered } from '../../store/selectors';
 
 
 function mapStateToProps(state) {
   return {
-    adverts: state.adverts.advertsInPages,
-    actualPage: state.adverts.actualPage,
+    adverts: advertsInPages(state),
+    actualPage: actualPage(state),
 
-    isFetching: state.ui.isFetching,
-    error: state.ui.error,
+    isFetching: isFetching(state),
+    error: error(state),
 
-    showLogin: state.homeModals.showLogin,
-    showRegister: state.homeModals.showRegister,
-    showUserRegistered: state.homeModals.showUserRegistered,
+    showLogin: showLogin(state),
+    showRegister: showRegister(state),
+    showUserRegistered: showUserRegistered(state),
 
   }
 }
 
 const mapDispatchToProps = {
-  // getAdverts: getAdverts,
-  advertsSuccess: AdvertsSuccess,
+  // nothing for the moment
 
 };
 

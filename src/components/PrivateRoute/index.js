@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 
 import PrivateRoute from './PrivateRoute';
+
 import { isAuthorized } from '../../store/selectors';
-import { goLogin } from '../../store/actions';
+import { goToHome } from '../../store/actions';
 
 const mapStateToProps = state => ({
-  authorized: isAuthorized(state.user), //quitar lo de exist de aquí cuando vaya limpiando todos los registros
+  authorized: isAuthorized(state), 
 });
 
 const mapDispatchToProps = {
-  goLogin: goLogin,
+  goToHome: goToHome,
 };
-
 
 export default connect(
   mapStateToProps,

@@ -43,24 +43,24 @@ const createRequestPublic = (url, body) => {
     .then(res => res.json());
 }
 
-const createRequestPrivate = (url, body, token) => {
+// const createRequestPrivate = (url, body, token) => {
 
-  return fetch(
-    url,
-    {
-      method: 'POST',
-      headers:
-      {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-      body: JSON.stringify(body)
+//   return fetch(
+//     url,
+//     {
+//       method: 'POST',
+//       headers:
+//       {
+//         'Content-Type': 'application/json',
+//         'Authorization': token
+//       },
+//       body: JSON.stringify(body)
 
-    }
-  )
-    .catch(err => console.log(err))
-    .then(res => res.json());
-}
+//     }
+//   )
+//     .catch(err => console.log(err))
+//     .then(res => res.json());
+// }
 
 const createRequestWithPhoto = (url, body, token) => {
 
@@ -87,22 +87,22 @@ const createRequestWithPhoto = (url, body, token) => {
 
 
 
-const updateRequest = (url, body, token) => {
-  return fetch(
-    url,
-    {
-      method: 'PUT',
-      body: JSON.stringify(body),
-      headers:
-      {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-    }
-  )
-    .catch(err => console.log(err))
-    .then(res => res.json());
-}
+// const updateRequest = (url, body, token) => {
+//   return fetch(
+//     url,
+//     {
+//       method: 'PUT',
+//       body: JSON.stringify(body),
+//       headers:
+//       {
+//         'Content-Type': 'application/json',
+//         'Authorization': token
+//       },
+//     }
+//   )
+//     .catch(err => console.log(err))
+//     .then(res => res.json());
+// }
 
 
 const updateRequestWithPhoto = (url, body, token) => {

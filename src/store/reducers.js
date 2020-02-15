@@ -19,7 +19,7 @@ const initialState = {
         error: null,
     },
 
-    homeModals: {
+    appSelectors: {
         showLogin: false,
         showRegister: false,
         showUserRegistered: false,
@@ -148,7 +148,7 @@ export const ui = (state = initialState.ui, action) => {
     return state;
 };
 
-export const homeModals = (state = initialState.homeModals, action) => {
+export const appSelectors = (state = initialState.appSelectors, action) => {
 
     switch (action.type) {
 

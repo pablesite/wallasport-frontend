@@ -24,6 +24,19 @@ const resources = {
       'CreateAdvert': 'Upload a new product',
       'UpdateAdvert': 'Edit this product',
       'FilteringButton': 'Filter products',
+      'UploadYourProduct': 'What are you waiting for? Upload your product!',
+      'Sale': 'Sale',
+      'Buy': 'Buy',
+      'NoAdverts': 'There is no product. Please, try another search',
+      'NameOfPhoto': 'The photo entered has the name: ',
+      'DeleteAlert': 'You are about to delete this product. This operation cannot be undone.',
+      'Disagree': 'Disagree',
+      'Agree': 'Agree',
+      'Warning': 'Warning!',
+      'FindProducts': 'Find products according to your preferences',
+      'NameInitials': 'Name Initials',
+      'OneFreeTag': '[1] Tag',
+      'Of': 'of',
       
     }
   },
@@ -47,7 +60,19 @@ const resources = {
       'CreateAdvert': 'Subir nuevo producto',
       'UpdateAdvert': 'Edita este producto',
       'FilteringButton': 'Filtra productos',
-
+      'UploadYourProduct': '¿A qué esperas? ¡Sube tu producto!',
+      'Sale': 'Venta',
+      'Buy': 'Compra',
+      'NoAdverts': 'No hay ningún producto disponible. Por favor, intenta otra búsqueda.',
+      'NameOfPhoto': 'La foto subida tiene se llama: ',
+      'DeleteAlert': 'Estás a punto de borrar este producto. Esta operación no se puede deshacer.',
+      'Disagree': 'Cancelar',
+      'Agree': 'De acuerdo',
+      'Warning': '¡Atención!',
+      'FindProducts': 'Encuentra productos de acuerdo tus preferencias',
+      'NameInitials': 'Iniciales del Nombre',
+      'OneFreeTag': '[1] etiqueta',
+      'Of': 'de',
     }
   }
 

@@ -1,16 +1,6 @@
-import { theme } from '../../styles';
+import { theme } from '../styles';
 
 export const styles = {
-  profileHomeIcon: {
-    color: theme.palette.primary.main,
-    '& > svg': {
-      marginTop: theme.spacing(2),
-    },
-    '&:hover': {
-      color: theme.palette.primary.dark,
-      cursor: 'pointer',
-    }
-  },
 
   profileRoot: {
     // flexGrow: 1,
@@ -20,38 +10,25 @@ export const styles = {
     minHeight: 50,
   },
 
-  profileTitle: {
-    flexGrow: 1,
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-
   profileItemsLeft: {
     display: 'flex',
     justifyContent: 'left',
   },
 
-  profileItemsCenter: {
-    display: 'flex',
-    justifyContent: 'center',
-
-  },
   profileItemsRight: {
     display: 'flex',
     justifyContent: 'right',
   },
 
-  profileButton: {
-    borderRadius: '20px 20px 20px 20px',
-    textTransform: 'none',
-  },
-
-  littleText: {
-    borderRadius: '20px 20px 20px 20px',
-    textTransform: 'none',
-    fontSize: '.85em',
+  profileHomeIcon: {
+    color: theme.palette.primary.main,
+    '& > svg': {
+      marginTop: theme.spacing(2),
+    },
+    '&:hover': {
+      color: theme.palette.primary.dark,
+      cursor: 'pointer',
+    }
   },
 
   profileTranslate: {
@@ -74,5 +51,17 @@ export const styles = {
       cursor: 'pointer',
     },
   },
+
+  profileButton: {
+    borderRadius: '20px 20px 20px 20px',
+    textTransform: 'none',
+  },
+
+  proflieLittleText: {
+    borderRadius: '20px 20px 20px 20px',
+    textTransform: 'none',
+    fontSize: '.85em',
+  },
+
 
 }

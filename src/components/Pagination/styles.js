@@ -1,14 +1,14 @@
 
-import { theme } from '../../styles';
+import { theme } from '../styles';
 
 export const styles = {
+    
     paginationArrow: {
         cursor: 'pointer'
     },
 
-    pages: {
+    paginationPages: {
         color: theme.palette.primary.main,
-    }
-
+    },
 
 }

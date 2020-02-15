@@ -2,11 +2,11 @@
 
 export const styles = {
 
-    grid: {
+    advertDetailGrid: {
         margin: '2em 25vw 2em 25vw'
     }, 
 
-    footer: {
+    advertDetailFooter: {
         backgroundColor: 'black',
         position: 'fixed',
         bottom: '0px',
@@ -14,5 +14,14 @@ export const styles = {
         width: '100%',
         height: '50px',
         color: 'white',  
+    },
+    
+    advertDetailHomeNoAdverts: {
+        flexGrow: 1,
+        height: '80vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '2.5em'
     },
 }

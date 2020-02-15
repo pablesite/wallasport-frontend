@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
 
 import Profile from '../Profile';
 import Footer from '../Footer';
@@ -7,6 +9,7 @@ import Error from '../Error';
 import Advert from '../Advert'
 import Login from '../Login';
 
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,16 +18,27 @@ import { styles } from './styles';
 
 const useStyles = makeStyles(styles);
 
+
 export default function AdvertDetail(props) {
 
-
   const styles = useStyles();
+  const [t] = useTranslation();
 
-  const { showLogin, showRegister, showUserRegistered, adverts, isFetching, error, getOneAdvert, locateAdvertFromUrl  } = props;
+
+  // State of store
+  const {
+    adverts, locateAdvertFromUrl,                 //adverts
+    isFetching, error,                            //ui
+    showLogin, showRegister, showUserRegistered,  //appSelectors
+  } = props;
+
+  // Actions of the store
+  const { getOneAdvert } = props;
+
 
   useEffect(() => {
     getOneAdvert(locateAdvertFromUrl.slugName)
-  }, [locateAdvertFromUrl]);
+  }, [getOneAdvert, locateAdvertFromUrl]);
 
 
   return (
@@ -36,30 +50,34 @@ export default function AdvertDetail(props) {
 
       <Profile />
 
-      {isFetching && <Loading className="app-loading" />}
-      {error && <Error className="app-error" error={error} />}
+      {isFetching && <Loading  />}
+      {error && !showLogin && !showRegister && !showUserRegistered &&<Error  error={error} />}
 
 
       {!isFetching && adverts && adverts.length === 0 &&
 
-        <h4>No hay anuncios. Pruebe otra búsqueda por favor.</h4>}
+        <Typography
+          className={styles.advertDetailHomeNoAdverts}
+          variant="body2" color="inherit" >
+          {t('NoAdverts')}
+        </Typography>
 
+      }
 
       {adverts && adverts.length !== 0 &&
-
-        <div className={styles.grid}>
+        <div className={styles.advertDetailGrid}>
           < Grid
             container
             alignItems='center'
             justify="center"
             spacing={1}>
 
-            {/* <Advert advert={adverts[actualPage][0]} /> */}
             <Advert advert={locateAdvertFromUrl} />
+
           </Grid>
         </div>}
 
-      <div className={styles.footer}>
+      <div className={styles.advertDetailFooter}>
         <Footer />
       </div>
 
@@ -67,4 +85,13 @@ export default function AdvertDetail(props) {
   )
 }
 
-
+AdvertDetail.propTypes = {
+  adverts: T.object,
+  locateAdvertFromUrl: T.object,
+  isFetching: T.bool,
+  error: T.objectOf(Error),
+  showLogin: T.bool,
+  showRegister: T.bool,
+  showUserRegistered: T.bool,
+  getOneAdvert: T.func,
+};

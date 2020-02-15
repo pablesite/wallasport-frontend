@@ -1,13 +1,15 @@
-//Listo
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useStyles } from '../styles';
+import { makeStyles } from '@material-ui/core/styles';
+// import { theme } from '../../styles';
+import { styles } from './styles';
+
+const useStyles = makeStyles(styles);
 
 export function APIUnavailable() {
 
     const [t] = useTranslation();
-
     const style = useStyles();
 
     return (

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import App from './App';
 import { createBrowserHistory } from 'history';
-import * as  AdvertsService from '../services/AdvertDBService';
+import * as  ApiService from '../services/ApiDBService';
 import { configureStore } from '../store';
 
 
@@ -24,7 +24,7 @@ it('renders without crashing', () => {
 // // Store configuration
 // const store = configureStore({
 //   history,
-//   services: { AdvertsService },
+//   services: { ApiService },
 // })({
 //   user,
 // });
@@ -32,11 +32,11 @@ it('renders without crashing', () => {
 //////////
 
 
-//jest.mock('../services/AdvertDBService');
+//jest.mock('../services/ApiDBService');
 
 
 const history = createBrowserHistory();
-const middlewares = [thunk.withExtraArgument({ history, services: { AdvertsService } })];
+const middlewares = [thunk.withExtraArgument({ history, services: { ApiService } })];
 const mockStore = configureStore(middlewares);
 const store = mockStore({ });
 

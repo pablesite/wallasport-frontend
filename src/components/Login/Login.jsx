@@ -1,12 +1,9 @@
-
-// Listo
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 
 import FormEnhanced from '../FormEnhanced'
 import InputEnhanced from '../InputEnhanced'
-
 import Loading from '../Loading';
 import Error from '../Error';
 import Copyright from '../Copyright';
@@ -21,33 +18,33 @@ import { TextField } from '@material-ui/core';
 import { mdiArrowLeftThick } from '@mdi/js';
 import Icon from '@mdi/react';
 
-
 import { makeStyles } from '@material-ui/core/styles';
-import { theme } from '../../styles';
+import { theme } from '../styles';
 import { styles } from './styles';
-
 
 
 const useStyles = makeStyles(styles);
 
+
 export default function Login(props) {
 
-    const { login, register, isFetching, error, goApp, showLogin, goLogin, showRegister, showUserRegistered, location } = props;
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const style = useStyles();
 
-    if (!showLogin && !showRegister && !showUserRegistered) {
-        goLogin();
-    }
+    // State of store
+    const {
+        isFetching, error,                              //ui
+        showLogin, showRegister, showUserRegistered,    //appSelectors
+    } = props;
+
+    // Actions of the store
+    const { login, register, goToHome, goLogin } = props;
 
     const initialState = showLogin ? { username: "pablesite", password: "1234" } : { username: "", password: "" };
 
     const onSubmit = (user) => {
-        if (showLogin) {
-            login(user);
-        } else {
-            register(user);
-        }
+        if (showLogin) { login(user) }
+        else { register(user) }
     };
 
     return (
@@ -63,18 +60,8 @@ export default function Login(props) {
 
                         <div className={style.loginArrow}>
 
-
                             <Icon
-                                // onClick={() => {
-                                //     if (location && location.pathname === '/login') {
-                                //         goToHome();
-                                //         goApp();
-                                //     } else {
-                                //         goApp();
-                                //     }
-                                // }}
-                                onClick={() => goApp()}
-
+                                onClick={() => goToHome()}
                                 path={mdiArrowLeftThick}
                                 size={1}
                                 horizontal
@@ -107,7 +94,7 @@ export default function Login(props) {
 
                         {showUserRegistered &&
                             <Button
-                                className={style.profileButton}
+                                className={style.loginButton}
                                 size="small"
                                 variant="outlined"
                                 color="primary"
@@ -128,7 +115,6 @@ export default function Login(props) {
                                             type='text'
                                             name='username'
                                             component={TextField}
-                                            selectValues={null}
                                             fullWidth
                                             variant="outlined"
                                             required />
@@ -141,7 +127,6 @@ export default function Login(props) {
                                                 type='email'
                                                 name='email'
                                                 component={TextField}
-                                                selectValues={null}
                                                 fullWidth
                                                 variant="outlined"
                                                 required />
@@ -153,7 +138,6 @@ export default function Login(props) {
                                             type='password'
                                             name='password'
                                             component={TextField}
-                                            selectValues={null}
                                             fullWidth
                                             variant="outlined"
                                             required />
@@ -191,15 +175,15 @@ export default function Login(props) {
 
 }
 
-
 Login.propTypes = {
-    error: T.instanceOf(Error),
     isFetching: T.bool,
-    isLogin: T.bool,
-    login: T.func,
-    register: T.func,
-    goApp: T.func,
+    error: T.objectOf(Error),
     showLogin: T.bool,
     showRegister: T.bool,
     showUserRegistered: T.bool,
+    login: T.func,
+    register: T.func,
+    goToHome: T.func,
+    goLogin: T.func,
 };
+
