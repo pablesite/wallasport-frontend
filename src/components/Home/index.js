@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import Home from './Home';
  import { advertsInPages, actualPage, isFetching, error, showLogin, showRegister, showUserRegistered } from '../../store/selectors';
+ import { showListAction } from '../../store/actions';
 
 
 function mapStateToProps(state) {
@@ -20,8 +21,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  // nothing for the moment
-
+  showListAction: showListAction,
 };
 
 export default connect(

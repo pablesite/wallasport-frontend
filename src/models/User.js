@@ -9,11 +9,13 @@ export default class User {
       username = null,
       email = null,
       password = null,
+      photo = null,
       favs = [],
     ) {
       this.username = username;
       this.email = email;
       this.password = password;
+      this.photo = photo;
       this.favs = favs;
     }
   }

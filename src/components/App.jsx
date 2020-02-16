@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'
 
-// import Login from './Login'
+import Login from './Login'
 import Home from './Home'
 import AdvertDetail from './AdvertDetail'
+import UserDetail from './UserDetail'
 import CreateOrUpdate from './CreateOrUpdate'
 import PrivateRoute from './PrivateRoute'
 
@@ -28,9 +29,10 @@ export default class App extends Component {
             <Router history={history}>
               <Switch>
                 <Route exact path='/' component={Home} />
-                {/* <Route exact path='/login' component={Login}  /> */}
+                <Route exact path='/login' component={Login}  />
                 <Route exact path='/advert/:slugName' component={AdvertDetail} />
-                <PrivateRoute exact path='/createOrUpdate/' component={CreateOrUpdate} />
+                <PrivateRoute exact path='/user' component={UserDetail} />
+                <PrivateRoute exact path='/createOrUpdate' component={CreateOrUpdate} />
                 <PrivateRoute exact path='/createOrUpdate/:slugName' component={CreateOrUpdate} />
                 <Route component={Home} />
               </Switch>

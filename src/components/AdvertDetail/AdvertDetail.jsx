@@ -24,7 +24,6 @@ export default function AdvertDetail(props) {
   const styles = useStyles();
   const [t] = useTranslation();
 
-
   // State of store
   const {
     adverts, locateAdvertFromUrl,                 //adverts
@@ -33,14 +32,15 @@ export default function AdvertDetail(props) {
   } = props;
 
   // Actions of the store
-  const { getOneAdvert } = props;
+  const { goToAdvertDetail } = props;
 
 
   useEffect(() => {
-    getOneAdvert(locateAdvertFromUrl.slugName)
-  }, [getOneAdvert, locateAdvertFromUrl]);
+    goToAdvertDetail(locateAdvertFromUrl.slugName)
+  }, [goToAdvertDetail, locateAdvertFromUrl]);
 
 
+  
   return (
     <React.Fragment>
 
@@ -72,7 +72,7 @@ export default function AdvertDetail(props) {
             justify="center"
             spacing={1}>
 
-            <Advert advert={locateAdvertFromUrl} />
+            <Advert {...props} advert={locateAdvertFromUrl} />
 
           </Grid>
         </div>}
@@ -93,5 +93,5 @@ AdvertDetail.propTypes = {
   showLogin: T.bool,
   showRegister: T.bool,
   showUserRegistered: T.bool,
-  getOneAdvert: T.func,
+  goToAdvertDetail: T.func,
 };

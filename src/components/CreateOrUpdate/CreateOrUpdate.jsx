@@ -46,7 +46,7 @@ export default function CreateOrUpdate(props) {
 
 
   // Actions of the store
-  const { getOneAdvert, createAdvert, updateAdvert, showList } = props;
+  const { goToAdvertDetail, createAdvert, updateAdvert, showListAction, goToHome } = props;
 
 
   const types = ['buy', 'sale'];
@@ -65,8 +65,8 @@ export default function CreateOrUpdate(props) {
   };
 
 
-  const [advert, setAdvert] = useState()
-  const [photo, setPhoto] = useState()
+  const [advert, setAdvert] = useState();
+  const [photo, setPhoto] = useState();
 
 
   useEffect(() => {
@@ -75,14 +75,15 @@ export default function CreateOrUpdate(props) {
         advert.slugName = slugify(advert.name);
         if (photo) { createAdvert({ ...advert, photo }, user.token) }
         else { createAdvert({ ...advert }, user.token) }
+        goToHome();
       }
       if (!showCreateAdvert) {
         if (photo) { updateAdvert({ ...advert, photo }, user.token) }
         else { updateAdvert({ ...advert }, user.token) }
-        getOneAdvert(advert.slugName);
+        goToAdvertDetail(advert.slugName);
       }
     }
-  }, [advert, photo, createAdvert, getOneAdvert, showCreateAdvert, updateAdvert, user.token]);
+  }, [advert, photo, createAdvert, goToAdvertDetail, showCreateAdvert, updateAdvert, user.token, goToHome]);
 
 
   const onSubmit = (advert) => {
@@ -117,7 +118,7 @@ export default function CreateOrUpdate(props) {
         <Link
           to='/'
           onClick={() => {
-            showList();
+            showListAction();
           }} >
           <Icon
             path={mdiArrowLeftThick}
@@ -217,7 +218,7 @@ export default function CreateOrUpdate(props) {
                   color="primary"
                   size="medium"
                 >
-                  Upload an image
+                  {t('UploadImage')}
                 </Button>
               </label>
 
@@ -258,9 +259,9 @@ CreateOrUpdate.propTypes = {
   isFetching: T.bool,
   error: T.objectOf(Error),
   showCreateAdvert: T.bool,
-  getOneAdvert: T.func,
+  goToAdvertDetail: T.func,
   createAdvert: T.func,
   updateAdvert: T.func,
-  showList: T.func,
+  showListAction: T.func,
 };
 

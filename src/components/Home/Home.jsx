@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 
@@ -27,7 +27,6 @@ export default function Home(props) {
   const [t] = useTranslation();
   const style = useStyles();
 
-
   // State of store
   const {
     adverts, actualPage,                         //adverts
@@ -35,6 +34,13 @@ export default function Home(props) {
     showLogin, showRegister, showUserRegistered, //appSelector                                  
   } = props;
 
+  // Acctions of store
+const { showListAction } = props;
+
+
+  useEffect(() => {
+    showListAction()
+  }, [showListAction]);
 
   return (
     <React.Fragment>
@@ -44,7 +50,7 @@ export default function Home(props) {
       {showUserRegistered && <Login />}
 
       <Profile />
-
+     
       {isFetching && <Loading />}
       {error && !showLogin && !showRegister && !showUserRegistered && <Error error={error} />}
 
@@ -69,7 +75,7 @@ export default function Home(props) {
 
             {
               adverts[actualPage].map(function (advert, i) {
-                return <Advert key={i} advert={advert} />
+                return <Advert {...props} key={i} advert={advert} />
               })
             }
 
@@ -103,6 +109,7 @@ Home.propTypes = {
   showLogin: T.bool,
   showRegister: T.bool,
   showUserRegistered: T.bool,
+  showListAction: T.func,
 
 };
 

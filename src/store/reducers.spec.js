@@ -32,7 +32,7 @@ describe('reducers', () => {
     });
 
 
-    it('should handle a DELETE_USER_SUCCESS action', () => {
+    it('should handle a LOGOUT_SUCCESS action', () => {
         const initialState = {
             user: {
                 username: 'pablesite',
@@ -41,7 +41,7 @@ describe('reducers', () => {
         };
 
         const action = {
-            type: types.DELETE_USER_SUCCESS,
+            type: types.LOGOUT_SUCCESS,
             user:null,
         };
 

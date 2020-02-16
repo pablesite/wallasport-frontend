@@ -12,6 +12,9 @@ import Input from '@material-ui/core/Input';
 import { mdiMagnify } from '@mdi/js';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Icon from '@mdi/react';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Avatar from '@material-ui/core/Avatar';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../styles';
@@ -30,7 +33,7 @@ function HomeIcon(props) {
 }
 
 export default function Profile(props) {
-  
+
   const [t, i18n] = useTranslation();
   const style = useStyles();
 
@@ -40,9 +43,10 @@ export default function Profile(props) {
   } = props;
 
   // Actions of the store
-  const { goLogin, logout, goRegister, getAdverts, goToCreateAdvert } = props;
+  const { showLoginAction, logout, showRegisterAction, getAdverts, goToHome, goToUserDetail, goToCreateAdvert } = props;
 
 
+  // translate utils
   const changeStyleToEnglish = () => {
     let spanishChange = document.getElementById("spanish-change");
     let englishChange = document.getElementById("english-change");
@@ -66,137 +70,151 @@ export default function Profile(props) {
 
   }
 
+  // menu utils
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = event => { setAnchorEl(event.currentTarget) };
+  const handleClose = () => { setAnchorEl(null) };
+
 
   return (
     <React.Fragment>
 
-      <div className={style.profileRoot}>
-        <AppBar color='inherit' position="static">
+      <AppBar color='inherit' position="static">
 
+        <Toolbar className={style.profileToolbar}>
 
-          <Toolbar className={style.profileToolbar}>
+          <Grid container
+            direction="row"
+            justify="space-between"
+            alignItems="center" >
 
-            <Grid container
-              direction="row"
-              justify="space-between"
-              alignItems="center" >
-
-              <Grid item className={style.profileItemsLeft}>
-                  <HomeIcon 
-                  className={style.profileHomeIcon} 
-                  fontSize="large" 
-                  onClick ={() => getAdverts()}
-                  />
-              </Grid>
-
-              <Grid item >
-                <div id='spanish-change'
-                  className={style.profileTranslate}
-                  onClick={() => {
-                    i18n.changeLanguage("es");
-                    changeStyleToSpanish();
-                  }}
-                >
-                  es
-                </div>
-
-                <div id='english-change'
-                  className={style.profileTranslateDark}
-                  onClick={() => {
-                    i18n.changeLanguage("en");
-                    changeStyleToEnglish();
-                  }}
-                >
-                  en
-                </div>
-              </Grid>
-
-              <Grid item xs={10} sm className={style.profileItemsLeft}>
-                <Input className={style.proflieLittleText}
-                  id="standard-full-width"
-                  size='small'
-                  style={{ margin: 8 }}
-                  placeholder={t("SearchProduct")}
-                  fullWidth
-                  onChange={(e) => {
-                    getAdverts(`name=${e.target.value}`)
-                  }}
-                  startAdornment={<Icon path={mdiMagnify}
-                    size={1}
-                    horizontal
-                    rotate={90}
-                    color={theme.palette.primary.main}
-                  />}
-                />
-              </Grid>
-
-
-              {(user.username === null) &&
-                <Grid item className={style.profileItemsRight}>
-                  <Button
-                    className={style.profileButton}
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => goLogin()}
-                  >
-                    {t('LoginButton')}
-                  </Button>
-                </Grid>}
-
-              {(user.username === null) &&
-                <Grid item className={style.profileItemsRight}>
-                  <Button
-                    className={style.profileButton}
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => goRegister()}>
-                    {t('RegisterButton')}
-                  </Button>
-                </Grid>}
-
-              {(user.username !== null) &&
-                <Grid item className={style.profileItemsRight}>
-                  <Button
-                    className={style.profileButton}
-                    color="primary">
-                    {t('Messages')}
-                  </Button>
-                </Grid>}
-
-              {(user.username !== null) &&
-                <Grid item className={style.profileItemsRight}>
-                  <Button
-                    className={style.profileButton}
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => logout()}
-                  >
-                    {t('Logout')}
-                  </Button>
-                </Grid>}
-
-              {(user.username !== null) &&
-                <Grid item className={style.profileItemsRight}>
-                  <Button
-                    className={style.profileButton}
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={()=> goToCreateAdvert()}
-                  >
-                    {t('CreateProduct')}
-                  </Button>
-                </Grid>}
-
+            <Grid item className={style.profileItemsLeft}>
+              <HomeIcon
+                className={style.profileHomeIcon}
+                fontSize="large"
+                onClick={() => { goToHome(); getAdverts() }}
+              />
             </Grid>
 
-          </Toolbar>
-        </AppBar>
+            <Grid item >
+              <div id='spanish-change'
+                className={style.profileTranslate}
+                onClick={() => {
+                  i18n.changeLanguage("es");
+                  changeStyleToSpanish();
+                }}
+              >
+                es
+                </div>
 
-      </div>
+              <div id='english-change'
+                className={style.profileTranslateDark}
+                onClick={() => {
+                  i18n.changeLanguage("en");
+                  changeStyleToEnglish();
+                }}
+              >
+                en
+                </div>
+            </Grid>
+
+            <Grid item xs={10} sm className={style.profileItemsLeft}>
+              <Input className={style.proflieLittleText}
+                id="standard-full-width"
+                size='small'
+                style={{ margin: 8 }}
+                placeholder={t("SearchProduct")}
+                fullWidth
+                onChange={(e) => {
+                  getAdverts(`name=${e.target.value}`)
+                }}
+                startAdornment={<Icon path={mdiMagnify}
+                  size={1}
+                  horizontal
+                  rotate={90}
+                  color={theme.palette.primary.main}
+                />}
+              />
+            </Grid>
+
+
+            {(user.username === null) &&
+              <Grid item className={style.profileItemsRight}>
+                <Button
+                  className={style.profileButton}
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => showLoginAction()}
+                >
+                  {t('LoginButton')}
+                </Button>
+              </Grid>}
+
+            {(user.username === null) &&
+              <Grid item className={style.profileItemsRight}>
+                <Button
+                  className={style.profileButton}
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => showRegisterAction()}>
+                  {t('RegisterButton')}
+                </Button>
+              </Grid>}
+
+            {(user.username !== null) &&
+              <Grid item className={style.profileItemsRight}>
+                <Button
+                  className={style.profileButton}
+                  color="primary">
+                  {t('Messages')}
+                </Button>
+              </Grid>}
+
+            {(user.username !== null) &&
+              <Grid item className={style.profileItemsRight}>
+                <Button
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleClick}>
+
+                  <Avatar
+                    className={style.userAvatar}
+                    src={user.photo ? `${process.env.REACT_APP_IMG_URL}/${user.photo}` : `${process.env.REACT_APP_IMG_URL}/no-photo.gif`}
+                  />
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem className={style.profileMenuItem} onClick={() => goToUserDetail()}>{t('MyAccount')}</MenuItem>
+                  <MenuItem className={style.profileMenuItem} onClick={handleClose}>{t('MyProducts')}</MenuItem>
+                  <MenuItem className={style.profileMenuItem} onClick={handleClose}>{t('MyFavs')}</MenuItem>
+                  <MenuItem className={style.profileMenuItem} onClick={() => logout()}>{t('Logout')}</MenuItem>
+                </Menu>
+              </Grid>}
+
+            {(user.username !== null) &&
+              <Grid item className={style.profileItemsRight}>
+                <Button
+                  className={style.profileButton}
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => goToCreateAdvert()}
+                >
+                  {t('CreateProduct')}
+                </Button>
+              </Grid>}
+
+          </Grid>
+
+        </Toolbar>
+      </AppBar>
 
     </React.Fragment>
   );
@@ -205,9 +223,12 @@ export default function Profile(props) {
 
 Profile.propTypes = {
   user: T.object,
-  goLogin: T.func,
+  showLoginAction: T.func,
   logout: T.func,
-  goRegister: T.func,
+  showRegisterAction: T.func,
   getAdverts: T.func,
+  goToHome: T.func,
+  goToUserDetail: T.func,
   goToCreateAdvert: T.func,
 };
+

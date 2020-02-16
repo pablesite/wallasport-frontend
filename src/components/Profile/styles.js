@@ -2,10 +2,6 @@ import { theme } from '../styles';
 
 export const styles = {
 
-  profileRoot: {
-    // flexGrow: 1,
-  },
-
   profileToolbar: {
     minHeight: 50,
   },
@@ -55,6 +51,14 @@ export const styles = {
   profileButton: {
     borderRadius: '20px 20px 20px 20px',
     textTransform: 'none',
+  },
+
+  profileMenuItem: {
+    color:theme.palette.primary.main,
+    '&:hover': {
+      color: '#fff',
+      backgroundColor: theme.palette.primary.main,
+    }
   },
 
   proflieLittleText: {

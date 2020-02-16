@@ -6,11 +6,11 @@ import T from 'prop-types';
 export default function PrivateRoute({ authorized, ...props }) {
 
   // Actions of the store
-  const { goToHome } = props;
+  const { showLoginAction } = props;
 
   useEffect(() => {
-    if (!authorized) { goToHome();}
-  }, [authorized, goToHome]);
+    if (!authorized) { showLoginAction();}
+  }, [authorized, showLoginAction]);
 
   return (
     <React.Fragment>

@@ -17,7 +17,7 @@ export default function DeleteAlert(props) {
     const [t] = useTranslation();
 
     // Origin props of the component
-    const { slugName } = props;
+    const { type, item } = props;
 
     // State of store
     const {
@@ -40,7 +40,13 @@ export default function DeleteAlert(props) {
 
     const handleDelete = () => {
         setOpen(false);
-        deleteAdvert(slugName, token);
+        if(type === 'advert') {
+            deleteAdvert(item, token);
+        }
+        if(type === 'user') {
+            // deleteUser(item, token); //falta hacerla
+        }
+        
     };
 
     return (
@@ -73,7 +79,7 @@ export default function DeleteAlert(props) {
 }
 
 DeleteAlert.propTypes = {
-    slugName: T.string,
+    item: T.string,
     token: T.string,
     deleteAdvert: T.func,
 };

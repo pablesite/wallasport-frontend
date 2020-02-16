@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import AdvertDetail from './AdvertDetail';
 
-import { getOneAdvert } from '../../store/actions';
+import { goToAdvertDetail } from '../../store/actions';
 import { isFetching, error, showLogin, showRegister, showUserRegistered, advertsInPages, locateAdvertFromUrl } from '../../store/selectors';
 
 
@@ -13,12 +13,12 @@ function mapStateToProps(state, props) {
     showRegister: showRegister(state),
     showUserRegistered: showUserRegistered(state),
     adverts: advertsInPages(state),
-    locateAdvertFromUrl: locateAdvertFromUrl(props.location, state),
+    locateAdvertFromUrl: locateAdvertFromUrl(state, props.location),
   }
 }
 
 const mapDispatchToProps = {
-  getOneAdvert: getOneAdvert
+  goToAdvertDetail: goToAdvertDetail
 };
 
 export default connect(

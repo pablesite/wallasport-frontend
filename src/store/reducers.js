@@ -23,28 +23,32 @@ const initialState = {
         showLogin: false,
         showRegister: false,
         showUserRegistered: false,
-        showAdvertDetail: true, //seguro?
+        showUpdateUser: false,
+        showAdvertDetail: true,
         showCreateAdvert: true,
-
-
-
     }
 
 };
 
+
 export const user = (state = initialState.user, action) => {
     switch (action.type) {
 
-        // testeado
-        case TYPES.DELETE_USER_SUCCESS:
-            return action.user;
+        case TYPES.REGISTER_SUCCESS:
+            return state;
 
         // testeado
         case TYPES.LOGIN_SUCCESS:
             return action.user;
 
+        // testeado
+        case TYPES.LOGOUT_SUCCESS:
+            return action.user;
 
-        case TYPES.REGISTER_SUCCESS:
+        case TYPES.GET_USER_SUCCESS:
+            return action.user;
+
+        case TYPES.UPDATE_USER_SUCCESS:
             return state;
 
         default:
@@ -56,27 +60,9 @@ export const user = (state = initialState.user, action) => {
 export const adverts = (state = initialState.adverts, action) => {
     switch (action.type) {
 
-        // case TYPES.ADVERTS_SUCCESS:
-        //     return {
-        //         ...state,
-              
-        //     };
-
-        // case TYPES.ONE_ADVERT_SUCCESS:
-        //     return {
-        //         ...state,
-        //         detail: action.detail,
-        //     };
-
-        // case TYPES.ADVERT_CREATED_SUCCESS:
-        //     return {
-        //         ...state,
-        //         detail: action.detail,
-        //     };
-
         case TYPES.DIVIDE_IN_PAGES:
 
-            return action.adverts; 
+            return action.adverts;
 
         case TYPES.PAGE_BACK:
             return {
@@ -96,11 +82,7 @@ export const adverts = (state = initialState.adverts, action) => {
 };
 
 
-
-
-
 export const tags = (state = initialState.tags, action) => {
-
     switch (action.type) {
 
         case TYPES.GET_TAGS_SUCCESS:
@@ -148,42 +130,55 @@ export const ui = (state = initialState.ui, action) => {
     return state;
 };
 
+
 export const appSelectors = (state = initialState.appSelectors, action) => {
 
     switch (action.type) {
 
-        case TYPES.GO_LOGIN:
+        case TYPES.SHOW_LOGIN:
             return {
                 ...state,
                 showLogin: true,
                 showRegister: false,
+                showUpdateUser: false,
                 showUserRegistered: false,
             }
 
-        case TYPES.GO_REGISTER:
+        case TYPES.SHOW_REGISTER:
             return {
                 ...state,
                 showLogin: false,
                 showRegister: true,
+                showUpdateUser: false,
                 showUserRegistered: false,
             }
 
-        case TYPES.GO_USER_REGISTERED:
+        case TYPES.SHOW_USER_REGISTERED:
             return {
                 ...state,
                 showLogin: false,
                 showRegister: false,
+                showUpdateUser: false,
                 showUserRegistered: true,
             }
 
-        case TYPES.GO_APP:
+        case TYPES.SHOW_UPDATE_USER:
             return {
                 ...state,
                 showLogin: false,
                 showRegister: false,
+                showUpdateUser: true,
                 showUserRegistered: false,
             }
 
+        case TYPES.SHOW_MAINSCREEN:
+            return {
+                ...state,
+                showLogin: false,
+                showRegister: false,
+                showUpdateUser: false,
+                showUserRegistered: false,
+            }
 
         case TYPES.SHOW_ADVERT_DETAIL:
             return {

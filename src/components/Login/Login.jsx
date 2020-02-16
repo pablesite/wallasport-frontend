@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 
@@ -33,18 +33,38 @@ export default function Login(props) {
 
     // State of store
     const {
-        isFetching, error,                              //ui
-        showLogin, showRegister, showUserRegistered,    //appSelectors
+        token, username, email,                                         //user
+        isFetching, error,                                              //ui
+        showLogin, showRegister, showUpdateUser, showUserRegistered,    //appSelectors
     } = props;
 
     // Actions of the store
-    const { login, register, goToHome, goLogin } = props;
+    const { login, register, updateUser, goToHome, showLoginAction } = props;
 
-    const initialState = showLogin ? { username: "pablesite", password: "1234" } : { username: "", password: "" };
+    let initialState = showUpdateUser ? { username: username, email: email } : { username: "", email: "", password: "" };
+
+    useEffect(() => {
+        if (!showLogin && !showRegister && !showUpdateUser && !showUserRegistered) {
+            showLoginAction();
+        }
+
+    }, [showLoginAction, showRegister, showUpdateUser, showUserRegistered, showLogin]);
+
+    const [photo, setPhoto] = useState();
+
 
     const onSubmit = (user) => {
-        if (showLogin) { login(user) }
-        else { register(user) }
+        if (showLogin) { login(user); }
+        else {
+            if (photo) { user = { ...user, photo: photo } }
+
+            if (showRegister) {
+                register(user)
+            } else {
+                updateUser(user, username, token)
+            }
+
+        }
     };
 
     return (
@@ -79,6 +99,7 @@ export default function Login(props) {
                         <Typography component="h1" variant="h6">
                             {showLogin && t('Welcome')}
                             {showRegister && t('Register')}
+                            {showUpdateUser && t('UpdateUser')}
                         </Typography>
 
                         <Typography variant="body2">
@@ -98,7 +119,7 @@ export default function Login(props) {
                                 size="small"
                                 variant="outlined"
                                 color="primary"
-                                onClick={() => goLogin()}>
+                                onClick={() => showLoginAction()}>
                                 {t('LoginButton')}
                             </Button>}
                         {showUserRegistered && <p></p>}
@@ -121,7 +142,7 @@ export default function Login(props) {
                                     </Grid>
 
 
-                                    {showRegister && !showUserRegistered &&
+                                    {(showRegister || showUpdateUser) && !showUserRegistered &&
                                         <Grid item xs={12}>
                                             <InputEnhanced
                                                 type='email'
@@ -140,10 +161,45 @@ export default function Login(props) {
                                             component={TextField}
                                             fullWidth
                                             variant="outlined"
-                                            required />
+                                            required
+                                            helperText={showUpdateUser && t('NewPassword')}
+
+                                        />
                                     </Grid>
 
+                                    {(showRegister || showUpdateUser) && !showUserRegistered &&
+
+                                        <Grid item xs={12}>
+                                            <input
+                                                accept="image/*"
+                                                style={{ display: 'none' }}
+                                                id="raised-button-file"
+                                                multiple
+                                                type="file"
+                                                onChange={(e) => setPhoto(e.target.files[0])}
+                                            />
+
+                                            <label htmlFor="raised-button-file">
+                                                <Button
+                                                    className={style.createOrUpdateButtonUpload}
+                                                    component="span"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    size="medium"
+                                                >
+                                                    {t('UploadImage')}
+                                                </Button>
+                                            </label>
+
+                                        </Grid>
+                                    }
+
                                 </Grid>
+
+                                <Typography className={style.createOrUpdateCreateTypography} variant="body2" color="inherit" >
+                                    {photo !== undefined && photo !== null && t('NameOfPhoto') + photo.name}
+                                </Typography>
 
 
                                 <div className={style.loginSubmit}>
@@ -155,6 +211,8 @@ export default function Login(props) {
                                     >
                                         {showLogin && t('LoginButton')}
                                         {showRegister && t('RegisterButton')}
+                                        {showUpdateUser && t('UpdateUserButton')}
+
                                     </Button>
                                 </div>
 
@@ -176,14 +234,19 @@ export default function Login(props) {
 }
 
 Login.propTypes = {
+    token: T.string,
+    username: T.string,
+    email: T.string,
     isFetching: T.bool,
     error: T.objectOf(Error),
     showLogin: T.bool,
     showRegister: T.bool,
+    showUpdateUser: T.bool,
     showUserRegistered: T.bool,
     login: T.func,
     register: T.func,
+    updateUser: T.func,
     goToHome: T.func,
-    goLogin: T.func,
+    showLoginAction: T.func,
 };
 

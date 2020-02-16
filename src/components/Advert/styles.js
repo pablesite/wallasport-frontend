@@ -1,6 +1,9 @@
 import { theme } from '../styles';
 
-export const styles = {
+// const styledBy = (property, mapping) => props => mapping[props[property]];
+
+export const styles = { 
+  
   advertRoot: {
     margin: 5,
     width: 225,
@@ -20,16 +23,43 @@ export const styles = {
     }
   },
 
+  advertReserved: {
+    background: 'rgba(142, 231, 201, 0.35)',
+  },
+
+  advertSold: {
+    background: 'rgba(142, 142, 142, 0.45)',
+  },
+
+  advertReservedText: {
+    position: 'absolute', 
+    transform: 'rotate(-45deg)',
+    fontSize: 'xxx-large',
+    top: '35vh',
+    right: '44vw',
+    zIndex: 1,
+    color: theme.palette.primary.main,
+  },
+
+  advertSoldText: {
+    position: 'absolute', 
+    transform: 'rotate(-45deg)',
+    fontSize: 'xxx-large',
+    top: '35vh',
+    right: '44vw',
+    zIndex: 1,
+  },
+
   advertUserOwner: {
     color: theme.palette.primary.main,
     display: 'inline',
-    paddingLeft: '3em'
+    paddingLeft: '1em',
 
   },
   advertUserOwnerDetail: {
     color: theme.palette.primary.main,
     paddingTop: '1em',
-    paddingLeft: '3em',
+    paddingLeft: '1em',
     fontSize: 'x-large',
   },
 
@@ -116,11 +146,15 @@ export const styles = {
   },
 
   advertTags: {
-
+    // nothin for the moment
   },
 
   advertTagsDetail: {
-    
+    // nothin for the moment
+  },
+
+  advertSocialNetwork: {
+    marginRight:15,
   },
 
 

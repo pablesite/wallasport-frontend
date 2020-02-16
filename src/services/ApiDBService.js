@@ -2,9 +2,6 @@ import Advert from '../models/Advert';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// // Token aquí para pruebas. Hay que cogerlo siempre del store de Redux.
-// const tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTQ0NDg4ODIzNmEyNjUzMzg4ZDdhNmEiLCJpYXQiOjE1ODE2NzAzMzMsImV4cCI6MTU4MTg0MzEzM30.Ik1IeQlZVkriFu3WtwQaPL5NxsSblw6to3dxLPrndDY';
-
 /* ------ API generic requests ------ */
 
 const getRequest = (url) => {
@@ -12,11 +9,19 @@ const getRequest = (url) => {
     url,
     {
       method: 'GET',
-      headers:
-      {
-        'Accept': "application/json, text/plain, */*",
-        // 'Authorization': token 
-      }
+      headers: { 'Accept': "application/json, text/plain, */*", }
+    }
+  )
+    .catch(err => console.log(err)) // Este error aparece cuando por ejemplo la API no redirecciona bien a las rutas. EN vez de hacer nada con él, pinto API Unavailable. Se podría mejorar.
+    .then(res => res.json());
+}
+
+const getRequestPrivate = (url, token) => {
+  return fetch(
+    url,
+    {
+      method: 'GET',
+      headers: { 'Accept': "application/json, text/plain, */*", 'Authorization': token }
     }
   )
     .catch(err => console.log(err)) // Este error aparece cuando por ejemplo la API no redirecciona bien a las rutas. EN vez de hacer nada con él, pinto API Unavailable. Se podría mejorar.
@@ -25,18 +30,12 @@ const getRequest = (url) => {
 
 
 const createRequestPublic = (url, body) => {
-
   return fetch(
     url,
     {
       method: 'POST',
-      headers:
-      {
-        'Content-Type': 'application/json',
-        // 'Authorization': token
-      },
+      headers: {'Content-Type': 'application/json' },
       body: JSON.stringify(body)
-
     }
   )
     .catch(err => console.log(err))
@@ -44,18 +43,12 @@ const createRequestPublic = (url, body) => {
 }
 
 // const createRequestPrivate = (url, body, token) => {
-
 //   return fetch(
 //     url,
 //     {
 //       method: 'POST',
-//       headers:
-//       {
-//         'Content-Type': 'application/json',
-//         'Authorization': token
-//       },
+//       headers: {'Content-Type': 'application/json','Authorization': token },
 //       body: JSON.stringify(body)
-
 //     }
 //   )
 //     .catch(err => console.log(err))
@@ -63,21 +56,27 @@ const createRequestPublic = (url, body) => {
 // }
 
 const createRequestWithPhoto = (url, body, token) => {
-
   const formData = new FormData()
-
-  for(const name in body) {
-    formData.append(name, body[name]);
-  }
-
+  for (const name in body) { formData.append(name, body[name]) }
   return fetch(
     url,
     {
       method: 'POST',
-      headers:
-      {
-         'Authorization': token
-      },
+      headers: {'Authorization': token },
+      body: formData,
+    }
+  )
+    .catch(err => console.log(err))
+    .then(res => res.json());
+}
+
+const createRequestWithPhotoPublic = (url, body) => {
+  const formData = new FormData()
+  for (const name in body) { formData.append(name, body[name]) }
+  return fetch(
+    url,
+    {
+      method: 'POST',
       body: formData,
     }
   )
@@ -93,11 +92,7 @@ const createRequestWithPhoto = (url, body, token) => {
 //     {
 //       method: 'PUT',
 //       body: JSON.stringify(body),
-//       headers:
-//       {
-//         'Content-Type': 'application/json',
-//         'Authorization': token
-//       },
+//       headers: {'Content-Type': 'application/json', 'Authorization': token },
 //     }
 //   )
 //     .catch(err => console.log(err))
@@ -106,21 +101,13 @@ const createRequestWithPhoto = (url, body, token) => {
 
 
 const updateRequestWithPhoto = (url, body, token) => {
-
   const formData = new FormData()
-
-  for(const name in body) {
-    formData.append(name, body[name]);
-  }
-
+  for (const name in body) { formData.append(name, body[name]) }
   return fetch(
     url,
     {
       method: 'PUT',
-      headers:
-      {
-         'Authorization': token
-      },
+      headers: {'Authorization': token },
       body: formData,
     }
   )
@@ -131,18 +118,11 @@ const updateRequestWithPhoto = (url, body, token) => {
 
 
 const deleteRequest = (url, token) => {
-
   return fetch(
     url,
     {
       method: 'DELETE',
-      headers:
-      {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-      // body: JSON.stringify(body)
-
+      headers: { 'Content-Type': 'application/json', 'Authorization': token },
     }
   )
     .catch(err => console.log(err))
@@ -156,39 +136,52 @@ const loginJWT = (user) => {
   return createRequestPublic(`${API_URL}/login`, user)
     .catch(error => console.error('Error:', error))
     .then(response => response)
-
 }
 
 const registerNewUser = (user) => {
-  return createRequestPublic(`${API_URL}/register`, user)
+  return createRequestWithPhotoPublic(`${API_URL}/register`, user)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 
 }
 
+const getUser = (username, token) => {
+  return getRequestPrivate(`${API_URL}/user/${username}`, token)
+    .catch(error => console.error('Error:', error))
+    .then(res => res.user)
+}
+
+const updateUser = (user, username, token) => {
+  console.log('entro API updateUser', user, token)
+  return updateRequestWithPhoto(`${API_URL}/user/${username}`, user, token)
+    .catch(error => console.error('Error:', error))
+    .then(res => res.user)
+}
+
+
 const getTags = () => {
   return getRequest(`${API_URL}/tags/`)
+    .catch(error => console.error('Error:', error))
     .then(res => res.tags)
-
 }
 
 // De momento no se usa
 const getOneAdvert = (advertID) => {
   return getRequest(`${API_URL}/adverts/${advertID}`)
+    .catch(error => console.error('Error:', error))
     .then(res => new Advert(res.advert))
-
-
 }
 
 // De momento no se usa
 const discoverAdverts = () => {
   return getRequest(`${API_URL}/adverts/`)
+    .catch(error => console.error('Error:', error))
     .then(res => res.list.map(adv => new Advert(adv)))
-
 }
 
 const getAdverts = (query) => {
   return getRequest(`${API_URL}/adverts?${query}`)
+    .catch(error => console.error('Error:', error))
     .then(res => res.list.map(adv => new Advert(adv)))
 
 }
@@ -200,8 +193,8 @@ const createAdvert = (advert, token) => {
 
 }
 
-const updateAdvert = (advert, slugName, token) => {
-  return updateRequestWithPhoto(`${API_URL}/adverts/${slugName}`, advert, token)
+const updateAdvert = (advert, token) => {
+  return updateRequestWithPhoto(`${API_URL}/adverts/${advert.slugName}`, advert, token)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 }
@@ -214,13 +207,16 @@ const deleteAdvert = (slugName, token) => {
 
 
 export {
-  getTags,
-  getOneAdvert,
+  loginJWT,
+  getUser,
+  updateUser,
+  registerNewUser,
   discoverAdverts,
   getAdverts,
+  getOneAdvert,
   createAdvert,
   updateAdvert,
   deleteAdvert,
-  loginJWT,
-  registerNewUser,
+  getTags,
+
 };

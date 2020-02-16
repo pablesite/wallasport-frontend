@@ -27,7 +27,6 @@ export const theme = createMuiTheme({
 
 
 export const styles = {
-   
 
     apiUnavailable: {
         flexGrow: 1,
@@ -40,6 +39,4 @@ export const styles = {
         fontSize: '4em'
     },
 
-
-
-    };
+};

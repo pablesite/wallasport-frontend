@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Profile from './Profile';
 
 import { user } from '../../store/selectors';
-import { logout, goLogin, goRegister,getAdverts, goToCreateAdvert } from '../../store/actions';
+import { logout, showLoginAction, showRegisterAction, getAdverts, goToHome, goToUserDetail, goToCreateAdvert } from '../../store/actions';
 
 
 function mapStateToProps(state) {
@@ -13,10 +13,12 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  goLogin: goLogin,
+  showLoginAction: showLoginAction,
   logout: logout,
-  goRegister: goRegister,
+  showRegisterAction: showRegisterAction,
   getAdverts: getAdverts,
+  goToHome: goToHome,
+  goToUserDetail: goToUserDetail,
   goToCreateAdvert: goToCreateAdvert,
 };
 

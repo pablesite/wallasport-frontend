@@ -1,20 +1,23 @@
 import { connect } from 'react-redux';
 
 import Advert from './Advert';
-import { getOneAdvert, goToCreateAdvert, goToUpdateAdvert } from '../../store/actions';
-import { showAdvertDetail, user } from '../../store/selectors';
+
+import { user, showAdvertDetail } from '../../store/selectors';
+import { goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, markAsReserved, markAsSold } from '../../store/actions';
 
 function mapStateToProps(state) {
   return {
-    showAdvertDetail: showAdvertDetail(state),
     user: user(state),
+    showAdvertDetail: showAdvertDetail(state),
   };
 }
 
 const mapDispatchToProps = {
-  getOneAdvert: getOneAdvert,
+  goToAdvertDetail: goToAdvertDetail,
   goToCreateAdvert: goToCreateAdvert,
   goToUpdateAdvert: goToUpdateAdvert,
+  markAsReserved: markAsReserved,
+  markAsSold: markAsSold,
 
 };
 

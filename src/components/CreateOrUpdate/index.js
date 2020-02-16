@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CreateOrUpdate from './CreateOrUpdate';
 
-import { createAdvert, updateAdvert, getOneAdvert, showList } from '../../store/actions';
+import { createAdvert, updateAdvert, goToAdvertDetail, showListAction, goToHome } from '../../store/actions';
 import { user, isAuthorized, locateAdvertFromUrl, tags, showCreateAdvert } from '../../store/selectors';
 
 
@@ -9,7 +9,7 @@ function mapStateToProps(state, props) {
   return {
     user: user(state),
     checkUser: isAuthorized(state),
-    advertToEdit: locateAdvertFromUrl(props.location, state),
+    advertToEdit: locateAdvertFromUrl(state, props.location),
     tagList: tags(state),
     showCreateAdvert: showCreateAdvert(state),
   }
@@ -18,8 +18,9 @@ function mapStateToProps(state, props) {
 const mapDispatchToProps = {
   createAdvert: createAdvert,
   updateAdvert: updateAdvert,
-  getOneAdvert: getOneAdvert,
-  showList: showList,
+  goToAdvertDetail: goToAdvertDetail,
+  showListAction: showListAction,
+  goToHome: goToHome,
 };
 
 

@@ -54,30 +54,30 @@ describe('actions', () => {
 
     /* ----- UI tests ----- */
 
-    it('should create an goApp action', () => {
+    it('should create an showMainScreenAction action', () => {
         const expectedAction = {
-            type: types.GO_APP,
+            type: types.SHOW_MAINSCREEN,
           
         };
-        expect(actions.goApp()).toEqual(expectedAction);
+        expect(actions.showMainScreenAction()).toEqual(expectedAction);
 
     });
 
-    it('should create an goLogin action', () => {
+    it('should create an showLoginAction action', () => {
         const expectedAction = {
-            type: types.GO_LOGIN,
+            type: types.SHOW_LOGIN,
           
         };
-        expect(actions.goLogin()).toEqual(expectedAction);
+        expect(actions.showLoginAction()).toEqual(expectedAction);
 
     });
 
-    it('should create an goRegister action', () => {
+    it('should create an showRegisterAction action', () => {
         const expectedAction = {
-            type: types.GO_REGISTER,
+            type: types.SHOW_REGISTER,
           
         };
-        expect(actions.goRegister()).toEqual(expectedAction);
+        expect(actions.showRegisterAction()).toEqual(expectedAction);
 
     });
 
@@ -90,7 +90,7 @@ describe('actions', () => {
         const expectedActions = [{
             type: types.API_REQUEST,
         }, {
-            type: types.GO_USER_REGISTERED,
+            type: types.SHOW_USER_REGISTERED,
         }, 
         { type: types.REGISTER_SUCCESS,
             
@@ -131,7 +131,7 @@ describe('actions', () => {
         const expectedActions = [{
             type: types.API_REQUEST,
         }, {
-            type: types.GO_APP,   
+            type: types.SHOW_MAINSCREEN,   
         }, {
             type: types.LOGIN_SUCCESS,
             user    
@@ -174,7 +174,7 @@ describe('actions', () => {
     it('should dispatch a logout action', async () => {
 
         const expectedActions = [{
-            type: types.DELETE_USER_SUCCESS,
+            type: types.LOGOUT_SUCCESS,
             user: new User()
         }];
 
@@ -183,14 +183,14 @@ describe('actions', () => {
     });
 
 
-    //Delete User
-    it('should create an deleteUserSuccess action', () => {
+    //Logout User
+    it('should create an logoutSuccess action', () => {
 
         const expectedAction = {
-            type: types.DELETE_USER_SUCCESS,
+            type: types.LOGOUT_SUCCESS,
             user: new User()
         };
-        expect(actions.deleteUserSuccess()).toEqual(expectedAction);
+        expect(actions.logoutSuccess()).toEqual(expectedAction);
 
     });
 
