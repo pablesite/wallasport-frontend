@@ -2,17 +2,22 @@
 import { connect } from 'react-redux';
 
 import Filtering from './Filtering';
-import { getAdverts } from '../../store/actions';
+
+import { sort, isFetching, error } from '../../store/selectors';
+import { getAdverts, switchSort } from '../../store/actions';
 
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
-    // nothing for the moment
+    sort: sort(state),
+    isFetching: isFetching(state),
+    error: error(state),
   };
 }
 
 const mapDispatchToProps = {
   filterAdverts: getAdverts,
+  switchSort: switchSort,
 };
 
 export default connect(

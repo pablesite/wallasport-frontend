@@ -84,8 +84,6 @@ const createRequestWithPhotoPublic = (url, body) => {
     .then(res => res.json());
 }
 
-
-
 // const updateRequest = (url, body, token) => {
 //   return fetch(
 //     url,
@@ -98,7 +96,6 @@ const createRequestWithPhotoPublic = (url, body) => {
 //     .catch(err => console.log(err))
 //     .then(res => res.json());
 // }
-
 
 const updateRequestWithPhoto = (url, body, token) => {
   const formData = new FormData()
@@ -152,11 +149,18 @@ const getUser = (username, token) => {
 }
 
 const updateUser = (user, username, token) => {
-  console.log('entro API updateUser', user, token)
   return updateRequestWithPhoto(`${API_URL}/user/${username}`, user, token)
     .catch(error => console.error('Error:', error))
     .then(res => res.user)
 }
+
+const deleteUser = (username, token) => {
+  return deleteRequest(`${API_URL}/user/${username}`, token)
+    .catch(error => console.error('Error:', error))
+    .then(response => response)
+}
+
+
 
 
 const getTags = () => {
@@ -211,6 +215,7 @@ export {
   getUser,
   updateUser,
   registerNewUser,
+  deleteUser,
   discoverAdverts,
   getAdverts,
   getOneAdvert,

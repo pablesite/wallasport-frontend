@@ -8,8 +8,7 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
-
-//export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 
 
  // ADVERTS types
@@ -18,6 +17,8 @@ export const ADVERTS_SUCCESS = 'ADVERTS_SUCCESS';
 export const DIVIDE_IN_PAGES = 'DIVIDE_IN_PAGES';
 export const PAGE_BACK = 'PAGE_BACK';
 export const PAGE_FORWARD = 'PAGE_FORWARD';
+export const SWITCH_SORT = 'SWITCH_SORT';
+
 
  // TAGS types
 export const GET_TAGS_SUCCESS = 'GET_TAGS_SUCCESS';

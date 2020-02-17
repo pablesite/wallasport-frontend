@@ -13,6 +13,7 @@ export const isAuthorized = (state) =>  Boolean(state.user && state.user.usernam
 export const advertsInPages = state => state.adverts.advertsInPages;
 export const actualPage = state => state.adverts.actualPage;
 export const numberOfPages = state => state.adverts.numberOfPages;
+export const sort = state => state.adverts.sort;
 
 export const locateAdvertFromUrl = (state, location) => {
     let advert = null;

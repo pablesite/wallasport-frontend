@@ -36,7 +36,7 @@ const resources = {
       'Buy': 'Buy',
       'NoAdverts': 'There is no product. Please, try another search',
       'NameOfPhoto': 'The photo entered has the name: ',
-      'DeleteAlert': 'You are about to delete this product. This operation cannot be undone.',
+      'DeleteAlert': 'You are about to delete this item. This operation cannot be undone.',
       'Disagree': 'Disagree',
       'Agree': 'Agree',
       'Warning': 'Warning!',
@@ -47,9 +47,11 @@ const resources = {
       'postSocialNetwork': 'Check out this bargain.',
       'Reserved': 'Reserved!',
       'Sold': 'Sold!!!',
-      'WelcomePersonalInfo': 'Welcome to the personal info',
+      'WelcomePersonalInfo': 'Welcome to your personal info',
       'Username': 'Username: ',
       'Email': 'Email: ',
+      'Descendent': 'Newer First',
+      'Ascendent': 'Older First',
       
     }
   },
@@ -85,7 +87,7 @@ const resources = {
       'Buy': 'Compra',
       'NoAdverts': 'No hay ningún producto disponible. Por favor, intenta otra búsqueda.',
       'NameOfPhoto': 'La foto subida tiene se llama: ',
-      'DeleteAlert': 'Estás a punto de borrar este producto. Esta operación no se puede deshacer.',
+      'DeleteAlert': 'Estás a punto de borrar este item. Esta operación no se puede deshacer.',
       'Disagree': 'Cancelar',
       'Agree': 'De acuerdo',
       'Warning': '¡Atención!',
@@ -99,6 +101,8 @@ const resources = {
       'WelcomePersonalInfo': 'Bienvenido a tu información personal',
       'Username': 'Nombre de usuario: ',
       'Email': 'Corre electrónico: ',
+      'Descendent': 'Nuevos Primero',
+      'Ascendent': 'Viejos Primero',
     }
   }
 

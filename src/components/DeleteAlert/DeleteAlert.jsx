@@ -25,9 +25,9 @@ export default function DeleteAlert(props) {
     } = props;
 
     // Actions of the store
-    const { deleteAdvert } = props;
+    const { deleteUser, deleteAdvert } = props;
 
-
+    console.log('test')
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -39,12 +39,14 @@ export default function DeleteAlert(props) {
     };
 
     const handleDelete = () => {
+
+        console.log(type)
         setOpen(false);
         if(type === 'advert') {
             deleteAdvert(item, token);
         }
         if(type === 'user') {
-            // deleteUser(item, token); //falta hacerla
+            deleteUser(item, token)
         }
         
     };
@@ -82,4 +84,5 @@ DeleteAlert.propTypes = {
     item: T.string,
     token: T.string,
     deleteAdvert: T.func,
+    deleteUser: T.func,
 };

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import DeleteAlert from './DeleteAlert';
 
-import { deleteAdvert } from '../../store/actions';
+import { deleteUser, deleteAdvert } from '../../store/actions';
 import { token } from '../../store/selectors';
 
 
@@ -12,7 +12,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-    deleteAdvert: deleteAdvert
+    deleteAdvert: deleteAdvert,
+    deleteUser: deleteUser,
 };
 
 export default connect(

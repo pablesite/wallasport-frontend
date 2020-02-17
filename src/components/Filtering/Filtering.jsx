@@ -9,7 +9,6 @@ import InputEnhanced from '../InputEnhanced'
 import Loading from '../Loading';
 import Error from '../Error';
 
-
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -19,7 +18,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { makeStyles } from '@material-ui/core/styles';
 // import { theme } from '../styles';
@@ -36,12 +36,12 @@ export default function Filtering(props) {
 
     // State of store
     const {
-        isFetching, error    //ui
+        sort,         //adverts     
+        isFetching, error,  //ui
     } = props;
 
-  // Actions of the store
-  const { filterAdverts } = props;
-
+    // Actions of the store
+    const { filterAdverts, switchSort } = props;
 
     const onSubmit = (event) => {
 
@@ -63,8 +63,8 @@ export default function Filtering(props) {
         if (filterString && filterString.trim().length) {
             filterAdverts(filterString)
         }
-        else { 
-            filterAdverts(); 
+        else {
+            filterAdverts();
         }
     };
 
@@ -117,22 +117,44 @@ export default function Filtering(props) {
                                         component={TextField}
                                         fullWidth
                                         helperText={t('OneFreeTag')}
-
-
                                     />
                                 </Grid>
 
-                                <Grid item className={style.filteringSubmit} xs={3}>
-                                    <Button
-                                        label="Continue"
-                                        type='submit'
-                                        variant="contained"
-                                        color="secondary"
-                                        className={style.filteringButton}
-                                    >
-                                        {t('FilteringButton')}
 
-                                    </Button>
+                                <Grid item xs={3}>
+
+                                    <Grid item className={style.filteringSubmit} xs>
+
+                                        <FormControlLabel
+                                            classes={{ root: style.filteringSwitch, label: style.filteringSwitchText }}
+                                            control={
+                                                <Switch
+                                                    checked={sort}
+                                                    onChange={() => switchSort(sort)}
+                                                    value={sort}
+                                                    color="secondary"
+                                                    // className={style.filteringSwitch}
+                                                // classes={{
+                                                //     colorSecondary: style.filteringSwitch,
+                                                //   }}
+                                                />}
+                                            label={sort ? t('Descendent') : t('Ascendent')}
+                                        />
+                                    </Grid>
+
+                                    <Grid item className={style.filteringSubmit} xs>
+                                        <Button
+                                            label="Continue"
+                                            type='submit'
+                                            variant="contained"
+                                            color="secondary"
+                                            className={style.filteringButton}
+                                        >
+                                            {t('FilteringButton')}
+
+                                        </Button>
+                                    </Grid>
+
                                 </Grid>
 
                             </Grid>
@@ -152,7 +174,7 @@ export default function Filtering(props) {
 }
 
 Filtering.propTypes = {
-     error: T.objectOf(Error),
-     isFetching: T.bool,
-     filterAdverts: T.func,
+    error: T.objectOf(Error),
+    isFetching: T.bool,
+    filterAdverts: T.func,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 
@@ -52,8 +52,11 @@ export default function UserDetail(props) {
 
       <Profile />
 
+      <Filtering />
+
       {isFetching && <Loading />}
       {error && <Error error={error} />}
+
 
       <div className={style.userDetailRoot} >
 

@@ -3,7 +3,7 @@ import {
   GET_USER_SUCCESS,
   // CREATE_USER_SUCESS,
   UPDATE_USER_SUCCESS,
-  //DELETE_USER_SUCCESS,
+  DELETE_USER_SUCCESS,
 
   REGISTER_SUCCESS,
   REGISTER_INVALID,
@@ -41,6 +41,7 @@ import {
   SHOW_UPDATE_ADVERT,
   SHOW_ADVERT_DETAIL,
   SHOW_LIST,
+  SWITCH_SORT,
   // GO_DETAIL,
 
 
@@ -85,8 +86,8 @@ export const login = (user) => {
       if (success === true) {
         user = { username: user.username, token }
         dispatch(loginSuccess(user));
-        dispatch(goToHome());
         dispatch(getUser(user.username, token))
+        dispatch(goToHome());
       } else {
         dispatch(loginInvalid(new Error(i18n.t('Invalid_credentials'))));
       }
@@ -118,6 +119,19 @@ export const getUser = (username, token) => {
       user = { ...user, token: token }
       saveUserInLS(user);
       dispatch(getUserSuccess(user));
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+export const deleteUser = (username, token) => {
+  return async function (dispatch, _getState, { services: { ApiService } }) {
+    dispatch(apiRequest());
+    try {
+      await ApiService.deleteUser(username, token)
+      dispatch(logout());
+      dispatch(deleteUserSuccess());
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -167,6 +181,10 @@ export const logoutSuccess = () => ({
   user: new User(),
 });
 
+export const deleteUserSuccess = () => ({
+  type: DELETE_USER_SUCCESS,
+});
+
 export const getUserSuccess = user => ({
   type: GET_USER_SUCCESS,
   user: user,
@@ -186,8 +204,16 @@ export const getAdverts = (query) => {
   return async function (dispatch, _getState, { history, services: { ApiService } }) {
     dispatch(apiRequest());
     try {
+      const sort = _getState().adverts.sort;
+      let sortEnhanced = '';
+      if (sort !== undefined) {
+        if (sort === false) { sortEnhanced = '' }
+        if (sort === true) { sortEnhanced = '-' }
+        if (query === '' || query === undefined) { query = 'sort=' + sortEnhanced + 'creationDate' }
+        else { query = query + '&sort=' + sortEnhanced + 'creationDate' }
+      }
       const adverts = await ApiService.getAdverts(query)
-      dispatch(divideInPages(adverts, 8)); //Parámetro (el 6) debería ser modificable por el usuario.
+      dispatch(divideInPages(adverts, 8, sort)); //Parámetro (el 8) debería ser modificable por el usuario.
       dispatch(AdvertsSuccess());
     } catch (error) {
       dispatch(apiFailure(error));
@@ -291,7 +317,7 @@ export const markAsSold = (advert, token) => {
 
 /* Actions */
 
-export const divideInPages = (adverts, numberPerPage) => {
+export const divideInPages = (adverts, numberPerPage, sort) => {
 
   const numberOfPages = Math.ceil(adverts.length / numberPerPage);
   const actualPage = 1;
@@ -327,9 +353,10 @@ export const divideInPages = (adverts, numberPerPage) => {
     advertsInPages[index].push(advert);
   });
 
+  console.log('sort en divide', sort)
   return {
     type: DIVIDE_IN_PAGES,
-    adverts: { actualPage, numberOfPages, advertsInPages },
+    adverts: { actualPage, numberOfPages, advertsInPages, sort },
   }
 }
 
@@ -358,6 +385,14 @@ export const pageForward = (actualPage, numberOfPages) => {
     actualPage: actualPage
   }
 }
+
+export const switchSort = (sort) => {
+  return {
+    type: SWITCH_SORT,
+    sort: !sort
+  }
+}
+
 
 //Testeada
 export const AdvertsSuccess = () => ({

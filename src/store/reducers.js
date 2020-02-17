@@ -9,6 +9,7 @@ const initialState = {
         advertsInPages: [],
         actualPage: 1,
         numberOfPages: 1,
+        sort: true, // at the beginning, filter descendent
     },
 
     tags: [],
@@ -34,8 +35,8 @@ const initialState = {
 export const user = (state = initialState.user, action) => {
     switch (action.type) {
 
-        case TYPES.REGISTER_SUCCESS:
-            return state;
+        // case TYPES.REGISTER_SUCCESS:
+        //     return state;
 
         // testeado
         case TYPES.LOGIN_SUCCESS:
@@ -48,8 +49,9 @@ export const user = (state = initialState.user, action) => {
         case TYPES.GET_USER_SUCCESS:
             return action.user;
 
-        case TYPES.UPDATE_USER_SUCCESS:
-            return state;
+        // case TYPES.UPDATE_USER_SUCCESS:
+        //     return state;
+
 
         default:
             return state;
@@ -61,7 +63,6 @@ export const adverts = (state = initialState.adverts, action) => {
     switch (action.type) {
 
         case TYPES.DIVIDE_IN_PAGES:
-
             return action.adverts;
 
         case TYPES.PAGE_BACK:
@@ -74,6 +75,12 @@ export const adverts = (state = initialState.adverts, action) => {
             return {
                 ...state,
                 actualPage: action.actualPage,
+            };
+
+        case TYPES.SWITCH_SORT:
+            return {
+                ...state,
+                sort: action.sort,
             };
 
         default:
