@@ -5,9 +5,13 @@ export const user = state => state.user;
 export const token = state => state.user.token;
 export const username = state => state.user.username;
 export const email = state => state.user.email;
-
 export const isAuthorized = (state) =>  Boolean(state.user && state.user.username);
 
+export const findInFavourites = (state, favId) => {
+    const isInTheList = state.user.favs.find(fav => fav == favId);
+    console.log(state.user.favs)
+    return Boolean(isInTheList);
+}
 
 // adverts selector
 export const advertsInPages = state => state.adverts.advertsInPages;

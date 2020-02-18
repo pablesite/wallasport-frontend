@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 
@@ -27,8 +27,7 @@ export default function DeleteAlert(props) {
     // Actions of the store
     const { deleteUser, deleteAdvert } = props;
 
-    console.log('test')
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);

@@ -39,12 +39,12 @@ export default function Advert(props) {
 
   // State of store
   const {
-    user,                 //user
-    showAdvertDetail      //appSelector  
+    user, findInFavourites, //user
+    showAdvertDetail        //appSelector  
   } = props;
 
   // Actions of the store
-  const { goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, markAsReserved, markAsSold } = props;
+  const { goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, markAsFavourite, markAsReserved, markAsSold } = props;
 
 
   return (
@@ -138,7 +138,6 @@ export default function Advert(props) {
 
             </Typography>}
 
-
         </CardContent>
 
         <Grid container justify='space-between' alignItems='center' >
@@ -147,8 +146,10 @@ export default function Advert(props) {
             {advert.name && showAdvertDetail &&
               <CardActions disableSpacing>
 
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon  />
+                <IconButton aria-label="add to favorites"
+                onClick={() => markAsFavourite(user, advert._id)}>
+                  <FavoriteIcon 
+                  color={findInFavourites ? "primary" : "inherit"} /> 
                 </IconButton>
 
                 {(advert.userOwner === user.username) &&
@@ -211,6 +212,7 @@ Advert.propTypes = {
   goToAdvertDetail: T.func,
   goToCreateAdvert: T.func,
   goToUpdateAdvert: T.func,
+  markAsFavourite: T.func,
   markAsReserved: T.func,
   markAsSold: T.func,
 };

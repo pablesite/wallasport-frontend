@@ -51,6 +51,7 @@ import User from '../models/User';
 import Advert from '../models/Advert';
 
 import { saveUserInLS, deleteLS } from '../services/Storage';
+import { findInFavourites } from './selectors';
 
 import i18n from 'i18next';
 
@@ -132,6 +133,21 @@ export const deleteUser = (username, token) => {
       await ApiService.deleteUser(username, token)
       dispatch(logout());
       dispatch(deleteUserSuccess());
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+export const markAsFavourite = (user, favourite) => {
+  return async function (dispatch, _getState, { services: { ApiService } }) {
+    dispatch(apiRequest());
+    try {
+      user = { ...user, favs: favourite }
+      await ApiService.updateUser(user, user.username, user.token)
+      dispatch(getAdverts());
+      dispatch(getUser(user.username, user.token))
+      dispatch(updateUserSuccess())
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -277,6 +293,7 @@ export const deleteAdvert = (slugName, token) => {
   };
 };
 
+
 export const markAsReserved = (advert, token) => {
   return async function (dispatch, _getState, { services: { ApiService } }) {
     dispatch(apiRequest());
@@ -353,7 +370,6 @@ export const divideInPages = (adverts, numberPerPage, sort) => {
     advertsInPages[index].push(advert);
   });
 
-  console.log('sort en divide', sort)
   return {
     type: DIVIDE_IN_PAGES,
     adverts: { actualPage, numberOfPages, advertsInPages, sort },

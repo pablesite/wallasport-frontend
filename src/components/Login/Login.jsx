@@ -54,6 +54,9 @@ export default function Login(props) {
 
 
     const onSubmit = (user) => {
+        // console.log(user)
+        // const user1 = new User(user.username, user.email);
+
         if (showLogin) { login(user); }
         else {
             if (photo) { user = { ...user, photo: photo } }
