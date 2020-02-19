@@ -129,18 +129,18 @@ const deleteRequest = (url, token) => {
 
 /* ------ Specific functions ------ */
 
+const registerNewUser = (user) => {
+  return createRequestWithPhotoPublic(`${API_URL}/register`, user)
+    .catch(error => console.error('Error:', error))
+    .then(response => response)
+}
+
 const loginJWT = (user) => {
   return createRequestPublic(`${API_URL}/login`, user)
     .catch(error => console.error('Error:', error))
     .then(response => response)
 }
 
-const registerNewUser = (user) => {
-  return createRequestWithPhotoPublic(`${API_URL}/register`, user)
-    .catch(error => console.error('Error:', error))
-    .then(response => response)
-
-}
 
 const getUser = (username, token) => {
   return getRequestPrivate(`${API_URL}/user/${username}`, token)
@@ -160,21 +160,13 @@ const deleteUser = (username, token) => {
     .then(response => response)
 }
 
-
-
-
-const getTags = () => {
-  return getRequest(`${API_URL}/tags/`)
+const getFavsFromUser = (username, sort, token) => {
+  return getRequestPrivate(`${API_URL}/user/${username}/favs/${sort}`, token)
     .catch(error => console.error('Error:', error))
-    .then(res => res.tags)
+    .then(res => res.user)
 }
 
-// De momento no se usa
-const getOneAdvert = (advertID) => {
-  return getRequest(`${API_URL}/adverts/${advertID}`)
-    .catch(error => console.error('Error:', error))
-    .then(res => new Advert(res.advert))
-}
+
 
 // De momento no se usa
 const discoverAdverts = () => {
@@ -183,12 +175,20 @@ const discoverAdverts = () => {
     .then(res => res.list.map(adv => new Advert(adv)))
 }
 
+
+const getOneAdvert = (slugName) => {
+  console.log('slug',slugName)
+  return getRequest(`${API_URL}/adverts/${slugName}`)
+    .catch(error => console.error('Error:', error))
+    .then(res => new Advert(res.advert))
+}
+
 const getAdverts = (query) => {
   return getRequest(`${API_URL}/adverts?${query}`)
     .catch(error => console.error('Error:', error))
     .then(res => res.list.map(adv => new Advert(adv)))
-
 }
+
 
 const createAdvert = (advert, token) => {
   return createRequestWithPhoto(`${API_URL}/adverts`, advert, token)
@@ -210,9 +210,19 @@ const deleteAdvert = (slugName, token) => {
 }
 
 
+
+const getTags = () => {
+  return getRequest(`${API_URL}/tags/`)
+    .catch(error => console.error('Error:', error))
+    .then(res => res.tags)
+}
+
+
+
 export {
   loginJWT,
   getUser,
+  getFavsFromUser,
   updateUser,
   registerNewUser,
   deleteUser,

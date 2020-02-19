@@ -18,6 +18,8 @@ export const DIVIDE_IN_PAGES = 'DIVIDE_IN_PAGES';
 export const PAGE_BACK = 'PAGE_BACK';
 export const PAGE_FORWARD = 'PAGE_FORWARD';
 export const SWITCH_SORT = 'SWITCH_SORT';
+export const USER_OWNER_SUCCESS = 'USER_OWNER_SUCCESS';
+
 
 
  // TAGS types

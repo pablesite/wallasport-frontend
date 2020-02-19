@@ -42,6 +42,7 @@ const { showListAction } = props;
     showListAction()
   }, [showListAction]);
 
+
   return (
     <React.Fragment>
 
@@ -50,7 +51,7 @@ const { showListAction } = props;
       {showUserRegistered && <Login />}
 
       <Profile />
-     
+    
       {isFetching && <Loading />}
       {error && !showLogin && !showRegister && !showUserRegistered && <Error error={error} />}
 

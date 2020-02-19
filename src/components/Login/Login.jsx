@@ -57,7 +57,7 @@ export default function Login(props) {
         // console.log(user)
         // const user1 = new User(user.username, user.email);
 
-        if (showLogin) { login(user); }
+        if (showLogin) { login(user); goToHome(); }
         else {
             if (photo) { user = { ...user, photo: photo } }
 
@@ -66,7 +66,6 @@ export default function Login(props) {
             } else {
                 updateUser(user, username, token)
             }
-
         }
     };
 

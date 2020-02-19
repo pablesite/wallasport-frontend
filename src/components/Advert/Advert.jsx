@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 import { TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon } from "react-share";
@@ -12,6 +12,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -44,7 +45,12 @@ export default function Advert(props) {
   } = props;
 
   // Actions of the store
-  const { goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, markAsFavourite, markAsReserved, markAsSold } = props;
+  const { getAdverts, goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, goToHome, goToLogin, markAsFavourite, markAsReserved, markAsSold } = props;
+  //falta una acción que saque user y foto del anuncio!
+
+  // useEffect(() => {
+  //   getUserOwnerFromAdvert(advert.slugName)
+  // }, [getUserOwnerFromAdvert]);
 
 
   return (
@@ -68,20 +74,24 @@ export default function Advert(props) {
             onClick={() => goToAdvertDetail(advert.slugName)}
           />}
 
-        {advert.name &&
+        {advert.name && advert.userOwner &&
           <Typography
             className={showAdvertDetail === false ? style.advertUserOwner : style.advertUserOwnerDetail}
-            variant="body2" color="inherit" >
-            '{advert.userOwner}'
-      </Typography>}
+            variant="body2" color="inherit"
+          >
+            <Link href="#" onClick={() => { getAdverts(`userOwner=${advert.userOwner._id}`); goToHome(); }} color="inherit">
+              '{advert.userOwner.username}'
+              </Link>
 
-        {advert.name &&
+          </Typography>}
+
+        {advert.name && advert.userOwner &&
           <Avatar
             className={showAdvertDetail === false ? style.advertAvatar : style.advertAvatarDetail}
             // src={'https://i.pravatar.cc/300'} 
-   
-            src={(advert.userOwner === user.username) && user.photo ? `${process.env.REACT_APP_IMG_URL}/${user.photo}` : `${process.env.REACT_APP_IMG_URL}/no-photo.gif`} //esto está mal. Sólo vería las fotos del usuario logueado. Me falta las referencias de User en Advert en mongo
-            />}
+
+            src={advert.userOwner.photo ? `${process.env.REACT_APP_IMG_URL}/${advert.userOwner.photo}` : `${process.env.REACT_APP_IMG_URL}/no-photo.gif`} //esto está mal. Sólo vería las fotos del usuario logueado. Me falta las referencias de User en Advert en mongo
+          />}
         {advert.name &&
           <CardHeader
             classes={{
@@ -146,32 +156,43 @@ export default function Advert(props) {
             {advert.name && showAdvertDetail &&
               <CardActions disableSpacing>
 
+                {/* {user.username && */}
                 <IconButton aria-label="add to favorites"
-                onClick={() => markAsFavourite(user, advert._id)}>
-                  <FavoriteIcon 
-                  color={findInFavourites ? "primary" : "inherit"} /> 
-                </IconButton>
+                  onClick={() => {
 
-                {(advert.userOwner === user.username) &&
+                    if (user.username !== null) {
+                      markAsFavourite(user, advert._id)
+                    } else {
+                      goToLogin();
+                    }
+
+                  }}>
+                  <FavoriteIcon
+                    color={findInFavourites ? "primary" : "inherit"}  //Revisar
+                  />
+                </IconButton>
+                {/* } */}
+
+                {(advert.userOwner && advert.userOwner.username === user.username) &&
                   <IconButton aria-label="mark as reserved"
                     onClick={() => markAsReserved(advert, user.token)}>
                     <AssignmentIcon
                       color={advert.reserved ? "primary" : "inherit"} />
                   </IconButton>}
 
-                {(advert.userOwner === user.username) &&
+                {(advert.userOwner && advert.userOwner.username === user.username) &&
                   <IconButton aria-label="mark as sold"
                     onClick={() => markAsSold(advert, user.token)}>
                     <AssignmentTurnedInIcon
                       color={advert.sold ? "primary" : "inherit"} />
                   </IconButton>}
 
-                {(advert.userOwner === user.username) &&
+                {(advert.userOwner && advert.userOwner.username === user.username) &&
                   <IconButton onClick={() => goToUpdateAdvert(advert.slugName)} >
                     <EditIcon />
                   </IconButton>}
 
-                {(advert.userOwner === user.username) &&
+                {(advert.userOwner && advert.userOwner.username === user.username) &&
                   <DeleteAlert type='advert' item={advert.slugName} />}
               </CardActions>}
 

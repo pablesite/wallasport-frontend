@@ -43,7 +43,7 @@ export default function Profile(props) {
   } = props;
 
   // Actions of the store
-  const { showLoginAction, logout, showRegisterAction, getAdverts, goToHome, goToUserDetail, goToCreateAdvert } = props;
+  const { showLoginAction, logout, showRegisterAction, getAdverts, goToHome, goToUserDetail, goToCreateAdvert, getFavsFromUser } = props;
 
 
   // translate utils
@@ -192,9 +192,9 @@ export default function Profile(props) {
                   onClose={handleClose}
                 >
                   <MenuItem className={style.profileMenuItem} onClick={() => goToUserDetail()}>{t('MyAccount')}</MenuItem>
-                  <MenuItem className={style.profileMenuItem} onClick={handleClose}>{t('MyProducts')}</MenuItem>
-                  <MenuItem className={style.profileMenuItem} onClick={handleClose}>{t('MyFavs')}</MenuItem>
-                  <MenuItem className={style.profileMenuItem} onClick={() => logout()}>{t('Logout')}</MenuItem>
+                  <MenuItem className={style.profileMenuItem} onClick={() => getAdverts(`userOwner=${user._id}`)}>{t('MyProducts')}</MenuItem>
+                  <MenuItem className={style.profileMenuItem} onClick={() => getFavsFromUser(user.username, user.token)}>{t('MyFavs')}</MenuItem>
+                  <MenuItem className={style.profileMenuItem} onClick={() => {logout(); getAdverts(); } }>{t('Logout')}</MenuItem>
                 </Menu>
               </Grid>}
 

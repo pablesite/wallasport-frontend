@@ -5,11 +5,14 @@ export const user = state => state.user;
 export const token = state => state.user.token;
 export const username = state => state.user.username;
 export const email = state => state.user.email;
-export const isAuthorized = (state) =>  Boolean(state.user && state.user.username);
+export const isAuthorized = (state) => Boolean(state.user && state.user.username);
 
 export const findInFavourites = (state, favId) => {
-    const isInTheList = state.user.favs.find(fav => fav == favId);
-    console.log(state.user.favs)
+    let isInTheList = undefined;
+    if (state.user.favs) {
+        isInTheList = state.user.favs.find(fav => fav == favId);
+    }
+
     return Boolean(isInTheList);
 }
 
@@ -20,15 +23,18 @@ export const numberOfPages = state => state.adverts.numberOfPages;
 export const sort = state => state.adverts.sort;
 
 export const locateAdvertFromUrl = (state, location) => {
-    let advert = null;
-    const path = location.pathname.split('/')
-    for (let i = 1; i < state.adverts.numberOfPages + 1; i++) {
-        advert = state.adverts.advertsInPages[i].find(advert => advert.slugName === path[2]);
-        if (advert !== null && advert !== undefined) {
-            i = state.adverts.numberOfPages + 1;
+    if (state.adverts) {
+        let advert = null;
+        const path = location.pathname.split('/')
+        for (let i = 1; i < state.adverts.numberOfPages + 1; i++) {
+            advert = state.adverts.advertsInPages[i].find(advert => advert.slugName === path[2]);
+            if (advert !== null && advert !== undefined) {
+                i = state.adverts.numberOfPages + 1;
+            }
         }
+        return advert;
     }
-    return advert;
+
 }
 
 // tags selectors

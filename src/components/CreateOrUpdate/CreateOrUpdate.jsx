@@ -85,13 +85,15 @@ export default function CreateOrUpdate(props) {
     }
   }, [advert, photo, createAdvert, goToAdvertDetail, showCreateAdvert, updateAdvert, user.token, goToHome]);
 
+  // console.log('Usuario en CreateOrUpdate',user)
+  console.log('Anuncio en CreateOrUpdate',advert)
 
   const onSubmit = (advert) => {
     setAdvert({
       ...advert,
       price: parseInt(advert.price, 10),
       type: advert.type === 'sale' ? true : false,
-      userOwner: user.username,
+      userOwner: user._id,
       reserved: false,
       sold: false,
     })

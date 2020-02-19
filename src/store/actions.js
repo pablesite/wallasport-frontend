@@ -18,6 +18,7 @@ import {
   DIVIDE_IN_PAGES,
   PAGE_BACK,
   PAGE_FORWARD,
+  USER_OWNER_SUCCESS,
 
 
   // TAGS types
@@ -51,7 +52,6 @@ import User from '../models/User';
 import Advert from '../models/Advert';
 
 import { saveUserInLS, deleteLS } from '../services/Storage';
-import { findInFavourites } from './selectors';
 
 import i18n from 'i18next';
 
@@ -86,9 +86,9 @@ export const login = (user) => {
       const { success, token } = await ApiService.loginJWT(user);
       if (success === true) {
         user = { username: user.username, token }
-        dispatch(loginSuccess(user));
+        dispatch(loginSuccess());
         dispatch(getUser(user.username, token))
-        dispatch(goToHome());
+        // dispatch(goToHome());
       } else {
         dispatch(loginInvalid(new Error(i18n.t('Invalid_credentials'))));
       }
@@ -125,6 +125,42 @@ export const getUser = (username, token) => {
     }
   };
 };
+
+export const getFavsFromUser = (username, token) => {
+  return async function (dispatch, _getState, { services: { ApiService } }) {
+    dispatch(apiRequest());
+    try {
+      const sort = _getState().adverts.sort;
+      let sortEnhanced = '';
+      if (sort !== undefined) {
+        if (sort === false) { sortEnhanced = 'creationDate' }
+        if (sort === true) { sortEnhanced = '-creationDate' }
+      }      
+      let user = await ApiService.getFavsFromUser(username, sortEnhanced, token)
+      let favs = user.favs;
+      dispatch(divideInPages(favs, 8, sort)); //Parámetro (el 8) debería ser modificable por el usuario.
+      dispatch(goToHome());
+      dispatch(AdvertsSuccess());
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
+// export const getAdvertsFromUser = (username, token) => {
+//   return async function (dispatch, _getState, { services: { ApiService } }) {
+//     dispatch(apiRequest());
+//     try {
+//       let adverts = await ApiService.getAdvertsFromUser(username, token)
+//       dispatch(divideInPages(adverts, 8, sort)); //Parámetro (el 8) debería ser modificable por el usuario.
+//       dispatch(goToHome());
+//       dispatch(AdvertsSuccess());
+//     } catch (error) {
+//       dispatch(apiFailure(error));
+//     }
+//   };
+// };
+
 
 export const deleteUser = (username, token) => {
   return async function (dispatch, _getState, { services: { ApiService } }) {
@@ -180,9 +216,8 @@ export const registerInvalid = error => ({
 });
 
 //Testeada
-export const loginSuccess = user => ({
+export const loginSuccess = () => ({
   type: LOGIN_SUCCESS,
-  user,
 });
 
 //Testeada
@@ -253,6 +288,24 @@ export const getAdverts = (query) => {
 //   };
 // };
 
+
+
+export const getUserOwnerFromAdvert = (slugName) => {
+  return async function (dispatch, _getState, { history, services: { ApiService } }) {
+    dispatch(apiRequest());
+    try {
+      const advert = await ApiService.getOneAdvert(slugName)
+      console.log('advert con populate hecho', advert)
+      dispatch(UserOwnerSuccess(advert.userOwner))
+      dispatch(AdvertsSuccess());
+      
+      // history.push(`/advert/${id}`);
+    } catch (error) {
+      dispatch(apiFailure(error));
+    }
+  };
+};
+
 export const createAdvert = (advert, token) => {
   return async function (dispatch, _getState, { services: { ApiService } }) {
     dispatch(apiRequest());
@@ -304,8 +357,9 @@ export const markAsReserved = (advert, token) => {
         advert = { ...advert, reserved: !advert.reserved }
       }
       await ApiService.updateAdvert(advert, token)
-      dispatch(AdvertsSuccess())
       dispatch(getAdverts());
+      dispatch(AdvertsSuccess())
+      
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -409,11 +463,21 @@ export const switchSort = (sort) => {
   }
 }
 
+export const UserOwnerSuccess = (userOwner) => {
+  return {
+    type: USER_OWNER_SUCCESS,
+    userOwner: userOwner
+  }
+}
+
+
+
 
 //Testeada
 export const AdvertsSuccess = () => ({
   type: ADVERTS_SUCCESS,
 });
+
 
 
 
@@ -513,6 +577,16 @@ export const goToHome = () => {
     dispatch(showListAction());
     dispatch(showMainScreenAction());
     history.push("/");
+  };
+};
+
+export const goToLogin = () => {
+  return function (dispatch, _getState, { history }) {
+    // dispatch(apiSuccess());  // if there is an error in login/register, and we go back, the error should be dissapear.
+    // dispatch(showListAction());
+    // dispatch(showMainScreenAction());
+    console.log('test')
+    history.push("/login");
   };
 };
 

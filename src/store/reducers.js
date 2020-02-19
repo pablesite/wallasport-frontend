@@ -39,8 +39,8 @@ export const user = (state = initialState.user, action) => {
         //     return state;
 
         // testeado
-        case TYPES.LOGIN_SUCCESS:
-            return action.user;
+        // case TYPES.LOGIN_SUCCESS:
+        //     return action.user;
 
         // testeado
         case TYPES.LOGOUT_SUCCESS:
@@ -82,6 +82,13 @@ export const adverts = (state = initialState.adverts, action) => {
                 ...state,
                 sort: action.sort,
             };
+
+        case TYPES.USER_OWNER_SUCCESS:
+            return {
+                ...state,
+                 userOwner: action.userOwner,
+            };
+
 
         default:
             return state;

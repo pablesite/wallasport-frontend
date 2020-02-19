@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Advert from './Advert';
 
 import { user, showAdvertDetail, findInFavourites } from '../../store/selectors';
-import { goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, markAsFavourite, markAsReserved, markAsSold } from '../../store/actions';
+import { getAdverts, goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, goToLogin, goToHome, markAsFavourite, markAsReserved, markAsSold } from '../../store/actions';
 
 function mapStateToProps(state, props) {
   return {
@@ -14,9 +14,12 @@ function mapStateToProps(state, props) {
 }
 
 const mapDispatchToProps = {
+  getAdverts: getAdverts,
   goToAdvertDetail: goToAdvertDetail,
   goToCreateAdvert: goToCreateAdvert,
   goToUpdateAdvert: goToUpdateAdvert,
+  goToLogin: goToLogin,
+  goToHome: goToHome,
   markAsFavourite: markAsFavourite,
   markAsReserved: markAsReserved,
   markAsSold: markAsSold,
