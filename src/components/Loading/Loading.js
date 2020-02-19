@@ -1,17 +1,13 @@
+// Listo
 import React from 'react';
-import T from 'prop-types';
-import classNames from 'classnames';
 
 import './styles.css';
 
-export default function Loading({ className }) {
+export default function Loading() {
   return (
-    <div className={classNames('loading', className)}>
+    <div className='loading'>
       <div className="spinner"></div>
-    </div>
+      </div>
   );
 }
 
-Loading.propTypes = {
-  className: T.string,
-};

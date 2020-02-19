@@ -1,184 +1,254 @@
-import "../../App.css";
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
 
-import { FormEnhanced } from '../WithFormEnhanced/WithFormEnhanced'
-import { InputEnhanced } from '../WithInputEnhanced/WithInputEnhanced'
+import FormEnhanced from '../FormEnhanced'
+import InputEnhanced from '../InputEnhanced'
+import Loading from '../Loading';
+import Error from '../Error';
+import Copyright from '../Copyright';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import { TextField } from '@material-ui/core';
+import { mdiArrowLeftThick } from '@mdi/js';
+import Icon from '@mdi/react';
 
-// import { Trans } from 'react-i18next';
-import { Translation } from 'react-i18next';
-
-
-import "./Login.css"
-
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                WallaSport - Pablo Ruiz Molina
-        </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../styles';
+import { styles } from './styles';
 
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-            check: false
-        };
-
-        this.checkError = this.checkError.bind(this);
-
-    }
+const useStyles = makeStyles(styles);
 
 
-    componentDidMount() {
-        if (this.props.checkUser.exist) {
-            this.props.history.push("/home");
+export default function Login(props) {
+
+    const [t] = useTranslation();
+    const style = useStyles();
+
+    // State of store
+    const {
+        token, username, email,                                         //user
+        isFetching, error,                                              //ui
+        showLogin, showRegister, showUpdateUser, showUserRegistered,    //appSelectors
+    } = props;
+
+    // Actions of the store
+    const { login, register, updateUser, goToHome, showLoginAction } = props;
+
+    let initialState = showUpdateUser ? { username: username, email: email } : { username: "", email: "", password: "" };
+
+    useEffect(() => {
+        if (!showLogin && !showRegister && !showUpdateUser && !showUserRegistered) {
+            showLoginAction();
         }
 
-    }
+    }, [showLoginAction, showRegister, showUpdateUser, showUserRegistered, showLogin]);
+
+    const [photo, setPhoto] = useState();
 
 
-    onSubmit = (user) => {
-        this.props.saveUserInStore(user);
-        this.props.history.push("/home");
-    }
+    const onSubmit = (user) => {
+        // console.log(user)
+        // const user1 = new User(user.username, user.email);
 
+        if (showLogin) { login(user); goToHome(); }
+        else {
+            if (photo) { user = { ...user, photo: photo } }
 
-    checkError(event) {
-        event.preventDefault();
+            if (showRegister) {
+                register(user)
+            } else {
+                updateUser(user, username, token)
+            }
+        }
+    };
 
-        this.setState({
-            check: true
-        });
+    return (
+        <React.Fragment>
 
-    }
+            <div className={style.loginBackground}>
 
+                {isFetching && <Loading />}
 
-    render() {
+                <Container component="main" maxWidth="xs" className={style.loginContainer}>
 
-        const { check } = this.state;
+                    <div className={style.loginForm}>
 
-        return (
-            <React.Fragment>
+                        <div className={style.loginArrow}>
 
+                            <Icon
+                                onClick={() => goToHome()}
+                                path={mdiArrowLeftThick}
+                                size={1}
+                                horizontal
+                                rotate={180}
+                                color={theme.palette.primary.main}
+                            />
 
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
+                        </div>
 
-                    <div className='paper'>
+                        {!showUserRegistered &&
+                            <Avatar className={style.loginAvatar}>
+                                <LockOutlinedIcon />
+                            </Avatar>}
 
-                        <Avatar className='avatar'>
-                            <LockOutlinedIcon />
-                        </Avatar>
+                        <Typography component="h1" variant="h6">
+                            {showLogin && t('Welcome')}
+                            {showRegister && t('Register')}
+                            {showUpdateUser && t('UpdateUser')}
+                        </Typography>
 
-                        <Typography component="h1" variant="h5">
-                            {/* <Trans>Sign up</Trans> */}
-                        Sign up!
+                        <Typography variant="body2">
+                            {showRegister && t('Register_data')}
+
+                        </Typography>
+
+                        <Typography component="h1" variant="h6">
+                            {showUserRegistered && t('UserRegistered')}
                         </Typography>
 
                         <p></p>
-                        <FormEnhanced
-                            className='fortest'
-                            handleSubmit={this.onSubmit}
-                            initialState={
-                                {
-                                    name: "Pablo",
-                                    surname: "Ruiz",
-                                    email: "pabloruiz@ctnaval.com",
-                                    tag: "lifestyle"
-                                }
-                            }
-                        >
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <InputEnhanced type='text' name='name' />
+
+                        {showUserRegistered &&
+                            <Button
+                                className={style.loginButton}
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => showLoginAction()}>
+                                {t('LoginButton')}
+                            </Button>}
+                        {showUserRegistered && <p></p>}
+
+                        {!showUserRegistered &&
+                            <FormEnhanced
+                                handleSubmit={onSubmit}
+                                initialState={initialState}
+                            >
+                                <Grid container spacing={2}>
+
+                                    <Grid item xs={12}>
+                                        <InputEnhanced
+                                            type='text'
+                                            name='username'
+                                            component={TextField}
+                                            fullWidth
+                                            variant="outlined"
+                                            required />
+                                    </Grid>
+
+
+                                    {(showRegister || showUpdateUser) && !showUserRegistered &&
+                                        <Grid item xs={12}>
+                                            <InputEnhanced
+                                                type='email'
+                                                name='email'
+                                                component={TextField}
+                                                fullWidth
+                                                variant="outlined"
+                                                required />
+                                        </Grid>
+                                    }
+
+                                    <Grid item xs={12}>
+                                        <InputEnhanced
+                                            type='password'
+                                            name='password'
+                                            component={TextField}
+                                            fullWidth
+                                            variant="outlined"
+                                            required
+                                            helperText={showUpdateUser && t('NewPassword')}
+
+                                        />
+                                    </Grid>
+
+                                    {(showRegister || showUpdateUser) && !showUserRegistered &&
+
+                                        <Grid item xs={12}>
+                                            <input
+                                                accept="image/*"
+                                                style={{ display: 'none' }}
+                                                id="raised-button-file"
+                                                multiple
+                                                type="file"
+                                                onChange={(e) => setPhoto(e.target.files[0])}
+                                            />
+
+                                            <label htmlFor="raised-button-file">
+                                                <Button
+                                                    className={style.createOrUpdateButtonUpload}
+                                                    component="span"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    size="medium"
+                                                >
+                                                    {t('UploadImage')}
+                                                </Button>
+                                            </label>
+
+                                        </Grid>
+                                    }
+
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
-                                    <InputEnhanced type='text' name='surname' />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <InputEnhanced type='email' name='email' />
-                                </Grid>
-                            </Grid>
+                                <Typography className={style.createOrUpdateCreateTypography} variant="body2" color="inherit" >
+                                    {photo !== undefined && photo !== null && t('NameOfPhoto') + photo.name}
+                                </Typography>
 
 
-                            <div className="submit">
-                                <Button
-                                    label="Continue"
-                                    type='submit'
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Enter
-                                </Button>
-                            </div>
+                                <div className={style.loginSubmit}>
+                                    <Button
+                                        label="Continue"
+                                        type='submit'
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        {showLogin && t('LoginButton')}
+                                        {showRegister && t('RegisterButton')}
+                                        {showUpdateUser && t('UpdateUserButton')}
 
-                        </FormEnhanced>
+                                    </Button>
+                                </div>
 
+                                {error && <Error error={error} />}
 
-                        <Grid container justify="center">
+                            </FormEnhanced>}
 
-                            <Grid item xs={12}>
-                                <Box textAlign="justify">
-                                    <h3>By pressing the button below you can check Error Boundary functionality.
-                                Remember to test this functionality in production mode.</h3>
-                                </Box>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    fullWidth
-                                    onClick={this.checkError}
-                                    label="Error Boundary"
-                                >
-                                    Check Error
-                            </Button>
-                            </Grid>
-                        </Grid>
-
-                        <Box mt={5}>
-                            <Copyright />
-                        </Box>
+                        <Copyright />
 
                     </div>
 
-                    {
-                        check
-                        &&
-                        undefined.methodDoesNotExist()
-                    }
-
                 </Container>
+            </div>
 
-            </React.Fragment>
+        </React.Fragment>
 
-        );
-    }
+    );
+
 }
 
+Login.propTypes = {
+    token: T.string,
+    username: T.string,
+    email: T.string,
+    isFetching: T.bool,
+    error: T.objectOf(Error),
+    showLogin: T.bool,
+    showRegister: T.bool,
+    showUpdateUser: T.bool,
+    showUserRegistered: T.bool,
+    login: T.func,
+    register: T.func,
+    updateUser: T.func,
+    goToHome: T.func,
+    showLoginAction: T.func,
+};
 
-export default Login;

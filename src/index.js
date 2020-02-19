@@ -3,58 +3,73 @@ import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 
 import App from './components/App';
+import { APIUnavailable } from './components/APIUnavailable';
+import Loading from './components/Loading';
 import * as serviceWorker from './serviceWorker';
 
-import { saveUserInLS, getUserFromLS, deleteLS } from './services/Storage';
+import { getUserFromLS } from './services/Storage';
 import { configureStore } from './store';
+import { getAdverts, fetchTags} from './store/actions'
 
-import { saveUser, fetchTags } from './store/actions' 
-
-import * as  AdvertsService  from './services/AdvertDBService'
+import * as  ApiService from './services/ApiDBService'
 
 import './i18n';
 
 
-
-// funcion render de la applicacion
-const renderApp = props =>
-{
+// App render
+const renderApp = props => {
   ReactDOM.render(<App {...props} />, document.getElementById('root'));
 }
 
-const store = configureStore({  
-  services: { AdvertsService }
-});
-
-// actualizamos el usuario en LS cuando cambie su estado en el store de Redux
-store.subscribe(() => {
-  const { storeInfo, user } = store.getState();
-  
-  if (storeInfo === 'saveUser') {
-    saveUserInLS(user);
-  }
-
-  if (storeInfo === 'deleteUser') {
-    deleteLS();
-  }
-
-  // Esperamos a tener las tags para renderizar la app
-  if (storeInfo === 'tagsInStore') {
-    renderApp({ store, history });
-  }
-});
-
-// histórico del browser
-const history = createBrowserHistory();
-
-// Cargamos el usuario siempre y cuando esté persistido en LS
-const user = getUserFromLS(); 
-if (user !== null) {
-  store.dispatch(saveUser(user));
+// API Unavailable
+const renderAPIError = props => {
+  ReactDOM.render(<APIUnavailable {...props} />, document.getElementById('root'));
 }
 
-// Cargamos las tags al inicio.
+// Loader
+const renderLoader = () => {
+  ReactDOM.render(<Loading />, document.getElementById('root'));
+}
+
+// Loader is renderer while the APP is ready
+renderLoader();
+
+
+// Browser history
+const history = createBrowserHistory();
+
+
+// The user is loaded as long as it is persisted in LS.
+const user = getUserFromLS() || undefined;
+
+// Store configuration
+const store = configureStore({
+  history,
+  services: { ApiService },
+})({
+  user,
+});
+
+
+// It is checked if there is an API connection available
+
+store.subscribe(() => {
+  const { ui } = store.getState();
+
+  if (ui.apiConnection === true) {
+    renderApp({ store, history });
+  } else if (ui.apiConnection === false) {
+    renderAPIError();
+  }
+
+});
+
+
+// The tags are rendered
+// store.dispatch(getAdverts('sort=creationDate'));
+store.dispatch(getAdverts());
 store.dispatch(fetchTags());
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

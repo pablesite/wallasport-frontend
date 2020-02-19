@@ -1,151 +1,78 @@
-import React, { Component } from "react";
+import React from "react";
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
 
-import AdvertList from '../AdvertList/AdvertList';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import { mdiArrowLeftThick } from '@mdi/js';
+import Icon from '@mdi/react'
 
-import './Pagination.css'
-
-
-export default class Pagination extends Component {
-    constructor(props) {
-        super(props);
-
-        this.goForward = this.goForward.bind(this);
-        this.goBack = this.goBack.bind(this);
-        this.updatePages = this.updatePages.bind(this);
-
-        this.state = {
-            pages: {},
-            actualPage: 1,
-            advertActualPage: [],
-            pagesNumber: 0
-
-        }
-    }
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../styles';
+import { styles } from './styles';
 
 
-    componentDidMount() {
-        this.updatePages();
-    }
-
-    componentDidUpdate() {
-        const { disableUpdate, update } = this.props;
-        if (update) {
-            this.updatePages();
-            disableUpdate();
-        }
-    }
+const useStyles = makeStyles(styles);
 
 
-    updatePages() {
-        const { totalAdverts, numberPerPage, adverts } = this.props;
-        const pagesNumber = Math.ceil(totalAdverts / numberPerPage);
+export default function Pagination(props) {
 
-        let pages = {}
-        let index = 0;
-        adverts.forEach(function (advert, key) {
-            if ((key) % numberPerPage === 0) {
-                index += 1;
-                pages = {
-                    ...pages,
-                    [index]: []
-                }
-            }
-            pages[index].push(advert);
-        });
+    const [t] = useTranslation();
+    const style = useStyles();
 
-        this.setState({
-            pages: pages,
-            actualPage: 1,
-            advertActualPage: pages[1],
-            pagesNumber: pagesNumber,
-        })
+    // State of store
+    const {
+        actualPage, numberOfPages, //adverts
+    } = props;
 
-    }
-
-    goForward() {
-
-        const { pages, actualPage, pagesNumber } = this.state;
-
-        if (actualPage < pagesNumber) {
-            this.setState({
-                actualPage: actualPage + 1,
-                advertActualPage: pages[actualPage + 1]
-            })
-        } else {
-            this.setState({
-                actualPage: 1,
-                advertActualPage: pages[1]
-            })
-
-        }
-    }
-
-    goBack() {
-
-        const { pages, actualPage, pagesNumber } = this.state;
-
-        if (actualPage > 1) {
-            this.setState({
-                actualPage: actualPage - 1,
-                advertActualPage: pages[actualPage - 1]
-            })
-        } else {
-            this.setState({
-                actualPage: pagesNumber,
-                advertActualPage: pages[pagesNumber]
-            })
-
-        }
-    }
+    // Actions of the store
+    const { pageBack, pageForward } = props;
 
 
-    render() {
-        const { advertActualPage, actualPage, pagesNumber } = this.state;
+    return (
+        <React.Fragment>
 
-        return (
-            <React.Fragment>
-                <div className="grid"> 
-                <Grid container alignItems='center' alignContent='center' spacing={2}>
-                    <AdvertList adverts={advertActualPage} />
+            <Grid container alignItems='center' alignContent='space-between' spacing={1} justify='center'>
+                <Grid item sm={2}>
+                    <Box textAlign="center" className={style.paginationArrow} >
+                        <Icon className='login-arrow'
+                            onClick={() => pageBack(actualPage, numberOfPages)}
+                            path={mdiArrowLeftThick}
+                            size={1}
+                            horizontal
+                            rotate={180}
+                            color={theme.palette.primary.main}
+                        />
+                    </Box>
                 </Grid>
-                </div>
 
-                <Grid container alignItems='center' alignContent='space-between' spacing={1} justify='center'>
-                        <Grid item xs={1} sm={2}>
-                            <Box textAlign="center">
-                                <Button
-                                    onClick={this.goBack}
-                                    variant="text"
-                                    color="primary"
-                                >
-                                Go Back
-                                </Button>
-                            </Box>
-                        </Grid>
-                        
-                        <Grid item xs={1} sm={2}   >
-                            <Box textAlign="center" className="pages">
-                                {`${actualPage} of ${pagesNumber}`}
-                            </Box>
-                         </Grid>
+                <Grid item sm={2}   >
+                    <Box textAlign="center" className={style.paginationPages}>
+                        {`${actualPage} ${t('Of')} ${numberOfPages}`}
+                    </Box>
+                </Grid>
 
-                        <Grid item xs={1} sm={2} >
-                            <Box textAlign="center">
-                                <Button
-                                    onClick={this.goForward}
-                                    variant="text"
-                                    color="primary"
-                                >
-                                Go Forward
-                                </Button>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                    
-            </React.Fragment>
-        )
-    }
+                <Grid item sm={2} >
+                    <Box textAlign="center" className={style.paginationArrow} >
+                        <Icon className='login-arrow'
+                            onClick={() => pageForward(actualPage, numberOfPages)}
+                            path={mdiArrowLeftThick}
+                            size={1}
+                            horizontal
+                            rotate={0}
+                            color={theme.palette.primary.main}
+                        />
+                    </Box>
+                </Grid>
+            </Grid>
+
+        </React.Fragment>
+    )
 }
+
+Pagination.propTypes = {
+    actualPage: T.number,
+    numberOfPages: T.number,
+    pageBack: T.func,
+    pageForward: T.func,
+};

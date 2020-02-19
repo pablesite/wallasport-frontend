@@ -1,49 +1,40 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'
 
 import Login from './Login'
 import Home from './Home'
 import AdvertDetail from './AdvertDetail'
+import UserDetail from './UserDetail'
 import CreateOrUpdate from './CreateOrUpdate'
+import PrivateRoute from './PrivateRoute'
 
 import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { theme } from './styles'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#ff784e',
-      main: '#ff5722',
-      dark: '#b23c17',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#696969',
-      main: '#444444',
-      dark: '#2f2f2f',
-      contrastText: '#fff',
-    },
-  },
-});
+import '../index.css'
 
 
 export default class App extends Component {
 
   render() {
+    const { history, store } = this.props;
+
     return (
       <ErrorBoundary >
-        <Provider store={this.props.store}  {...this.props} > {/*Paso el store a todos los componentes*/}
+        <Provider store={store} >
           <MuiThemeProvider theme={theme} >
-            <Router >
+            <Router history={history}>
               <Switch>
-                <Route exact path='/login' component={Login} />
-                <Route exact path='/home/' component={Home} />
-                <Route exact path='/detail/:id' component={AdvertDetail} />
-                <Route exact path='/createOrUpdate/' component={CreateOrUpdate} />
-                <Route exact path='/createOrUpdate/:id' component={CreateOrUpdate} />
-                <Route component={Login} />
+                <Route exact path='/' component={Home} />
+                <Route exact path='/login' component={Login}  />
+                <Route exact path='/advert/:slugName' component={AdvertDetail} />
+                <PrivateRoute exact path='/user' component={UserDetail} />
+                <PrivateRoute exact path='/createOrUpdate' component={CreateOrUpdate} />
+                <PrivateRoute exact path='/createOrUpdate/:slugName' component={CreateOrUpdate} />
+                <Route component={Home} />
               </Switch>
             </Router>
           </MuiThemeProvider>

@@ -1,9 +1,11 @@
 .loading {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(142, 231, 201, 0.55); 
   display: flex;
-  /* justify-content: center;
-  position: absolute; */
+  align-items: center;
+  position: absolute; 
+  height: 95vh;
+  width: 100vw;
+  z-index: 1;
 }
 
 .spinner,
@@ -12,14 +14,14 @@
   background-color: rgba(0, 0, 0, 0.5);
   animation: load 1s infinite ease-in-out;
   width: 1em;
-  height: 4em;
+  height: 14em;
 }
 .spinner {
   color: rgba(0, 0, 0, 0.5);
   text-indent: -9999em;
-  margin: 88px auto;
+  margin: 20px auto;
   position: relative;
-  font-size: 11px;
+  font-size: 8px;
   transform: translateZ(0);
   animation-delay: -0.16s;
 }

@@ -1,16 +1,26 @@
 import { connect } from 'react-redux';
 
 import Profile from './Profile';
-import { deleteUser } from '../../store/actions' 
+
+import { user } from '../../store/selectors';
+import { logout, showLoginAction, showRegisterAction, getAdverts, goToHome, goToUserDetail, goToCreateAdvert, getFavsFromUser } from '../../store/actions';
 
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+    user: user(state),
+  };
 }
 
-
 const mapDispatchToProps = {
-    deleteUserFromStore: deleteUser,
+  showLoginAction: showLoginAction,
+  logout: logout,
+  showRegisterAction: showRegisterAction,
+  getAdverts: getAdverts,
+  goToHome: goToHome,
+  goToUserDetail: goToUserDetail,
+  goToCreateAdvert: goToCreateAdvert,
+  getFavsFromUser: getFavsFromUser,
 };
 
 

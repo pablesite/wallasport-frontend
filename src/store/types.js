@@ -1,8 +1,60 @@
-export const ADVERTS_REQUEST = 'ADVERTS_REQUEST';
-export const ADVERTS_FAILURE = 'FETCH_ADVERTS_FAILURE';
-export const ADVERTS_SUCCESS = 'FETCH_ADVERTS_SUCCESS';
-export const TAGS_REQUEST = 'TAGS_REQUEST';
-export const TAGS_FAILURE = 'FETCH_TAGS_FAILURE';
-export const TAGS_SUCCESS = 'FETCH_TAGS_SUCCESS';
-export const SAVE_USER = 'SET_USER';
-export const DELETE_USER = 'DELETE_USER';
+
+// USER Types
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_INVALID = 'REGISTER_INVALID';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_INVALID = 'LOGIN_INVALID';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+
+
+ // ADVERTS types
+export const ADVERTS_SUCCESS = 'ADVERTS_SUCCESS';
+
+export const DIVIDE_IN_PAGES = 'DIVIDE_IN_PAGES';
+export const PAGE_BACK = 'PAGE_BACK';
+export const PAGE_FORWARD = 'PAGE_FORWARD';
+export const SWITCH_SORT = 'SWITCH_SORT';
+export const USER_OWNER_SUCCESS = 'USER_OWNER_SUCCESS';
+
+
+
+ // TAGS types
+export const GET_TAGS_SUCCESS = 'GET_TAGS_SUCCESS';
+
+// UI types
+export const API_REQUEST = 'API_REQUEST';
+export const API_FAILURE = 'API_FAILURE';
+export const API_SUCCESS = 'API_SUCCESS';
+
+// APPSELECTORS types
+export const SHOW_LOGIN = 'SHOW_LOGIN';
+export const SHOW_REGISTER = 'SHOW_REGISTER';
+export const SHOW_USER_REGISTERED = 'SHOW_USER_REGISTERED';
+export const SHOW_UPDATE_USER = 'SHOW_UPDATE_USER';
+export const SHOW_MAINSCREEN = 'SHOW_MAINSCREEN';
+export const SHOW_CREATE_ADVERT = 'SHOW_CREATE_ADVERT';
+export const SHOW_UPDATE_ADVERT = 'SHOW_UPDATE_ADVERT';
+export const SHOW_ADVERT_DETAIL = 'SHOW_ADVERT_DETAIL';
+export const SHOW_LIST = 'SHOW_LIST';
+// export const GO_DETAIL = 'GO_DETAIL';
+
+
+// export const GO_TO_HOME_SUCCESS = 'GO_TO_HOME_SUCCESS';
+
+
+
+
+ 
+
+
+ 
+  
+
+
+
+
+

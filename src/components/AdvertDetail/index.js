@@ -1,24 +1,25 @@
 import { connect } from 'react-redux';
 import AdvertDetail from './AdvertDetail';
 
-import { getAdvert } from '../../store/actions';
-import { checkUserExist } from '../../store/selectors';
+import { goToAdvertDetail } from '../../store/actions';
+import { isFetching, error, showLogin, showRegister, showUserRegistered, advertsInPages, locateAdvertFromUrl } from '../../store/selectors';
 
 
-const mapDispatchToProps = {
-  getAdvert: getAdvert
-
-};
-
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    adverts: state.adverts,
-    user: state.user,
-    isFetching: state.isFetching,
-    error: state.error,
-    checkUser: checkUserExist(state.user),
+    isFetching: isFetching(state),
+    error: error(state),
+    showLogin: showLogin(state),
+    showRegister: showRegister(state),
+    showUserRegistered: showUserRegistered(state),
+    adverts: advertsInPages(state),
+    locateAdvertFromUrl: locateAdvertFromUrl(state, props.location),
   }
 }
+
+const mapDispatchToProps = {
+  goToAdvertDetail: goToAdvertDetail
+};
 
 export default connect(
   mapStateToProps,

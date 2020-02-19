@@ -1,348 +1,269 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom'
+import slugify from 'react-slugify';
+import T from 'prop-types';
 
 import Profile from '../Profile';
-import { getAdvert } from "../../services/AdvertDBService";
+import Footer from '../Footer';
+import Loading from '../Loading';
+import Error from '../Error';
+import FormEnhanced from '../FormEnhanced'
+import InputEnhanced from '../InputEnhanced'
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import { mdiArrowLeftThick } from '@mdi/js';
+import Icon from '@mdi/react';
 
-import './CreateOrUpdate.css'
-
-const ventas = [
-  'buy',
-  'sell',
-];
+import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../styles';
+import { styles } from './styles';
 
 
-class CreateOrUpdate extends Component {
-  constructor(props) {
-    super(props);
+const useStyles = makeStyles(styles);
 
-    this.state = {
-      advert: {
-        description: '',
-        nombre: '',
-        foto: '',
-        precio: '',
-        tags: [],
-        venta: '',
-        _id: null
-      },
-      update: true,
 
-    };
+export default function CreateOrUpdate(props) {
 
-    this.checkCreateorUpdate = this.checkCreateorUpdate.bind(this);
-    this.goHome = this.goHome.bind(this);
+  const style = useStyles();
+  const [t] = useTranslation();
+
+
+  // State of store
+  const {
+    user,                //user
+    advertToEdit,        //adverts
+    tagList,             //tags
+    isFetching, error,   //ui
+    showCreateAdvert     //appSelectors
+  } = props;
+
+
+  // Actions of the store
+  const { goToAdvertDetail, createAdvert, updateAdvert, showListAction, goToHome } = props;
+
+
+  const types = ['buy', 'sale'];
+
+  const initialState = {
+    userOwner: '',
+    name: '',
+    slugName: '',
+    description: '',
+    photo: '',
+    type: '',
+    price: '',
+    tags: [],
+    reserved: '',
+    sold: '',
+  };
+
+
+  const [advert, setAdvert] = useState();
+  const [photo, setPhoto] = useState();
+
+
+  useEffect(() => {
+    if (advert) {
+      if (showCreateAdvert) {
+        advert.slugName = slugify(advert.name);
+        if (photo) { createAdvert({ ...advert, photo }, user.token) }
+        else { createAdvert({ ...advert }, user.token) }
+        goToHome();
+      }
+      if (!showCreateAdvert) {
+        if (photo) { updateAdvert({ ...advert, photo }, user.token) }
+        else { updateAdvert({ ...advert }, user.token) }
+        goToAdvertDetail(advert.slugName);
+      }
+    }
+  }, [advert, photo, createAdvert, goToAdvertDetail, showCreateAdvert, updateAdvert, user.token, goToHome]);
+
+  // console.log('Usuario en CreateOrUpdate',user)
+  console.log('Anuncio en CreateOrUpdate',advert)
+
+  const onSubmit = (advert) => {
+    setAdvert({
+      ...advert,
+      price: parseInt(advert.price, 10),
+      type: advert.type === 'sale' ? true : false,
+      userOwner: user._id,
+      reserved: false,
+      sold: false,
+    })
 
   };
 
 
-  componentDidMount() {
-    const { checkUser, history } = this.props;
-    
-    if (checkUser.exist) {
-      this.checkCreateorUpdate();
-    } else {
-      history.push("/login");
-    }
-  }
+  return (
+    <React.Fragment>
+
+      <Profile />
+
+      {isFetching && <Loading />}
+      {error && <Error />}
+
+      <Container
+        classes={{
+          root: style.createorUpdateRoot,
+        }}
+        component="main"
+        maxWidth="sm"
+      >
+
+        <Link
+          to='/'
+          onClick={() => {
+            showListAction();
+          }} >
+          <Icon
+            path={mdiArrowLeftThick}
+            size={1}
+            horizontal
+            rotate={180}
+            color={theme.palette.primary.main}
+          />
+        </Link>
+
+        <Typography className={style.createOrUpdateHeader} component="h1" variant="h6">
+          {showCreateAdvert && t('CreateAdvert')}
+          {!showCreateAdvert && t('UpdateAdvert')}
+        </Typography>
 
 
-  componentDidUpdate() {
-    const { update } = this.state;
+        <FormEnhanced
+          handleSubmit={onSubmit}
+          initialState={!showCreateAdvert ? { ...advertToEdit, price: parseInt(advertToEdit.price), type: advertToEdit.type ? 'sale' : 'buy' } : initialState}
+        >
+          <Grid container justify="center" spacing={2}>
 
-    if (!this.props.match.params.id && update) {
-      this.setState({
-        advert: {
-          description: '',
-          nombre: '',
-          foto: '',
-          precio: '',
-          tags: [],
-          venta: '',
-          _id: null,
+            <Grid item xs={12}>
+              <InputEnhanced
+                type='text'
+                name='name'
+                component={TextField}
+                fullWidth
+                variant="outlined"
+                required />
+            </Grid>
 
-        },
-        update: false
-      })
-    }
-  }
+            <Grid item xs={12}>
+              <InputEnhanced
+                type='text'
+                name='description'
+                component={TextField}
+                fullWidth
+                multiline
+                rows="5"
+                variant="outlined"
+                required />
+            </Grid>
 
+            <Grid item xs={6}>
+              <FormControl variant="outlined" fullWidth >
+                <InputEnhanced
+                  type='text'
+                  name='type'
+                  selectvalues={types}
+                  component={Select}
+                  fullWidth
+                  variant="outlined"
+                  required />
+              </FormControl>
+            </Grid>
 
-  createOrUpdateAdvert = () => {
-    const { _id } = this.state.advert;
+            <Grid item xs={6}>
+              <FormControl variant="outlined" fullWidth >
+                <InputEnhanced
+                  type='text'
+                  name='tags'
+                  selectvalues={tagList}
+                  component={Select}
+                  fullWidth
+                  variant="outlined"
+                  required />
+              </FormControl>
+            </Grid>
 
-    if (_id) {
-      this.props.updateAdvert(this.state.advert, _id).then(() => { this.props.history.push(`/detail/${_id}`) });
-    } else {
-      this.props.createAdvert(this.state.advert).then(() => { this.props.history.push(`/home/`) });
-    }
-  }
+            <Grid item xs={6}>
+              <InputEnhanced
+                type='text'
+                name='price'
+                component={TextField}
+                fullWidth
+                variant="outlined"
+                required />
+            </Grid>
 
+            <Grid item xs={6}>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                multiple
+                type="file"
+                onChange={(e) => setPhoto(e.target.files[0])}
+              />
 
-  checkCreateorUpdate() {
-    // Tenemos el ID del path param ? Sí: Pues es un update: No: Pues es un create
-    const advertID = this.props.match.params.id;
-
-    if (advertID) {
-      getAdvert(advertID).then(advert => {
-        if (advert.success === false) {
-          this.props.history.push("/404");
-        } else {
-          this.setState({ advert });
-        }
-      })
-    } else {
-      this.setState({
-        advert: {
-          description: '',
-          nombre: '',
-          foto: '',
-          precio: '',
-          tags: [],
-          venta: '',
-          _id: null
-
-        },
-        update: true,
-      });
-    }
-  }
-
-  onSubmit = (event) => {
-    event && event.preventDefault();
-    this.createOrUpdateAdvert();
-    this.setState({ update: true });
-  }
-
-  goHome() {
-    this.props.history.push('/home');
-  }
-
-  onInputChange = (event) => {
-    const { name, value } = event.target;
-
-    if (name === 'precio') {
-
-      if ((!/\D/.exec(value))) {
-        this.setState(({ advert }) => ({
-          advert: {
-            ...advert,
-            [name]: value
-          }
-        }));
-
-      }
-    } else {
-      this.setState(({ advert }) => ({
-        
-        advert: {
-          ...advert,
-          [name]: value
-        }
-      }));
-    }
-  };
-
-  onFileSelected = event => {
-    //const value = event.target.files[0].name;
-    this.setState(({ advert }) => ({
-      advert: {
-        ...advert,
-        //photo: value,
-        foto: 'noPhoto' //This functionality is deactivated while APi has not an endpoint to upload files.
-      }
-    }));
-
-  }
-
-
-  render() {
-
-    const { user, tagList } = this.props;
-    const { description, nombre, foto, precio, tags, venta, _id } = this.state.advert;
-
-    return (
-      <React.Fragment>
-
-        {
-          user
-          &&
-          <Profile
-            name={user.name}
-            surname={user.surname}
-            tag={user.tag}
-          > </Profile>
-        }
-
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-
-          <div className='paper'>
-
-            <Typography component="h1" variant="h5">
-              New Advert
-                        </Typography>
-
-            <form className='form' onSubmit={this.onSubmit}>
-              <Grid container justify="center" spacing={2}>
-
-                <Grid item xs={12} >
-                  <TextField
-                    label="Advert name"
-                    value={nombre}
-                    name="nombre"
-                    onChange={this.onInputChange}
-                    fullWidth
-                    variant="filled"
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12} >
-                  <TextField
-                    label="Description"
-                    value={description}
-                    name="description"
-                    onChange={this.onInputChange}
-                    fullWidth
-                    variant="filled"
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <FormControl required fullWidth variant="filled" >
-                    <InputLabel >Venta</InputLabel>
-                    <Select
-                      label="Venta"
-                      value={venta}
-                      name="venta"
-                      onChange={this.onInputChange}
-                      required
-                    >
-
-                      {ventas.map(venta => (
-                        <MenuItem key={venta} value={venta} >
-                          {venta}
-                        </MenuItem>
-                      ))}
-                    </Select>
-
-                  </FormControl >
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <FormControl required fullWidth variant="filled">
-                    <InputLabel >Tags</InputLabel>
-                    <Select
-                      multiple
-                      label="Tag"
-                      value={tags}
-                      name="tags"
-                      onChange={this.onInputChange}
-                      required
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-
-                      {tagList.map(tags => (
-                        <MenuItem key={tags} value={tags} >
-                          {tags}
-                        </MenuItem>
-                      ))}
-
-                    </Select>
-
-                  </FormControl>
-                </Grid>
-
-
-
-                <Grid item xs={12}>
-                  <TextField
-                    label={venta === 'buy' ? "Precio máximo" : "Precio"}
-                    value={precio}
-                    name="precio"
-                    onChange={this.onInputChange}
-                    fullWidth
-                    variant="filled"
-                    required
-
-                  />
-                </Grid>
-
-                <Grid item xs={12} >
-                  <input
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    id="raised-button-file"
-                    multiple
-                    type="file"
-                    onChange={this.onFileSelected}
-
-                  />
-                  <label htmlFor="raised-button-file">
-                    <Button
-                      component="span"
-                      fullWidth
-                      variant="outlined"
-                      color="primary"
-                    >
-                      Upload an image
+              <label htmlFor="raised-button-file">
+                <Button
+                  className={style.createOrUpdateButtonUpload}
+                  component="span"
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  size="medium"
+                >
+                  {t('UploadImage')}
                 </Button>
-                  </label>
-                  <Box textAlign="justify">
-                    <h3>The photo entered has the name: {foto}.
-                    Attention: This functionality is disabled because the API does not have an endpoint to upload photos.</h3>
-                  </Box>
+              </label>
 
-                </Grid>
+            </Grid>
 
-                <Grid item xs={12} >
-                  <Button
-                    label="Create"
-                    type='submit'
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    {_id ? 'Update advert' : 'Create a new advert'}
-                  </Button>
-                </Grid>
+            <Typography className={style.createOrUpdateCreateTypography} variant="body2" color="inherit" >
+              {photo !== undefined && photo !== null && t('NameOfPhoto') + photo.name}
+            </Typography>
 
-                <div className="back-home">
-                  <Grid item xs={12} >
-                    <Button variant="contained"
-                      color="secondary"
-                      className="button is-link"
-                      onClick={this.goHome}
-                    >
-                      Back to home
-                </Button>
-                  </Grid>
-                </div>
-              </Grid>
-            </form>
+            <Grid item xs={12}>
+              <Button
+                label="Continue"
+                type='submit'
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                {t('CreateAdvert')}
+              </Button>
+            </Grid>
 
-          </div>
+            {error && <Error error={error} />}
+          </Grid>
+        </FormEnhanced>
 
-        </Container>
+      </Container>
 
-      </React.Fragment>
-    );
-  }
+      <Footer />
+
+    </React.Fragment>
+  );
 }
 
-export default CreateOrUpdate;
+CreateOrUpdate.propTypes = {
+  user: T.object,
+  advertToEdit: T.object,
+  tagList: T.array,
+  isFetching: T.bool,
+  error: T.objectOf(Error),
+  showCreateAdvert: T.bool,
+  goToAdvertDetail: T.func,
+  createAdvert: T.func,
+  updateAdvert: T.func,
+  showListAction: T.func,
+};
+

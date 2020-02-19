@@ -1,178 +1,97 @@
-import React, { Component } from "react";
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import T from 'prop-types';
 
 import Profile from '../Profile';
+import Footer from '../Footer';
 import Loading from '../Loading';
 import Error from '../Error';
+import Advert from '../Advert'
+import Login from '../Login';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
-import './AdvertDetail.css'
-
-
-class AdvertDetail extends Component {
-  constructor(props) {
-    super(props);
-
-    this.goHome = this.goHome.bind(this);
-    this.updateAdvert = this.updateAdvert.bind(this);
-
-  }
+import { makeStyles } from '@material-ui/core/styles';
+import { styles } from './styles';
 
 
-  checkUserExist() {
-    if (this.props.checkUser.exist) {
-      return true;
-    } else {
-      this.props.history.push("/login");
-      return false;
-    }
-  }
+const useStyles = makeStyles(styles);
 
 
-  componentDidMount() {
-    if (this.checkUserExist()) {
-      this.props.getAdvert(this.props.match.params.id)
-    }
-  }
+export default function AdvertDetail(props) {
 
-  goHome() {
-    this.props.history.push('/home');
-  }
+  const styles = useStyles();
+  const [t] = useTranslation();
 
-  updateAdvert() {
-    this.props.history.push(`/createOrUpdate/${this.props.match.params.id}`);
+  // State of store
+  const {
+    adverts, locateAdvertFromUrl,                 //adverts
+    isFetching, error,                            //ui
+    showLogin, showRegister, showUserRegistered,  //appSelectors
+  } = props;
 
-  }
-
-
-  render() {
-
-    const { user, isFetching, error } = this.props;
-
-    const advert = this.props.adverts[0];
-
-    return (
-      <React.Fragment>
-
-        {
-          user
-          &&
-          <Profile
-            name={user.name}
-            surname={user.surname}
-            tag={user.tag}
-          > </Profile>
-        }
+  // Actions of the store
+  const { goToAdvertDetail } = props;
 
 
-        <div className="container">
-          {
-            advert
-            &&
-            <Container component="main" maxWidth="sm">
-              <CssBaseline />
-
-              <div className='paper'>
-                <Grid container alignItems='center' alignContent='center' spacing={2}>
-
-                  <Grid item xs={12} >
-                    <Card className="card">
-                      <div className="card-detail">
-                        <CardHeader
-                          className="limit-height-12vh"
-                          avatar={
-                            <Avatar aria-label="recipe" className='avatar'>
-                              {advert.type}
-                            </Avatar>
-
-                          }
-                          action={
-                            <IconButton aria-label="settings">
-                              <MoreVertIcon />
-                            </IconButton>
-                          }
-
-                          title={advert.name}
-                          subheader={'Tags: ' + advert.tags.map((tags, i) => (
-                            i === (advert.tags.length - 1) ? ` ${tags}.` : ` ${tags}`
-                          ))}
-
-                        />
-                        <CardMedia
-                          className="media"
-                          image={advert.photo !== 'noPhoto' ? `http://localhost:3003/${advert.photo}` : `http://localhost:3003/noHayImagen.gif`}
-                          title={advert.name}
-                        />
-                        <CardContent>
-                          <Typography variant="body2" color="textSecondary" component="p" className="limit-height-6vh">
-                            {advert.description}
-                          </Typography>
+  useEffect(() => {
+    goToAdvertDetail(locateAdvertFromUrl.slugName)
+  }, [goToAdvertDetail, locateAdvertFromUrl]);
 
 
-                          <div className="price-text">
-                            Precio: {advert.price} €.
-                          </div>
+  
+  return (
+    <React.Fragment>
+
+      {showLogin && <Login />}
+      {showRegister && <Login />}
+      {showUserRegistered && <Login />}
+
+      <Profile />
+
+      {isFetching && <Loading  />}
+      {error && !showLogin && !showRegister && !showUserRegistered &&<Error  error={error} />}
 
 
-                        </CardContent>
-                      </div>
-                    </Card>
-                  </Grid >
+      {!isFetching && adverts && adverts.length === 0 &&
 
-                  <Grid item xs={12} sm={6}>
-                    <Button variant="contained"
-                      color="secondary"
-                      onClick={this.goHome}
-                      fullWidth
-                    >
-                      Back to home
-                      </Button>
-                  </Grid>
+        <Typography
+          className={styles.advertDetailHomeNoAdverts}
+          variant="body2" color="inherit" >
+          {t('NoAdverts')}
+        </Typography>
 
-                  <Grid item xs={12} sm={6} >
-                    <Button variant="contained"
-                      color="primary"
-                      onClick={this.updateAdvert}
-                      fullWidth
-                    >
-                      Update Advert
-                      </Button>
-                  </Grid>
+      }
 
+      {adverts && adverts.length !== 0 &&
+        <div className={styles.advertDetailGrid}>
+          < Grid
+            container
+            alignItems='center'
+            justify="center"
+            spacing={1}>
 
-                </Grid>
-              </div>
-            </Container>
-          }
+            <Advert {...props} advert={locateAdvertFromUrl} />
 
-          {isFetching && <Loading className="app-loading" />}
-          {error && <Error className="app-error" error={error} />}
+          </Grid>
+        </div>}
 
-          {
-            !isFetching
-            &&
-            !advert
-            &&
-            <h1>There is not adverts...</h1>
-          }
+      <div className={styles.advertDetailFooter}>
+        <Footer />
+      </div>
 
-        </div>
-
-
-      </React.Fragment>
-    )
-  }
+    </React.Fragment>
+  )
 }
 
-export default AdvertDetail;
+AdvertDetail.propTypes = {
+  adverts: T.object,
+  locateAdvertFromUrl: T.object,
+  isFetching: T.bool,
+  error: T.objectOf(Error),
+  showLogin: T.bool,
+  showRegister: T.bool,
+  showUserRegistered: T.bool,
+  goToAdvertDetail: T.func,
+};

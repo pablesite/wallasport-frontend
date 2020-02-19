@@ -1,8 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
-import reducer  from './reducers';
+//import reducer  from './reducers';
+import * as reducers from './reducers';
 
 const configureMiddleware = ({ ...thunkExtraArgument }) => {
   const middlewares = [
@@ -12,13 +13,16 @@ const configureMiddleware = ({ ...thunkExtraArgument }) => {
 };
 
 
-export const configureStore = config =>  {
+export const configureStore = config => preloadedState =>  {
   const middlewares = configureMiddleware(config);
   const composeEnhancers = composeWithDevTools;
 
   const store = createStore(
-    reducer,
+    combineReducers( reducers ),
+    preloadedState,
     composeEnhancers(applyMiddleware(...middlewares)),
   );
+
   return store;
 };
+

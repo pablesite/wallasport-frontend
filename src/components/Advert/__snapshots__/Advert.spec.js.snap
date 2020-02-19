@@ -26,9 +26,7 @@ exports[`Advert should render Advert component 1`] = `
             <ForwardRef(WithStyles)
               aria-label="recipe"
               className="avatar"
-            >
-              sell
-            </ForwardRef(WithStyles)>
+            />
           }
           className="limit-height-12vh"
           subheader="Tags:  [object Object]."
@@ -36,7 +34,7 @@ exports[`Advert should render Advert component 1`] = `
         />
         <WithStyles(ForwardRef(CardMedia))
           className="media"
-          image="http://localhost:3001/images/anuncios/x6.jpg"
+          image="http://localhost:3003//images/anuncios/x6.jpg"
           title="BMW X6 M"
         />
         <WithStyles(ForwardRef(CardContent))>

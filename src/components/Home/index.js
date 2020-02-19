@@ -1,28 +1,28 @@
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import { fetchAdverts } from '../../store/actions';
-import { checkUserExist } from '../../store/selectors';
-
+ import { advertsInPages, actualPage, isFetching, error, showLogin, showRegister, showUserRegistered } from '../../store/selectors';
+ import { showListAction } from '../../store/actions';
 
 
 function mapStateToProps(state) {
-  return { 
-    adverts: state.adverts, 
-    user: state.user,  
-    isFetching: state.isFetching, 
-    error: state.error,
-    tagList: state.tags,
-    checkUser: checkUserExist(state.user), 
-  } 
+  return {
+    adverts: advertsInPages(state),
+    actualPage: actualPage(state),
+
+    isFetching: isFetching(state),
+    error: error(state),
+
+    showLogin: showLogin(state),
+    showRegister: showRegister(state),
+    showUserRegistered: showUserRegistered(state),
+
+  }
 }
 
-
 const mapDispatchToProps = {
-  loadAdverts: fetchAdverts,
-
+  showListAction: showListAction,
 };
-
 
 export default connect(
   mapStateToProps,
