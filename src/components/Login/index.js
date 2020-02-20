@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Login from './Login';
 import { register, login, updateUser, goToHome, showLoginAction } from '../../store/actions';
-import {token, username, email, isFetching, error, showLogin, showRegister, showUpdateUser, showUserRegistered, advertsInPages } from '../../store/selectors';
+import {token, username, email, isFetching, error, showLogin, showRegister, showUpdateUser, showUserRegistered } from '../../store/selectors';
 
 
 function mapStateToProps(state) {

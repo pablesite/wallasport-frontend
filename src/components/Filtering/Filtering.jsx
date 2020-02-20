@@ -6,12 +6,10 @@ import T from 'prop-types';
 import FormEnhanced from '../FormEnhanced'
 import InputEnhanced from '../InputEnhanced'
 
-import Loading from '../Loading';
 import Error from '../Error';
 
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { TextField, Select } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,7 +22,6 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import { theme } from '../styles';
 import { styles } from './styles';
 
 
@@ -40,7 +37,6 @@ export default function Filtering(props) {
     const {
         sort,               //adverts  
         tagList,            //tags   
-        isFetching, error,  //ui
     } = props;
 
     // Actions of the store
@@ -74,8 +70,6 @@ export default function Filtering(props) {
     return (
         <React.Fragment>
 
-            {isFetching && <Loading />}
-
             <Container component="main" className={style.filteringContainer}>
                 <ExpansionPanel className={style.filteringExpansionPanel}>
                     <ExpansionPanelSummary className={style.filteringExpansionSummary}
@@ -106,7 +100,6 @@ export default function Filtering(props) {
                                         name='price'
                                         component={TextField}
                                         fullWidth
-
                                         helperText='[min - max] (€)'
                                     />
                                 </Grid>
@@ -119,7 +112,6 @@ export default function Filtering(props) {
                                             selectvalues={tagList}
                                             component={Select}
                                             fullWidth
-                                            // variant="outlined"
                                             />
                                    
                                     <FormHelperText>{t('OneFreeTag')}</FormHelperText>
@@ -160,7 +152,6 @@ export default function Filtering(props) {
                                 </Grid>
 
                             </Grid>
-                            {error && <Error error={error} />}
 
                         </FormEnhanced>
                     </ExpansionPanelDetails>

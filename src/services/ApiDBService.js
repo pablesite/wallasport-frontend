@@ -12,7 +12,7 @@ const getRequest = (url) => {
       headers: { 'Accept': "application/json, text/plain, */*", }
     }
   )
-    .catch(err => console.log(err)) // Este error aparece cuando por ejemplo la API no redirecciona bien a las rutas. EN vez de hacer nada con él, pinto API Unavailable. Se podría mejorar.
+    .catch(err => console.log(err)) 
     .then(res => res.json());
 }
 
@@ -24,7 +24,7 @@ const getRequestPrivate = (url, token) => {
       headers: { 'Accept': "application/json, text/plain, */*", 'Authorization': token }
     }
   )
-    .catch(err => console.log(err)) // Este error aparece cuando por ejemplo la API no redirecciona bien a las rutas. EN vez de hacer nada con él, pinto API Unavailable. Se podría mejorar.
+    .catch(err => console.log(err))
     .then(res => res.json());
 }
 
@@ -41,19 +41,6 @@ const createRequestPublic = (url, body) => {
     .catch(err => console.log(err))
     .then(res => res.json());
 }
-
-// const createRequestPrivate = (url, body, token) => {
-//   return fetch(
-//     url,
-//     {
-//       method: 'POST',
-//       headers: {'Content-Type': 'application/json','Authorization': token },
-//       body: JSON.stringify(body)
-//     }
-//   )
-//     .catch(err => console.log(err))
-//     .then(res => res.json());
-// }
 
 const createRequestWithPhoto = (url, body, token) => {
   const formData = new FormData()
@@ -83,19 +70,6 @@ const createRequestWithPhotoPublic = (url, body) => {
     .catch(err => console.log(err))
     .then(res => res.json());
 }
-
-// const updateRequest = (url, body, token) => {
-//   return fetch(
-//     url,
-//     {
-//       method: 'PUT',
-//       body: JSON.stringify(body),
-//       headers: {'Content-Type': 'application/json', 'Authorization': token },
-//     }
-//   )
-//     .catch(err => console.log(err))
-//     .then(res => res.json());
-// }
 
 const updateRequestWithPhoto = (url, body, token) => {
   const formData = new FormData()

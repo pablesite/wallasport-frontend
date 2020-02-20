@@ -3,8 +3,11 @@
 export const styles = {
 
     advertDetailGrid: {
-        margin: '2em 25vw 2em 25vw'
-    }, 
+        margin: '2em 15vw 2em 15vw',
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
 
     advertDetailFooter: {
         backgroundColor: 'black',
@@ -13,9 +16,9 @@ export const styles = {
         left: '0px',
         width: '100%',
         height: '50px',
-        color: 'white',  
+        color: 'white',
     },
-    
+
     advertDetailHomeNoAdverts: {
         flexGrow: 1,
         height: '80vh',

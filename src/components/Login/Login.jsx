@@ -86,7 +86,7 @@ export default function Login(props) {
                                 size={1}
                                 horizontal
                                 rotate={180}
-                                color={theme.palette.primary.main}
+                                color={theme.palette.secondary.main}
                             />
 
                         </div>

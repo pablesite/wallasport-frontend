@@ -14,7 +14,6 @@ export default function InputEnhanced({
   // Origin props of the component
   const { type, name, selectvalues } = props;
 
-
   const formContext = useContext(FormContext);
 
   return (

@@ -1,9 +1,8 @@
 import { theme } from '../styles';
 
-// const styledBy = (property, mapping) => props => mapping[props[property]];
 
-export const styles = { 
-  
+export const styles = {
+
   advertRoot: {
     margin: 5,
     width: 225,
@@ -32,7 +31,7 @@ export const styles = {
   },
 
   advertReservedText: {
-    position: 'absolute', 
+    position: 'absolute',
     transform: 'rotate(-45deg)',
     fontSize: 'xxx-large',
     top: '35vh',
@@ -42,7 +41,7 @@ export const styles = {
   },
 
   advertSoldText: {
-    position: 'absolute', 
+    position: 'absolute',
     transform: 'rotate(-45deg)',
     fontSize: 'xxx-large',
     top: '35vh',
@@ -94,6 +93,11 @@ export const styles = {
     fontSize: 'x-large',
   },
 
+  advertCardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
   advertCardHeaderRoot: {
     paddingTop: 0,
     paddingBottom: 0,
@@ -130,6 +134,7 @@ export const styles = {
   },
 
   advertButton: {
+    marginTop: '1em',
     borderRadius: '20px 20px 20px 20px',
     textTransform: 'none',
   },
@@ -154,7 +159,7 @@ export const styles = {
   },
 
   advertSocialNetwork: {
-    marginRight:15,
+    marginRight: 15,
   },
 
 

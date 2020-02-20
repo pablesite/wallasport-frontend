@@ -21,7 +21,6 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import { theme } from '../styles';
 import { styles } from './styles';
 
 

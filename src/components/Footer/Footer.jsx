@@ -9,7 +9,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import { theme } from '../styles';
 import { styles } from './styles';
 
 

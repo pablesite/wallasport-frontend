@@ -35,13 +35,13 @@ export default function Pagination(props) {
             <Grid container alignItems='center' alignContent='space-between' spacing={1} justify='center'>
                 <Grid item sm={2}>
                     <Box textAlign="center" className={style.paginationArrow} >
-                        <Icon className='login-arrow'
+                        <Icon 
                             onClick={() => pageBack(actualPage, numberOfPages)}
                             path={mdiArrowLeftThick}
                             size={1}
                             horizontal
                             rotate={180}
-                            color={theme.palette.primary.main}
+                            color={theme.palette.secondary.main}
                         />
                     </Box>
                 </Grid>
@@ -54,13 +54,13 @@ export default function Pagination(props) {
 
                 <Grid item sm={2} >
                     <Box textAlign="center" className={style.paginationArrow} >
-                        <Icon className='login-arrow'
+                        <Icon 
                             onClick={() => pageForward(actualPage, numberOfPages)}
                             path={mdiArrowLeftThick}
                             size={1}
                             horizontal
                             rotate={0}
-                            color={theme.palette.primary.main}
+                            color={theme.palette.secondary.main}
                         />
                     </Box>
                 </Grid>

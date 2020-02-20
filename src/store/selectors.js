@@ -12,7 +12,6 @@ export const findInFavourites = (state, favId) => {
     if (state.user.favs) {
         isInTheList = state.user.favs.find(fav => fav == favId);
     }
-
     return Boolean(isInTheList);
 }
 
@@ -23,7 +22,7 @@ export const numberOfPages = state => state.adverts.numberOfPages;
 export const sort = state => state.adverts.sort;
 
 export const locateAdvertFromUrl = (state, location) => {
-    if (state.adverts) {
+    if(state.adverts.advertsInPages.length !== 0){
         let advert = null;
         const path = location.pathname.split('/')
         for (let i = 1; i < state.adverts.numberOfPages + 1; i++) {
@@ -34,7 +33,6 @@ export const locateAdvertFromUrl = (state, location) => {
         }
         return advert;
     }
-
 }
 
 // tags selectors

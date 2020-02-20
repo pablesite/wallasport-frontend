@@ -36,11 +36,12 @@ export default function AdvertDetail(props) {
 
 
   useEffect(() => {
-    goToAdvertDetail(locateAdvertFromUrl.slugName)
+     if ( locateAdvertFromUrl !== undefined && locateAdvertFromUrl.slugName !== undefined ) {
+      goToAdvertDetail(locateAdvertFromUrl.slugName)
+     }
   }, [goToAdvertDetail, locateAdvertFromUrl]);
 
 
-  
   return (
     <React.Fragment>
 
@@ -50,8 +51,8 @@ export default function AdvertDetail(props) {
 
       <Profile />
 
-      {isFetching && <Loading  />}
-      {error && !showLogin && !showRegister && !showUserRegistered &&<Error  error={error} />}
+      {isFetching && <Loading />}
+      {error && !showLogin && !showRegister && !showUserRegistered && <Error error={error} />}
 
 
       {!isFetching && adverts && adverts.length === 0 &&
@@ -64,15 +65,14 @@ export default function AdvertDetail(props) {
 
       }
 
-      {adverts && adverts.length !== 0 &&
+      {adverts && adverts.length !== 0  &&
         <div className={styles.advertDetailGrid}>
           < Grid
             container
             alignItems='center'
             justify="center"
             spacing={1}>
-
-            <Advert {...props} advert={locateAdvertFromUrl} />
+            <Advert {...props} advert={locateAdvertFromUrl} />}
 
           </Grid>
         </div>}

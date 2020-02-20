@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import T from 'prop-types';
 import { TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon } from "react-share";
@@ -22,7 +22,6 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import { theme } from '../../styles';
 import { styles } from './styles';
 
 
@@ -46,11 +45,7 @@ export default function Advert(props) {
 
   // Actions of the store
   const { getAdverts, goToAdvertDetail, goToCreateAdvert, goToUpdateAdvert, goToHome, goToLogin, markAsFavourite, markAsReserved, markAsSold } = props;
-  //falta una acción que saque user y foto del anuncio!
 
-  // useEffect(() => {
-  //   getUserOwnerFromAdvert(advert.slugName)
-  // }, [getUserOwnerFromAdvert]);
 
 
   return (
@@ -88,8 +83,6 @@ export default function Advert(props) {
         {advert.name && advert.userOwner &&
           <Avatar
             className={showAdvertDetail === false ? style.advertAvatar : style.advertAvatarDetail}
-            // src={'https://i.pravatar.cc/300'} 
-
             src={advert.userOwner.photo ? `${process.env.REACT_APP_IMG_URL}/${advert.userOwner.photo}` : `${process.env.REACT_APP_IMG_URL}/no-photo.gif`} //esto está mal. Sólo vería las fotos del usuario logueado. Me falta las referencias de User en Advert en mongo
           />}
         {advert.name &&
@@ -113,12 +106,12 @@ export default function Advert(props) {
           />
         }
         {!advert.name &&
-          <CardContent>
+          <CardContent className={style.advertCardContent}>
             <Typography variant="body2" color="textSecondary" component="p">
               {t('UploadYourProduct')}
             </Typography>
+          
             <Button
-
               className={style.advertButton}
               size="small"
               variant="outlined"

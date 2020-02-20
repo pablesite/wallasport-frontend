@@ -15,7 +15,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import { theme } from '../../styles';
 import { styles } from './styles';
 
 
@@ -46,16 +45,16 @@ const { showListAction } = props;
   return (
     <React.Fragment>
 
+      <Profile />
+
+      <Filtering />
+
       {showLogin && <Login />}
       {showRegister && <Login />}
       {showUserRegistered && <Login />}
 
-      <Profile />
-    
       {isFetching && <Loading />}
       {error && !showLogin && !showRegister && !showUserRegistered && <Error error={error} />}
-
-      <Filtering />
 
       {!isFetching && adverts && (adverts.length === 0 || Object.keys(adverts).length === 0) &&
         <Typography

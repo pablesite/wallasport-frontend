@@ -1,9 +1,8 @@
 import { theme } from '../styles';
 
 export const styles = {
-    
     loginBackground: {
-        background: 'rgba(142, 231, 201, 0.55)', 
+        background: 'rgba(119, 231, 196, 0.55)', 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

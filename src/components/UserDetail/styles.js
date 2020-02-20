@@ -1,4 +1,3 @@
-import { theme } from '../styles';
 
 export const styles = {
 

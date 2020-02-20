@@ -175,20 +175,7 @@ export default function CreateOrUpdate(props) {
               </FormControl>
             </Grid>
 
-            {/* <Grid item xs={6}>
-              <FormControl variant="outlined" fullWidth >
-                <InputEnhanced
-                  type='text'
-                  name='tags'
-                  selectvalues={tagList}
-                  component={Select}
-                  fullWidth
-                  variant="outlined"
-                  required />
-              </FormControl>
-            </Grid> */}
-
-          <Grid item xs={6}>
+            <Grid item xs={6}>
               <FormControl variant="outlined" fullWidth >
                 <InputEnhanced
                   type='text'
@@ -196,9 +183,9 @@ export default function CreateOrUpdate(props) {
                   component={TextField}
                   fullWidth
                   variant="outlined"
-                  required />
+                />
               </FormControl>
-            </Grid> 
+            </Grid>
 
             <Grid item xs={6}>
               <InputEnhanced

@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import AdvertDetail from './AdvertDetail';
 
-import { goToAdvertDetail } from '../../store/actions';
 import { isFetching, error, showLogin, showRegister, showUserRegistered, advertsInPages, locateAdvertFromUrl } from '../../store/selectors';
-
+import { goToAdvertDetail } from '../../store/actions';
 
 function mapStateToProps(state, props) {
   return {
@@ -18,7 +17,7 @@ function mapStateToProps(state, props) {
 }
 
 const mapDispatchToProps = {
-  goToAdvertDetail: goToAdvertDetail
+  goToAdvertDetail: goToAdvertDetail,
 };
 
 export default connect(

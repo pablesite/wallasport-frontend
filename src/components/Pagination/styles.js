@@ -8,7 +8,7 @@ export const styles = {
     },
 
     paginationPages: {
-        color: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
     },
 
 }

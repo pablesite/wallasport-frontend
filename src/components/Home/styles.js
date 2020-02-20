@@ -13,8 +13,7 @@ export const styles = {
     },
 
     homeGrid: {
-        margin: '2em 23vw 2em 23vw',
-        flexWrap: 'wrap'
+        margin: '2em 23vw 2em 23vw',  
     }, 
 
     homeGridPagination: {
