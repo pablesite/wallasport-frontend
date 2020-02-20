@@ -13,7 +13,9 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { TextField } from '@material-ui/core';
+import { TextField, Select } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -36,7 +38,8 @@ export default function Filtering(props) {
 
     // State of store
     const {
-        sort,         //adverts     
+        sort,               //adverts  
+        tagList,            //tags   
         isFetching, error,  //ui
     } = props;
 
@@ -76,9 +79,7 @@ export default function Filtering(props) {
             <Container component="main" className={style.filteringContainer}>
                 <ExpansionPanel className={style.filteringExpansionPanel}>
                     <ExpansionPanelSummary className={style.filteringExpansionSummary}
-                        expandIcon={<ExpandMoreIcon />}
-                    >
-                        <Typography className={style.filteringHeading}>{t('FindProducts')}</Typography>
+                        expandIcon={<ExpandMoreIcon />}>
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails className={style.filteringExpansionDetails}>
@@ -110,18 +111,23 @@ export default function Filtering(props) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={3}>
-                                    <InputEnhanced
-                                        type='text'
-                                        name='tags'
-                                        component={TextField}
-                                        fullWidth
-                                        helperText={t('OneFreeTag')}
-                                    />
+                                <Grid item xs={2}>
+                                    <FormControl fullWidth >
+                                        <InputEnhanced
+                                            type='text'
+                                            name='tags'
+                                            selectvalues={tagList}
+                                            component={Select}
+                                            fullWidth
+                                            // variant="outlined"
+                                            />
+                                   
+                                    <FormHelperText>{t('OneFreeTag')}</FormHelperText>
+                                    </FormControl>
                                 </Grid>
 
 
-                                <Grid item xs={3}>
+                                <Grid item xs={4}>
 
                                     <Grid item className={style.filteringSubmit} xs>
 
@@ -133,10 +139,6 @@ export default function Filtering(props) {
                                                     onChange={() => switchSort(sort)}
                                                     value={sort}
                                                     color="secondary"
-                                                    // className={style.filteringSwitch}
-                                                // classes={{
-                                                //     colorSecondary: style.filteringSwitch,
-                                                //   }}
                                                 />}
                                             label={sort ? t('Descendent') : t('Ascendent')}
                                         />

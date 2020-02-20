@@ -177,7 +177,6 @@ const discoverAdverts = () => {
 
 
 const getOneAdvert = (slugName) => {
-  console.log('slug',slugName)
   return getRequest(`${API_URL}/adverts/${slugName}`)
     .catch(error => console.error('Error:', error))
     .then(res => new Advert(res.advert))

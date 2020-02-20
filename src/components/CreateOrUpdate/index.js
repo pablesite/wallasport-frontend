@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import CreateOrUpdate from './CreateOrUpdate';
 
 import { createAdvert, updateAdvert, goToAdvertDetail, showListAction, goToHome } from '../../store/actions';
-import { user, isAuthorized, locateAdvertFromUrl, tags, showCreateAdvert } from '../../store/selectors';
+import { user, isAuthorized, locateAdvertFromUrl, showCreateAdvert } from '../../store/selectors';
 
 
 function mapStateToProps(state, props) {
@@ -10,7 +10,6 @@ function mapStateToProps(state, props) {
     user: user(state),
     checkUser: isAuthorized(state),
     advertToEdit: locateAdvertFromUrl(state, props.location),
-    tagList: tags(state),
     showCreateAdvert: showCreateAdvert(state),
   }
 }

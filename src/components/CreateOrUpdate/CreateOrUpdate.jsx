@@ -39,7 +39,6 @@ export default function CreateOrUpdate(props) {
   const {
     user,                //user
     advertToEdit,        //adverts
-    tagList,             //tags
     isFetching, error,   //ui
     showCreateAdvert     //appSelectors
   } = props;
@@ -85,8 +84,6 @@ export default function CreateOrUpdate(props) {
     }
   }, [advert, photo, createAdvert, goToAdvertDetail, showCreateAdvert, updateAdvert, user.token, goToHome]);
 
-  // console.log('Usuario en CreateOrUpdate',user)
-  console.log('Anuncio en CreateOrUpdate',advert)
 
   const onSubmit = (advert) => {
     setAdvert({
@@ -178,7 +175,7 @@ export default function CreateOrUpdate(props) {
               </FormControl>
             </Grid>
 
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <FormControl variant="outlined" fullWidth >
                 <InputEnhanced
                   type='text'
@@ -189,7 +186,19 @@ export default function CreateOrUpdate(props) {
                   variant="outlined"
                   required />
               </FormControl>
-            </Grid>
+            </Grid> */}
+
+          <Grid item xs={6}>
+              <FormControl variant="outlined" fullWidth >
+                <InputEnhanced
+                  type='text'
+                  name='tags'
+                  component={TextField}
+                  fullWidth
+                  variant="outlined"
+                  required />
+              </FormControl>
+            </Grid> 
 
             <Grid item xs={6}>
               <InputEnhanced

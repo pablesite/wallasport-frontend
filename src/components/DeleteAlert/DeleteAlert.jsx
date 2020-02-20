@@ -38,8 +38,6 @@ export default function DeleteAlert(props) {
     };
 
     const handleDelete = () => {
-
-        console.log(type)
         setOpen(false);
         if(type === 'advert') {
             deleteAdvert(item, token);

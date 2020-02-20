@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 
 import Filtering from './Filtering';
 
-import { sort, isFetching, error } from '../../store/selectors';
+import { sort, tags, isFetching, error } from '../../store/selectors';
 import { getAdverts, switchSort } from '../../store/actions';
 
 
 function mapStateToProps(state) {
   return {
     sort: sort(state),
+    tagList: tags(state),
     isFetching: isFetching(state),
     error: error(state),
   };

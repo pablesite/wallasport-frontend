@@ -295,7 +295,6 @@ export const getUserOwnerFromAdvert = (slugName) => {
     dispatch(apiRequest());
     try {
       const advert = await ApiService.getOneAdvert(slugName)
-      console.log('advert con populate hecho', advert)
       dispatch(UserOwnerSuccess(advert.userOwner))
       dispatch(AdvertsSuccess());
       
@@ -312,7 +311,8 @@ export const createAdvert = (advert, token) => {
     try {
       await ApiService.createAdvert(advert, token)
       dispatch(AdvertsSuccess());
-      dispatch(getAdverts())
+      dispatch(getAdverts());
+      dispatch(fetchTags());
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -324,6 +324,7 @@ export const updateAdvert = (advert, token) => {
     dispatch(apiRequest());
     try {
       await ApiService.updateAdvert(advert, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      dispatch(fetchTags());
       dispatch(AdvertsSuccess());
     } catch (error) {
       dispatch(apiFailure(error));
@@ -582,10 +583,6 @@ export const goToHome = () => {
 
 export const goToLogin = () => {
   return function (dispatch, _getState, { history }) {
-    // dispatch(apiSuccess());  // if there is an error in login/register, and we go back, the error should be dissapear.
-    // dispatch(showListAction());
-    // dispatch(showMainScreenAction());
-    console.log('test')
     history.push("/login");
   };
 };
