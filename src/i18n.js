@@ -52,6 +52,10 @@ const resources = {
       'Email': 'Email: ',
       'Descendent': 'Newer First',
       'Ascendent': 'Older First',
+      '1MBMax': '1 MB Maximum',
+      'TagsComas': 'Tags separated by comas',
+      'En€': 'Price in €',
+      'Buy/Sale': 'Buy / Sale',
       
     }
   },
@@ -103,6 +107,10 @@ const resources = {
       'Email': 'Corre electrónico: ',
       'Descendent': 'Nuevos Primero',
       'Ascendent': 'Viejos Primero',
+      '1MBMax': '1 MB Máximo',
+      'TagsComas': 'Etiquetas separadas por comas',
+      'En€': 'Precio en €',
+      'Buy/Sale': 'Compra / Venta',
     }
   }
 

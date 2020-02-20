@@ -149,7 +149,6 @@ export default function Advert(props) {
             {advert.name && showAdvertDetail &&
               <CardActions disableSpacing>
 
-                {/* {user.username && */}
                 <IconButton aria-label="add to favorites"
                   onClick={() => {
 
@@ -164,7 +163,7 @@ export default function Advert(props) {
                     color={findInFavourites ? "primary" : "inherit"}  //Revisar
                   />
                 </IconButton>
-                {/* } */}
+                
 
                 {(advert.userOwner && advert.userOwner.username === user.username) &&
                   <IconButton aria-label="mark as reserved"

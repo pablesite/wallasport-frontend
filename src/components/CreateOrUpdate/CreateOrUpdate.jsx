@@ -20,6 +20,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { mdiArrowLeftThick } from '@mdi/js';
 import Icon from '@mdi/react';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../styles';
@@ -172,6 +173,7 @@ export default function CreateOrUpdate(props) {
                   fullWidth
                   variant="outlined"
                   required />
+                  <FormHelperText >{t('Buy/Sale')}</FormHelperText>
               </FormControl>
             </Grid>
 
@@ -184,10 +186,12 @@ export default function CreateOrUpdate(props) {
                   fullWidth
                   variant="outlined"
                 />
+                <FormHelperText >{t('TagsComas')}</FormHelperText>
               </FormControl>
             </Grid>
 
             <Grid item xs={6}>
+            <FormControl variant="outlined" fullWidth >
               <InputEnhanced
                 type='text'
                 name='price'
@@ -195,15 +199,19 @@ export default function CreateOrUpdate(props) {
                 fullWidth
                 variant="outlined"
                 required />
+                <FormHelperText >{t('En€')}</FormHelperText>
+                </FormControl>
             </Grid>
-
+            
             <Grid item xs={6}>
+            <FormControl variant="outlined" fullWidth >
               <input
                 accept="image/*"
                 style={{ display: 'none' }}
                 id="raised-button-file"
                 multiple
                 type="file"
+
                 onChange={(e) => setPhoto(e.target.files[0])}
               />
 
@@ -219,6 +227,8 @@ export default function CreateOrUpdate(props) {
                   {t('UploadImage')}
                 </Button>
               </label>
+              <FormHelperText >{t('1MBMax')}</FormHelperText>
+              </FormControl>
 
             </Grid>
 

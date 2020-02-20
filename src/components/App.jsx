@@ -31,7 +31,7 @@ export default class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route exact path='/login' component={Login}  />
                 <Route exact path='/advert/:slugName' component={AdvertDetail} />
-                <PrivateRoute exact path='/user' component={UserDetail} />
+                <PrivateRoute exact path='/user/:username' component={UserDetail} />
                 <PrivateRoute exact path='/createOrUpdate' component={CreateOrUpdate} />
                 <PrivateRoute exact path='/createOrUpdate/:slugName' component={CreateOrUpdate} />
                 <Route component={Home} />

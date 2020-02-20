@@ -1,10 +1,8 @@
 import {
   // USER types
   GET_USER_SUCCESS,
-  // CREATE_USER_SUCESS,
   UPDATE_USER_SUCCESS,
   DELETE_USER_SUCCESS,
-
   REGISTER_SUCCESS,
   REGISTER_INVALID,
   LOGIN_SUCCESS,
@@ -14,7 +12,6 @@ import {
 
   // ADVERTS types
   ADVERTS_SUCCESS, //GET, CREATE OR UPDATE
-  //DELETE_ADVERT
   DIVIDE_IN_PAGES,
   PAGE_BACK,
   PAGE_FORWARD,
@@ -43,7 +40,7 @@ import {
   SHOW_ADVERT_DETAIL,
   SHOW_LIST,
   SWITCH_SORT,
-  // GO_DETAIL,
+
 
 
 } from './types';
@@ -88,7 +85,6 @@ export const login = (user) => {
         user = { username: user.username, token }
         dispatch(loginSuccess());
         dispatch(getUser(user.username, token))
-        // dispatch(goToHome());
       } else {
         dispatch(loginInvalid(new Error(i18n.t('Invalid_credentials'))));
       }
@@ -138,7 +134,7 @@ export const getFavsFromUser = (username, token) => {
       }      
       let user = await ApiService.getFavsFromUser(username, sortEnhanced, token)
       let favs = user.favs;
-      dispatch(divideInPages(favs, 8, sort)); //Parámetro (el 8) debería ser modificable por el usuario.
+      dispatch(divideInPages(favs, 8, sort)); 
       dispatch(goToHome());
       dispatch(AdvertsSuccess());
     } catch (error) {
@@ -146,20 +142,6 @@ export const getFavsFromUser = (username, token) => {
     }
   };
 };
-
-// export const getAdvertsFromUser = (username, token) => {
-//   return async function (dispatch, _getState, { services: { ApiService } }) {
-//     dispatch(apiRequest());
-//     try {
-//       let adverts = await ApiService.getAdvertsFromUser(username, token)
-//       dispatch(divideInPages(adverts, 8, sort)); //Parámetro (el 8) debería ser modificable por el usuario.
-//       dispatch(goToHome());
-//       dispatch(AdvertsSuccess());
-//     } catch (error) {
-//       dispatch(apiFailure(error));
-//     }
-//   };
-// };
 
 
 export const deleteUser = (username, token) => {
@@ -264,31 +246,13 @@ export const getAdverts = (query) => {
         else { query = query + '&sort=' + sortEnhanced + 'creationDate' }
       }
       const adverts = await ApiService.getAdverts(query)
-      dispatch(divideInPages(adverts, 8, sort)); //Parámetro (el 8) debería ser modificable por el usuario.
+      dispatch(divideInPages(adverts, 8, sort)); 
       dispatch(AdvertsSuccess());
     } catch (error) {
       dispatch(apiFailure(error));
     }
   };
 };
-
-// Para petición a la API...me hace falta?
-// export const getOneAdvert = (id) => {
-//   return async function (dispatch, _getState, { history, services: { ApiService } }) {
-//     dispatch(apiRequest());
-//     try {
-//       const advert = await ApiService.getOneAdvert(id)
-
-//       dispatch(divideInPages([advert], 1, true));
-//       dispatch(AdvertsSuccess());
-//       history.push(`/advert/${id}`);
-//     } catch (error) {
-//       dispatch(apiFailure(error));
-//     }
-//   };
-// };
-
-
 
 export const getUserOwnerFromAdvert = (slugName) => {
   return async function (dispatch, _getState, { history, services: { ApiService } }) {
@@ -297,8 +261,6 @@ export const getUserOwnerFromAdvert = (slugName) => {
       const advert = await ApiService.getOneAdvert(slugName)
       dispatch(UserOwnerSuccess(advert.userOwner))
       dispatch(AdvertsSuccess());
-      
-      // history.push(`/advert/${id}`);
     } catch (error) {
       dispatch(apiFailure(error));
     }
@@ -323,7 +285,7 @@ export const updateAdvert = (advert, token) => {
   return async function (dispatch, _getState, { services: { ApiService } }) {
     dispatch(apiRequest());
     try {
-      await ApiService.updateAdvert(advert, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      await ApiService.updateAdvert(advert, token) 
       dispatch(fetchTags());
       dispatch(AdvertsSuccess());
     } catch (error) {
@@ -337,7 +299,7 @@ export const deleteAdvert = (slugName, token) => {
   return async function (dispatch, _getState, { services: { ApiService } }) {
     dispatch(apiRequest());
     try {
-      await ApiService.deleteAdvert(slugName, token) //también podríamos comprobar el resultado (info) para ver si se ha actualizado bien.
+      await ApiService.deleteAdvert(slugName, token) 
       dispatch(AdvertsSuccess());
       dispatch(goToHome());
       dispatch(getAdverts())
@@ -346,7 +308,6 @@ export const deleteAdvert = (slugName, token) => {
     }
   };
 };
-
 
 export const markAsReserved = (advert, token) => {
   return async function (dispatch, _getState, { services: { ApiService } }) {
@@ -398,20 +359,7 @@ export const divideInPages = (adverts, numberPerPage, sort) => {
 
   const filledAdverts = numberPerPage * numberOfPages - adverts.length;
   for (var i = 0; i < filledAdverts; i++) {
-    adverts.push(new Advert({
-      // _0: undefined,
-      // _id: undefined,
-      // creationDate: undefined,
-      // description: undefined,
-      // name: undefined,
-      // photo: undefined,
-      // price: null,
-      // reserved: undefined,
-      // sold: undefined,
-      // tags: [],
-      // type: undefined,
-      // userOwner: undefined,
-    }))
+    adverts.push(new Advert({ }))
   }
 
   adverts.forEach(function (advert, key) {
@@ -470,9 +418,6 @@ export const UserOwnerSuccess = (userOwner) => {
     userOwner: userOwner
   }
 }
-
-
-
 
 //Testeada
 export const AdvertsSuccess = () => ({
@@ -589,8 +534,9 @@ export const goToLogin = () => {
 
 export const goToUserDetail = () => {
   return function (dispatch, _getState, { history }) {
+    const username = _getState().user.username;
     dispatch(showMainScreenAction());
-    history.push(`/user`);
+    history.push(`/user/${username}`);
   };
 };
 

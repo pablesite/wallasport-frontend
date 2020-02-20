@@ -17,7 +17,8 @@ let store = {};
 
 const user = {
     username: 'pablesite',
-    email: 'pabloruiz@ctnaval.com'
+    email: 'pabloruiz@ctnaval.com',
+    token: undefined
 }
 
 const adverts = {
@@ -90,9 +91,9 @@ describe('actions', () => {
         const expectedActions = [{
             type: types.API_REQUEST,
         }, {
-            type: types.SHOW_USER_REGISTERED,
+            type: types.REGISTER_SUCCESS,
         }, 
-        { type: types.REGISTER_SUCCESS,
+        { type: types.SHOW_USER_REGISTERED,
             
         }];
 
@@ -131,10 +132,12 @@ describe('actions', () => {
         const expectedActions = [{
             type: types.API_REQUEST,
         }, {
-            type: types.SHOW_MAINSCREEN,   
+            type: types.LOGIN_SUCCESS,    
         }, {
-            type: types.LOGIN_SUCCESS,
-            user    
+            type: types.API_REQUEST,  
+        }, {
+            type: types.GET_USER_SUCCESS,
+            user: {token: undefined} 
         }];
 
         // Mockeo la función de login y digo que devuelva un true.
@@ -150,9 +153,8 @@ describe('actions', () => {
 
         const expectedAction = {
             type: types.LOGIN_SUCCESS,
-            user,
         };
-        expect(actions.loginSuccess(user)).toEqual(expectedAction);
+        expect(actions.loginSuccess()).toEqual(expectedAction);
 
     });
 
@@ -202,9 +204,8 @@ describe('actions', () => {
 
         const expectedAction = {
             type: types.ADVERTS_SUCCESS,
-            adverts: adverts,
         };
-        expect(actions.AdvertsSuccess(adverts)).toEqual(expectedAction);
+        expect(actions.AdvertsSuccess()).toEqual(expectedAction);
 
     });
 

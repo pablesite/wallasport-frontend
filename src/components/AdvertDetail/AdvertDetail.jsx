@@ -36,9 +36,10 @@ export default function AdvertDetail(props) {
 
 
   useEffect(() => {
-     if ( locateAdvertFromUrl !== undefined && locateAdvertFromUrl.slugName !== undefined ) {
-      goToAdvertDetail(locateAdvertFromUrl.slugName)
-     }
+      if (locateAdvertFromUrl !== undefined && locateAdvertFromUrl.slugName !== undefined) {
+        goToAdvertDetail(locateAdvertFromUrl.slugName)
+
+      }
   }, [goToAdvertDetail, locateAdvertFromUrl]);
 
 
@@ -64,15 +65,15 @@ export default function AdvertDetail(props) {
         </Typography>
 
       }
-
-      {adverts && adverts.length !== 0  &&
+  
+      {adverts && adverts.length !== 0 && locateAdvertFromUrl !== undefined &&
         <div className={styles.advertDetailGrid}>
           < Grid
             container
             alignItems='center'
             justify="center"
             spacing={1}>
-            <Advert {...props} advert={locateAdvertFromUrl} />}
+            <Advert {...props} advert={locateAdvertFromUrl} />
 
           </Grid>
         </div>}

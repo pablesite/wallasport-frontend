@@ -72,7 +72,7 @@ export default function Login(props) {
 
             <div className={style.loginBackground}>
 
-                {isFetching && <Loading />}
+                {/* {isFetching && <Loading />} */}
 
                 <Container component="main" maxWidth="xs" className={style.loginContainer}>
 
