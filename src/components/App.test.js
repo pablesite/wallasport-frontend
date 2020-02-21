@@ -14,33 +14,11 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
 
 
-  // const history = createBrowserHistory();
-// // The user is loaded as long as it is persisted in LS.
-// const user = {
-//   username: 'pablesite',
-//   email: 'pabloruiz@ctnaval.com'
-// }
-
-// // Store configuration
-// const store = configureStore({
-//   history,
-//   services: { ApiService },
-// })({
-//   user,
-// });
-
-//////////
-
-
-//jest.mock('../services/ApiDBService');
-
-
 const history = createBrowserHistory();
 const middlewares = [thunk.withExtraArgument({ history, services: { ApiService } })];
 const mockStore = configureStore(middlewares);
 const store = mockStore({ });
 
-//////////////
 
 
   const props = {store, history}

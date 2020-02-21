@@ -35,23 +35,12 @@ const initialState = {
 export const user = (state = initialState.user, action) => {
     switch (action.type) {
 
-        // case TYPES.REGISTER_SUCCESS:
-        //     return state;
-
-        // testeado
-        // case TYPES.LOGIN_SUCCESS:
-        //     return action.user;
-
         // testeado
         case TYPES.LOGOUT_SUCCESS:
             return action.user;
 
         case TYPES.GET_USER_SUCCESS:
             return action.user;
-
-        // case TYPES.UPDATE_USER_SUCCESS:
-        //     return state;
-
 
         default:
             return state;
@@ -127,7 +116,7 @@ export const ui = (state = initialState.ui, action) => {
 
     if (/_FAILURE$/.test(action.type)) {
         return {
-            apiConnection: false, //Puede que la API sí que funcione guay, pero la petición se haya rechazado por no tener token por ejemplo. Pensar si hacer otra etiqueta para eso...
+            apiConnection: false,
             isFetching: false,
             error: action.error,
         };
