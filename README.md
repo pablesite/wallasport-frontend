@@ -6,6 +6,8 @@ Frontal desarrollado en React en el contexto de la práctica final del bootcamp 
 
 Wallasport es una plataforma que permite la compra y venta de productos de segunda mano relacionados con el deporte.
 
+El repositorio con la parte back de Wallasport está en [Repo wsbackend ](https://gitlab.keepcoding.io/pablesite/wallasport-backend)
+
 
 **Tabla de Contenidos**
 
